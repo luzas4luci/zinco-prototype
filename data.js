@@ -264,21 +264,22 @@ window.DATA = {
   // -------------------------------------------------------------------
   chat: {
     titulo: "Pregunta a Zinco",
-    saludo: "Hola 👋 Soy el asistente de Zinco · Laboral. Elige una pregunta:",
+    saludo: "Hola 👋 Soy el asistente de Zinco · Laboral. Pregunta lo que quieras o elige una sugerencia:",
     sugeridas: [
       {
-        q: "¿Por qué sube la nómina de julio?",
-        a: "Sube 5.080 € por tres motivos, todos revisados: la subida del convenio de hostelería (con atrasos desde abril), la incorporación de Hugo el 4 de julio y un anticipo por la baja de Antonio que la Seguridad Social nos devuelve. No hay ningún error."
+        q: "¿Cuánto me cuesta el equipo este mes?",
+        a: "En julio el equipo cuesta 62.296 € en total: 47.230 € de sueldos y 15.066 € de Seguridad Social a cargo de la empresa. Son unos 6.700 € más que en junio por la subida del convenio (con atrasos desde abril) y la incorporación de Hugo; está revisado, no hay error."
       },
       {
-        q: "¿Qué pasa con la baja de Antonio?",
-        a: "Antonio (cocina) sigue de baja por lumbalgia, hoy es su día 19. Falta un documento de la mutua que ya estamos reclamando; no afecta a su cobro. Previsión de vuelta: 21 de julio."
+        q: "¿Cómo va la baja de Antonio?",
+        a: "Antonio (cocina) sigue de baja por lumbalgia; hoy es su día 19. Falta un documento de la mutua que ya estamos reclamando y no afecta a su cobro. Previsión de vuelta: 21 de julio."
       },
       {
-        q: "¿Está todo al día con la Seguridad Social?",
-        a: "Sí. Los seguros sociales de junio están presentados sin incidencias y el alta de Hugo se comunicó en 9 horas, dentro de plazo. Lo único en curso es interno: tus nóminas de julio estarán listas el día 28."
+        q: "¿Qué pasa si contrato un camarero más en agosto?",
+        a: "Un camarero a jornada completa por convenio ronda los 1.710 € brutos al mes, unos 2.250 € de coste total con la Seguridad Social. Si te decides, pásanos sus datos y comunicamos el alta al Sistema RED el mismo día, como hicimos con Hugo."
       }
-    ]
+    ],
+    respuestaLibre: "Esa no la tengo a mano. La consulto con tu asesor y te respondemos en menos de 24 horas por aquí. Si corre prisa, llámanos y lo vemos al momento."
   }
 };
 

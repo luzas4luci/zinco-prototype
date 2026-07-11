@@ -381,6 +381,32 @@
       padding: 8px 14px; cursor: pointer;
     }
     .chat-sugeridas button:hover { background: var(--zinco-green-tint); }
+    .chat-panel:not([hidden]) { animation: chatSube 0.18s ease-out; }
+    @keyframes chatSube {
+      from { transform: translateY(14px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .burbuja.typing span {
+      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-soft); margin-right: 4px;
+      animation: puntito 1s infinite;
+    }
+    .burbuja.typing span:nth-child(2) { animation-delay: 0.18s; }
+    .burbuja.typing span:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes puntito { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+    .chat-input { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); }
+    .chat-input input {
+      flex: 1; font-family: var(--font); font-size: 0.84rem;
+      padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px;
+      background: var(--bg-page); color: var(--text);
+    }
+    .chat-input input:focus { outline: none; border-color: var(--zinco-green); }
+    .chat-input button {
+      font-family: var(--font); font-size: 0.84rem; font-weight: 700;
+      background: var(--zinco-green); color: var(--bg-card);
+      border: none; border-radius: 999px; padding: 9px 16px; cursor: pointer;
+    }
+    .chat-input button:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* ---------- Placeholder ---------- */
     .placeholder { text-align: center; padding: 44px 20px; color: var(--text-soft); font-size: 0.9rem; }
@@ -499,6 +525,10 @@
     </div>
     <div class="chat-msgs" id="chatMsgs"></div>
     <div class="chat-sugeridas" id="chatSugeridas"></div>
+    <form class="chat-input" id="chatForm">
+      <input type="text" id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off">
+      <button type="submit" id="chatEnviar">Enviar</button>
+    </form>
   </div>
 
   <!-- Chart.js por CDN; si no carga (sin conexión), la tab Nóminas muestra la tabla de respaldo -->
@@ -987,17 +1017,45 @@
       div.textContent = texto;
       chatMsgs.appendChild(div);
       chatMsgs.scrollTop = chatMsgs.scrollHeight;
+      return div;
     }
     burbuja(D.chat.saludo, "zinco");
+
+    // respuestas SIEMPRE pre-escritas, con estado de "escribiendo…" simulado
+    const chatEnviar = document.getElementById("chatEnviar");
+    let escribiendo = false;
+    function responder(pregunta, respuesta) {
+      if (escribiendo) return;
+      escribiendo = true;
+      chatEnviar.disabled = true;
+      burbuja(pregunta, "user");
+      const typing = burbuja("", "zinco");
+      typing.classList.add("typing");
+      typing.innerHTML = "<span></span><span></span><span></span>";
+      setTimeout(() => {
+        typing.remove();
+        burbuja(respuesta, "zinco");
+        escribiendo = false;
+        chatEnviar.disabled = false;
+      }, 700);
+    }
+
     const sugeridasBox = document.getElementById("chatSugeridas");
     D.chat.sugeridas.forEach(s => {
       const btn = document.createElement("button");
       btn.textContent = s.q;
-      btn.addEventListener("click", () => {
-        burbuja(s.q, "user");
-        burbuja(s.a, "zinco");
-      });
+      btn.addEventListener("click", () => responder(s.q, s.a));
       sugeridasBox.appendChild(btn);
+    });
+
+    // input libre → respuesta genérica pre-escrita
+    const chatInput = document.getElementById("chatInput");
+    document.getElementById("chatForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const texto = chatInput.value.trim();
+      if (!texto || escribiendo) return;
+      chatInput.value = "";
+      responder(texto, D.chat.respuestaLibre);
     });
   </script>
 </body>
