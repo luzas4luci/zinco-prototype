@@ -70,6 +70,15 @@ window.DATA = {
       estadoTexto: "⚠ Parte de confirmación pendiente de la mutua desde hace 6 días",
       mutua: "Mutua Universal",
       pagoDelegado: true,
+      previsionReincorporacion: "2026-07-21",
+      pelota: "Mutua",
+      hitos: [
+        { label: "Parte recibido", done: true, fecha: "2026-06-23" },
+        { label: "Comunicado a SS", done: true, fecha: "2026-06-24" },
+        { label: "Pago delegado activo", done: true, fecha: "2026-07-08" },
+        { label: "Previsión de reincorporación", done: false, fecha: "2026-07-21" }
+      ],
+      zincoAhora: "Hemos reclamado hoy a Mutua Universal el 2.º parte de confirmación (segunda reclamación por escrito). Si no llega antes del lunes 13, escalamos por teléfono con el gestor de la mutua. El pago delegado ya está activo, así que Antonio sigue cobrando con normalidad y la empresa recupera el anticipo en el RLC.",
       timeline: [
         { fecha: "2026-06-23", texto: "Parte de baja emitido (lumbalgia)", ok: true },
         { fecha: "2026-06-24", texto: "Baja comunicada al Sistema RED", ok: true },
@@ -91,6 +100,15 @@ window.DATA = {
       semanas: 16,
       estado: "ok",
       estadoTexto: "✓ Todo en orden — pago directo del INSS tramitado",
+      previsionReincorporacion: "2026-09-21",
+      pelota: "SS",
+      hitos: [
+        { label: "Parte recibido", done: true, fecha: "2026-06-02" },
+        { label: "Comunicado a SS", done: true, fecha: "2026-06-03" },
+        { label: "Pago directo INSS activo", done: true, fecha: "2026-06-05" },
+        { label: "Previsión de reincorporación", done: false, fecha: "2026-09-21" }
+      ],
+      zincoAhora: "Nada pendiente por tu parte: el pago directo del INSS está activo y confirmado. Haremos seguimiento del fin del descanso (21/09) y prepararemos la reincorporación de Lucía con 15 días de antelación.",
       timeline: [
         { fecha: "2026-06-02", texto: "Inicio del descanso por nacimiento y cuidado de menor", ok: true },
         { fecha: "2026-06-03", texto: "Comunicada a la Seguridad Social (Sistema RED)", ok: true },

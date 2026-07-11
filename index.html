@@ -183,6 +183,106 @@
     .hecho .texto { font-size: 0.85rem; }
     .hecho .texto::before { content: "✓ "; color: var(--ok); font-weight: 700; }
 
+    /* ---------- Tab ITs ---------- */
+    .it-card { cursor: pointer; transition: box-shadow 0.15s; }
+    .it-card:hover { box-shadow: 0 3px 10px rgba(27, 31, 27, 0.1); }
+    .it-head { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+    .it-head .quien { flex: 1; min-width: 180px; }
+    .it-head h3 { font-size: 1rem; font-weight: 700; }
+    .it-head .puesto { font-size: 0.8rem; color: var(--text-soft); }
+    .it-head .tipo { font-size: 0.82rem; color: var(--text-soft); margin-top: 3px; }
+    .it-dias { text-align: right; }
+    .it-dias .num { font-size: 1.7rem; font-weight: 800; line-height: 1.1; }
+    .it-dias .label { font-size: 0.72rem; color: var(--text-soft); }
+    .chip {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--bg-page);
+      border: 1px solid var(--line);
+      color: var(--text-soft);
+    }
+    .chip.warn { background: var(--warn-bg); border-color: var(--warn-bg); color: var(--warn); }
+    .chip.ok   { background: var(--zinco-green-tint); border-color: var(--zinco-green-tint); color: var(--ok); }
+    .it-estado { font-size: 0.82rem; margin-top: 10px; }
+    .it-estado.warn { color: var(--warn); }
+    .it-estado.ok { color: var(--ok); }
+
+    .hitos { display: flex; margin-top: 18px; }
+    .hito { flex: 1; text-align: center; position: relative; }
+    .hito .punto {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--bg-card);
+      border: 3px solid var(--line);
+      margin: 0 auto 6px;
+      position: relative; z-index: 1;
+    }
+    .hito.done .punto { background: var(--ok); border-color: var(--ok); }
+    .hito::before {
+      content: "";
+      position: absolute;
+      top: 6px; left: -50%; width: 100%;
+      height: 2px;
+      background: var(--line);
+    }
+    .hito.done::before { background: var(--ok); }
+    .hito:first-child::before { display: none; }
+    .hito .hlabel { font-size: 0.68rem; font-weight: 600; line-height: 1.25; padding: 0 4px; }
+    .hito .hfecha { font-size: 0.66rem; color: var(--text-soft); margin-top: 2px; }
+    .it-abrir { font-size: 0.76rem; color: var(--text-soft); margin-top: 16px; text-align: right; }
+
+    /* ---------- Modal ---------- */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(27, 31, 27, 0.45);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+    .modal {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      max-width: 560px; width: 100%;
+      max-height: 85vh; overflow-y: auto;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 12px 40px rgba(27, 31, 27, 0.25);
+    }
+    .modal .cerrar {
+      position: absolute; top: 12px; right: 14px;
+      font-size: 1.3rem; line-height: 1;
+      border: none; background: transparent;
+      color: var(--text-soft); cursor: pointer;
+      padding: 6px;
+    }
+    .modal h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 2px; }
+    .modal .msub { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 16px; }
+    .tl { border-left: 2px solid var(--line); margin: 14px 0 4px 7px; padding-left: 18px; }
+    .tl-item { position: relative; padding-bottom: 14px; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-item::before {
+      content: "";
+      position: absolute; left: -25px; top: 3px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--bg-card);
+      border: 3px solid var(--line);
+    }
+    .tl-item.done::before { background: var(--ok); border-color: var(--ok); }
+    .tl-item.pend::before { background: var(--warn); border-color: var(--warn); }
+    .tl-item .tfecha { font-size: 0.72rem; color: var(--text-soft); }
+    .tl-item .ttexto { font-size: 0.85rem; line-height: 1.4; }
+    .tl-item.pend .ttexto { color: var(--warn); font-weight: 600; }
+    .zinco-ahora {
+      background: var(--zinco-green-tint);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 18px;
+    }
+    .zinco-ahora .zt { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--zinco-green-dark); margin-bottom: 6px; }
+    .zinco-ahora p { font-size: 0.85rem; line-height: 1.5; color: var(--text); }
+
     /* ---------- Placeholder ---------- */
     .placeholder { text-align: center; padding: 44px 20px; color: var(--text-soft); font-size: 0.9rem; }
 
@@ -232,7 +332,9 @@
 
       <!-- ---- Tab ITs ---- -->
       <div id="tab-its" hidden>
-        <div class="card placeholder">La tab de ITs se construye en la siguiente iteración.</div>
+        <h1>Incapacidades temporales</h1>
+        <p class="sub" id="subITs"></p>
+        <div id="listaITs"></div>
       </div>
 
       <!-- ---- Tab Nóminas ---- -->
@@ -396,6 +498,99 @@
       row.innerHTML = `<span class="hora">${h.hora}</span><span class="texto">${h.texto}</span>`;
       feed.appendChild(row);
     });
+
+    // ---------- tab ITs ----------
+    // chip "quién tiene la pelota": ámbar cuando esperamos a un tercero
+    function chipPelota(it) {
+      const clase = it.pelota === "Mutua" ? "warn" : it.pelota === "Zinco" ? "ok" : "";
+      return `<span class="chip ${clase}">La pelota la tiene: ${it.pelota}</span>`;
+    }
+    function fmtLarga(iso) {
+      const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+      const d = fecha(iso);
+      return d.getDate() + " de " + MESES[d.getMonth()];
+    }
+
+    document.getElementById("subITs").textContent =
+      D.its.length + " bajas activas · " + D.empresa.nombre;
+
+    const listaITs = document.getElementById("listaITs");
+    D.its.forEach(it => {
+      const dias = diasEntre(fecha(it.inicio), HOY) + 1;
+      const card = document.createElement("div");
+      card.className = "card it-card";
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.innerHTML = `
+        <div class="it-head">
+          <div class="quien">
+            <h3>${it.empleado}</h3>
+            <div class="puesto">${it.puesto}</div>
+            <div class="tipo">${it.tipo}${it.diagnostico ? " · " + it.diagnostico : ""}</div>
+            <div style="margin-top:8px">${chipPelota(it)}</div>
+          </div>
+          <div class="it-dias">
+            <div class="num">${dias}</div>
+            <div class="label">días de baja</div>
+          </div>
+        </div>
+        <div class="hitos">
+          ${it.hitos.map(h => `
+            <div class="hito ${h.done ? "done" : ""}">
+              <div class="punto"></div>
+              <div class="hlabel">${h.label}</div>
+              <div class="hfecha">${fmtCorta(fecha(h.fecha))}</div>
+            </div>
+          `).join("")}
+        </div>
+        <div class="it-estado ${it.estado === "ok" ? "ok" : "warn"}">${it.estadoTexto}</div>
+        <div class="it-abrir">Ver detalle →</div>
+      `;
+      card.addEventListener("click", () => abrirModalIT(it));
+      card.addEventListener("keydown", e => { if (e.key === "Enter") abrirModalIT(it); });
+      listaITs.appendChild(card);
+    });
+
+    // ---------- modal de detalle de IT ----------
+    let overlay = null;
+    function cerrarModal() {
+      if (overlay) { overlay.remove(); overlay = null; }
+    }
+    function abrirModalIT(it) {
+      cerrarModal();
+      const dias = diasEntre(fecha(it.inicio), HOY) + 1;
+      overlay = document.createElement("div");
+      overlay.className = "overlay";
+      overlay.innerHTML = `
+        <div class="modal" role="dialog" aria-modal="true" aria-label="Detalle de la baja de ${it.empleado}">
+          <button class="cerrar" aria-label="Cerrar">✕</button>
+          <h3>${it.empleado} — ${it.tipo}</h3>
+          <div class="msub">
+            ${it.diagnostico ? it.diagnostico + " · " : ""}Día ${dias} de baja ·
+            Reincorporación prevista: ${fmtLarga(it.previsionReincorporacion)}
+            &nbsp;&nbsp;${chipPelota(it)}
+          </div>
+          <div class="tl">
+            ${it.timeline.map(ev => `
+              <div class="tl-item ${ev.ok === true ? "done" : ev.ok === false ? "pend" : ""}">
+                <div class="tfecha">${fmtCorta(fecha(ev.fecha))}</div>
+                <div class="ttexto">${ev.texto}</div>
+              </div>
+            `).join("")}
+          </div>
+          <div class="zinco-ahora">
+            <div class="zt">Qué está haciendo Zinco ahora</div>
+            <p>${it.zincoAhora}</p>
+          </div>
+        </div>
+      `;
+      // cierre con X y con click fuera del modal
+      overlay.querySelector(".cerrar").addEventListener("click", cerrarModal);
+      overlay.addEventListener("click", e => { if (e.target === overlay) cerrarModal(); });
+      document.body.appendChild(overlay);
+    }
+    // cierre con Esc
+    document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarModal(); });
   </script>
 </body>
 </html>
