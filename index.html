@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zinco · Laboral — Prototipo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --zinco-green: #3D6740;
+      --zinco-green-dark: #2C4A2E;
+      --zinco-green-tint: #E9F0EA;
+      --bg-page: #F7F8F7;
+      --bg-card: #FFFFFF;
+      --ok: #3D6740;
+      --warn: #B45309;
+      --warn-bg: #FEF3C7;
+      --alert: #B91C1C;
+      --alert-bg: #FEE2E2;
+      --text: #1B1F1B;
+      --text-soft: #5F6B60;
+      --line: #E4E8E4;
+      --radius: 14px;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg-page);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ---------- Topbar ---------- */
+    .topbar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .wordmark {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--zinco-green);
+      white-space: nowrap;
+    }
+    .empresa-select {
+      font-family: var(--font);
+      font-size: 0.85rem;
+      color: var(--text);
+      background: var(--bg-page);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 12px;
+      max-width: 100%;
+    }
+    .toggle {
+      margin-left: auto;
+      display: flex;
+      background: var(--bg-page);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px;
+    }
+    .toggle button {
+      font-family: var(--font);
+      font-size: 0.83rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--text-soft);
+      padding: 7px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .toggle button.active {
+      background: var(--zinco-green);
+      color: #fff;
+    }
+
+    /* ---------- Layout ---------- */
+    .container { max-width: 980px; margin: 0 auto; padding: 24px 20px 60px; }
+
+    /* ---------- Tabs (vista Asesor) ---------- */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 22px;
+      overflow-x: auto;
+    }
+    .tabs button {
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bg-card);
+      color: var(--text-soft);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .tabs button.active {
+      background: var(--zinco-green-tint);
+      border-color: var(--zinco-green);
+      color: var(--zinco-green-dark);
+    }
+    .tabs button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* ---------- Cards ---------- */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: 0 1px 3px rgba(27, 31, 27, 0.05);
+      margin-bottom: 12px;
+    }
+    h1 { font-size: 1.25rem; font-weight: 700; margin-bottom: 2px; }
+    .sub { color: var(--text-soft); font-size: 0.87rem; margin-bottom: 22px; }
+    h2 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-soft);
+      margin: 26px 0 10px;
+    }
+
+    /* ---------- Bandeja ---------- */
+    .tarea { display: flex; gap: 14px; align-items: flex-start; }
+    .tarea .cuerpo { flex: 1; }
+    .tarea h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .tarea p { font-size: 0.85rem; color: var(--text-soft); line-height: 1.45; }
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .badge.warn  { background: var(--warn-bg);  color: var(--warn); }
+    .badge.alert { background: var(--alert-bg); color: var(--alert); }
+    .badge.ok    { background: var(--zinco-green-tint); color: var(--ok); }
+    .cta {
+      font-family: var(--font);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--zinco-green-dark);
+      background: var(--zinco-green-tint);
+      border: none;
+      border-radius: 9px;
+      padding: 7px 14px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .cta:hover { background: var(--zinco-green); color: #fff; }
+
+    /* ---------- Hecho hoy ---------- */
+    .hecho { display: flex; gap: 12px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line); }
+    .hecho:last-child { border-bottom: none; }
+    .hecho .hora { font-size: 0.75rem; color: var(--text-soft); font-variant-numeric: tabular-nums; }
+    .hecho .texto { font-size: 0.85rem; }
+    .hecho .texto::before { content: "✓ "; color: var(--ok); font-weight: 700; }
+
+    /* ---------- Resumen del día ---------- */
+    .resumen { display: flex; gap: 28px; flex-wrap: wrap; }
+    .kpi .num { font-size: 1.7rem; font-weight: 800; }
+    .kpi .num.warn { color: var(--warn); }
+    .kpi .label { font-size: 0.75rem; color: var(--text-soft); }
+
+    /* ---------- Placeholder ---------- */
+    .placeholder { text-align: center; padding: 44px 20px; color: var(--text-soft); font-size: 0.9rem; }
+
+    @media (max-width: 640px) {
+      .topbar { padding: 12px 14px; gap: 10px; }
+      .toggle { margin-left: 0; }
+      .container { padding: 18px 14px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <span class="wordmark">Zinco · Laboral</span>
+    <select class="empresa-select" id="empresaSelect" aria-label="Empresa"></select>
+    <div class="toggle" role="tablist" aria-label="Vista">
+      <button id="btnAsesor" class="active">Asesor</button>
+      <button id="btnCliente">Cliente</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ================= VISTA ASESOR ================= -->
+    <section id="vistaAsesor">
+      <nav class="tabs">
+        <button class="active">Hoy</button>
+        <button disabled title="Siguiente iteración">ITs</button>
+        <button disabled title="Siguiente iteración">Nóminas</button>
+        <button disabled title="Siguiente iteración">Altas y Bajas</button>
+      </nav>
+
+      <h1 id="tituloHoy"></h1>
+      <p class="sub" id="subHoy"></p>
+
+      <div class="card">
+        <div class="resumen" id="resumenHoy"></div>
+      </div>
+
+      <h2>Bandeja — priorizada por plazo</h2>
+      <div id="bandeja"></div>
+
+      <h2>Hecho hoy</h2>
+      <div class="card" id="hechoHoy"></div>
+    </section>
+
+    <!-- ================= VISTA CLIENTE ================= -->
+    <section id="vistaCliente" hidden>
+      <div class="card placeholder">
+        La vista cliente se construye en la siguiente iteración.
+      </div>
+    </section>
+
+  </main>
+
+  <script src="data.js"></script>
+  <script>
+    const D = window.DATA;
+
+    // Topbar
+    const sel = document.getElementById("empresaSelect");
+    const opt = document.createElement("option");
+    opt.textContent = D.empresa.etiquetaSelector;
+    sel.appendChild(opt);
+
+    // Toggle Asesor / Cliente
+    const btnAsesor = document.getElementById("btnAsesor");
+    const btnCliente = document.getElementById("btnCliente");
+    const vistaAsesor = document.getElementById("vistaAsesor");
+    const vistaCliente = document.getElementById("vistaCliente");
+    function setVista(cliente) {
+      vistaAsesor.hidden = cliente;
+      vistaCliente.hidden = !cliente;
+      btnAsesor.classList.toggle("active", !cliente);
+      btnCliente.classList.toggle("active", cliente);
+    }
+    btnAsesor.addEventListener("click", () => setVista(false));
+    btnCliente.addEventListener("click", () => setVista(true));
+
+    // Cabecera del día
+    document.getElementById("tituloHoy").textContent = "Hoy";
+    document.getElementById("subHoy").textContent =
+      D.hoyTexto.charAt(0).toUpperCase() + D.hoyTexto.slice(1) + " · " + D.empresa.nombre;
+
+    // Resumen (KPIs del día)
+    const urgentes = D.bandeja.filter(t => t.nivel !== "ok").length;
+    document.getElementById("resumenHoy").innerHTML = `
+      <div class="kpi"><div class="num">${D.bandeja.length}</div><div class="label">tareas en bandeja</div></div>
+      <div class="kpi"><div class="num warn">${urgentes}</div><div class="label">requieren atención</div></div>
+      <div class="kpi"><div class="num">${D.hechoHoy.length}</div><div class="label">hechas hoy</div></div>
+    `;
+
+    // Bandeja priorizada por SLA
+    const bandeja = document.getElementById("bandeja");
+    D.bandeja
+      .slice()
+      .sort((a, b) => a.prioridad - b.prioridad)
+      .forEach(t => {
+        const card = document.createElement("div");
+        card.className = "card tarea";
+        card.innerHTML = `
+          <div class="cuerpo">
+            <h3>${t.titulo}</h3>
+            <p>${t.detalle}</p>
+            <button class="cta">${t.cta}</button>
+          </div>
+          <span class="badge ${t.nivel}">${t.sla}</span>
+        `;
+        bandeja.appendChild(card);
+      });
+
+    // Feed "Hecho hoy"
+    const feed = document.getElementById("hechoHoy");
+    D.hechoHoy.forEach(h => {
+      const row = document.createElement("div");
+      row.className = "hecho";
+      row.innerHTML = `<span class="hora">${h.hora}</span><span class="texto">${h.texto}</span>`;
+      feed.appendChild(row);
+    });
+  </script>
+</body>
+</html>
