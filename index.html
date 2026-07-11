@@ -113,7 +113,6 @@
       border-color: var(--zinco-green);
       color: var(--zinco-green-dark);
     }
-    .tabs button:disabled { opacity: 0.45; cursor: not-allowed; }
 
     /* ---------- Cards ---------- */
     .card {
@@ -135,7 +134,20 @@
       margin: 26px 0 10px;
     }
 
-    /* ---------- Bandeja ---------- */
+    /* ---------- Contadores-resumen ---------- */
+    .resumen { display: flex; gap: 12px; flex-wrap: wrap; }
+    .resumen .card { flex: 1; min-width: 200px; margin-bottom: 0; }
+    .kpi .num { font-size: 1.8rem; font-weight: 800; line-height: 1.2; }
+    .kpi .num .unidad { font-size: 1rem; font-weight: 700; color: var(--text-soft); }
+    .kpi .num.warn { color: var(--warn); }
+    .kpi .label { font-size: 0.78rem; font-weight: 600; margin-top: 2px; }
+    .kpi .nota { font-size: 0.74rem; color: var(--text-soft); margin-top: 4px; }
+    .kpi .nota.warn { color: var(--warn); }
+    .kpi .nota.ok { color: var(--ok); }
+    .barra { height: 6px; background: var(--zinco-green-tint); border-radius: 999px; margin-top: 8px; overflow: hidden; }
+    .barra > div { height: 100%; background: var(--zinco-green); border-radius: 999px; }
+
+    /* ---------- Requiere acción ---------- */
     .tarea { display: flex; gap: 14px; align-items: flex-start; }
     .tarea .cuerpo { flex: 1; }
     .tarea h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
@@ -171,12 +183,6 @@
     .hecho .texto { font-size: 0.85rem; }
     .hecho .texto::before { content: "✓ "; color: var(--ok); font-weight: 700; }
 
-    /* ---------- Resumen del día ---------- */
-    .resumen { display: flex; gap: 28px; flex-wrap: wrap; }
-    .kpi .num { font-size: 1.7rem; font-weight: 800; }
-    .kpi .num.warn { color: var(--warn); }
-    .kpi .label { font-size: 0.75rem; color: var(--text-soft); }
-
     /* ---------- Placeholder ---------- */
     .placeholder { text-align: center; padding: 44px 20px; color: var(--text-soft); font-size: 0.9rem; }
 
@@ -184,6 +190,7 @@
       .topbar { padding: 12px 14px; gap: 10px; }
       .toggle { margin-left: 0; }
       .container { padding: 18px 14px 48px; }
+      .resumen { flex-direction: column; }
     }
   </style>
 </head>
@@ -202,31 +209,47 @@
 
     <!-- ================= VISTA ASESOR ================= -->
     <section id="vistaAsesor">
-      <nav class="tabs">
-        <button class="active">Hoy</button>
-        <button disabled title="Siguiente iteración">ITs</button>
-        <button disabled title="Siguiente iteración">Nóminas</button>
-        <button disabled title="Siguiente iteración">Altas y Bajas</button>
+      <nav class="tabs" id="tabsNav">
+        <button data-tab="hoy" class="active">Hoy</button>
+        <button data-tab="its">ITs</button>
+        <button data-tab="nominas">Nóminas</button>
+        <button data-tab="movs">Altas y Bajas</button>
       </nav>
 
-      <h1 id="tituloHoy"></h1>
-      <p class="sub" id="subHoy"></p>
+      <!-- ---- Tab HOY ---- -->
+      <div id="tab-hoy">
+        <h1>Hoy</h1>
+        <p class="sub" id="subHoy"></p>
 
-      <div class="card">
         <div class="resumen" id="resumenHoy"></div>
+
+        <h2>Requiere acción</h2>
+        <div id="bandeja"></div>
+
+        <h2>Hecho hoy</h2>
+        <div class="card" id="hechoHoy"></div>
       </div>
 
-      <h2>Bandeja — priorizada por plazo</h2>
-      <div id="bandeja"></div>
+      <!-- ---- Tab ITs ---- -->
+      <div id="tab-its" hidden>
+        <div class="card placeholder">La tab de ITs se construye en la siguiente iteración.</div>
+      </div>
 
-      <h2>Hecho hoy</h2>
-      <div class="card" id="hechoHoy"></div>
+      <!-- ---- Tab Nóminas ---- -->
+      <div id="tab-nominas" hidden>
+        <div class="card placeholder">La tab de Nóminas se construye en una próxima iteración.</div>
+      </div>
+
+      <!-- ---- Tab Altas y Bajas ---- -->
+      <div id="tab-movs" hidden>
+        <div class="card placeholder">La tab de Altas y Bajas se construye en una próxima iteración.</div>
+      </div>
     </section>
 
     <!-- ================= VISTA CLIENTE ================= -->
     <section id="vistaCliente" hidden>
       <div class="card placeholder">
-        La vista cliente se construye en la siguiente iteración.
+        La vista cliente se construye en una próxima iteración.
       </div>
     </section>
 
@@ -235,14 +258,56 @@
   <script src="data.js"></script>
   <script>
     const D = window.DATA;
+    const HOY = fecha(D.hoy);
 
-    // Topbar
+    // ---------- utilidades de fechas ----------
+    function fecha(iso) { return new Date(iso + "T12:00:00"); }
+    function diasEntre(a, b) { return Math.round((b - a) / 86400000); }
+    function fmtCorta(d) {
+      return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0");
+    }
+    // Suma n días hábiles (lunes-viernes) a una fecha
+    function sumaDiasHabiles(d, n) {
+      const r = new Date(d);
+      while (n > 0) {
+        r.setDate(r.getDate() + 1);
+        const dia = r.getDay();
+        if (dia !== 0 && dia !== 6) n--;
+      }
+      return r;
+    }
+
+    // ---------- reglas de semáforo (calculadas, no hardcodeadas) ----------
+    // Devuelve { nivel: 'alert'|'warn'|'ok', sla: texto del badge }
+    function semaforoTarea(t) {
+      if (t.tipo === "it-parte") {
+        const it = D.its.find(i => i.id === t.ref);
+        const diasPendiente = diasEntre(fecha(it.partePendienteDesde), HOY);
+        if (diasPendiente > 5) return { nivel: "warn", sla: "Pendiente " + diasPendiente + " días" };
+        return { nivel: "ok", sla: "Pendiente " + diasPendiente + " días" };
+      }
+      if (t.tipo === "baja-ss") {
+        const baja = D.movimientos.bajas.find(b => b.empleadoId === t.empleadoId);
+        const limite = sumaDiasHabiles(fecha(baja.ultimoDia), 3); // plazo legal: 3 días hábiles
+        const diasHastaLimite = diasEntre(HOY, limite);
+        if (diasHastaLimite < 1) return { nivel: "alert", sla: diasHastaLimite < 0 ? "PLAZO VENCIDO" : "Plazo RED: HOY" };
+        return { nivel: "ok", sla: "Plazo RED: " + fmtCorta(limite) };
+      }
+      // genérico por fecha de vencimiento
+      const diasHasta = diasEntre(HOY, fecha(t.vence));
+      if (diasHasta <= 0) return { nivel: "alert", sla: "Vence hoy" };
+      if (diasHasta <= 4) return { nivel: "warn", sla: diasHasta + " día" + (diasHasta === 1 ? "" : "s") };
+      return { nivel: "ok", sla: "En plazo · " + fmtCorta(fecha(t.vence)) };
+    }
+    const ORDEN_NIVEL = { alert: 0, warn: 1, ok: 2 };
+
+    // ---------- topbar ----------
     const sel = document.getElementById("empresaSelect");
     const opt = document.createElement("option");
     opt.textContent = D.empresa.etiquetaSelector;
     sel.appendChild(opt);
 
-    // Toggle Asesor / Cliente
+    // toggle Asesor / Cliente
     const btnAsesor = document.getElementById("btnAsesor");
     const btnCliente = document.getElementById("btnCliente");
     const vistaAsesor = document.getElementById("vistaAsesor");
@@ -256,24 +321,59 @@
     btnAsesor.addEventListener("click", () => setVista(false));
     btnCliente.addEventListener("click", () => setVista(true));
 
-    // Cabecera del día
-    document.getElementById("tituloHoy").textContent = "Hoy";
+    // ---------- navegación de tabs ----------
+    const tabsNav = document.getElementById("tabsNav");
+    tabsNav.addEventListener("click", e => {
+      const btn = e.target.closest("button[data-tab]");
+      if (!btn) return;
+      tabsNav.querySelectorAll("button").forEach(b => b.classList.toggle("active", b === btn));
+      ["hoy", "its", "nominas", "movs"].forEach(id => {
+        document.getElementById("tab-" + id).hidden = id !== btn.dataset.tab;
+      });
+    });
+
+    // ---------- tab HOY ----------
     document.getElementById("subHoy").textContent =
       D.hoyTexto.charAt(0).toUpperCase() + D.hoyTexto.slice(1) + " · " + D.empresa.nombre;
 
-    // Resumen (KPIs del día)
-    const urgentes = D.bandeja.filter(t => t.nivel !== "ok").length;
+    // contadores-resumen (calculados desde data.js)
+    const itsConAviso = D.its.filter(it =>
+      it.partePendienteDesde && diasEntre(fecha(it.partePendienteDesde), HOY) > 5
+    ).length;
+    const altasPendientes = D.movimientos.altas.filter(a => !a.comunicadaRED).length;
+    const bajasPorComunicar = D.movimientos.bajas.filter(b => !b.comunicadaRED).length;
+    const avance = D.nominas.mesActual;
+
     document.getElementById("resumenHoy").innerHTML = `
-      <div class="kpi"><div class="num">${D.bandeja.length}</div><div class="label">tareas en bandeja</div></div>
-      <div class="kpi"><div class="num warn">${urgentes}</div><div class="label">requieren atención</div></div>
-      <div class="kpi"><div class="num">${D.hechoHoy.length}</div><div class="label">hechas hoy</div></div>
+      <div class="card kpi">
+        <div class="num ${itsConAviso ? "warn" : ""}">${D.its.length}</div>
+        <div class="label">ITs activas</div>
+        <div class="nota ${itsConAviso ? "warn" : "ok"}">${itsConAviso ? "⚠ " + itsConAviso + " con parte pendiente de la mutua" : "✓ Todas al día"}</div>
+      </div>
+      <div class="card kpi">
+        <div class="num">${altasPendientes + bajasPorComunicar}</div>
+        <div class="label">Movimientos pendientes de comunicar</div>
+        <div class="nota ${altasPendientes + bajasPorComunicar ? "" : "ok"}">${
+          altasPendientes + bajasPorComunicar
+            ? bajasPorComunicar + " baja por comunicar al RED (en plazo)"
+            : "✓ Todo comunicado al Sistema RED"
+        }</div>
+      </div>
+      <div class="card kpi">
+        <div class="num">${avance.avancePct}<span class="unidad"> %</span></div>
+        <div class="label">Nóminas de ${avance.mes.toLowerCase()}</div>
+        <div class="barra"><div style="width:${avance.avancePct}%"></div></div>
+        <div class="nota">${avance.etapa}</div>
+      </div>
     `;
 
-    // Bandeja priorizada por SLA
+    // lista "Requiere acción" ordenada por urgencia calculada
     const bandeja = document.getElementById("bandeja");
     D.bandeja
-      .slice()
-      .sort((a, b) => a.prioridad - b.prioridad)
+      .map(t => ({ ...t, sem: semaforoTarea(t) }))
+      .sort((a, b) =>
+        ORDEN_NIVEL[a.sem.nivel] - ORDEN_NIVEL[b.sem.nivel] || a.prioridad - b.prioridad
+      )
       .forEach(t => {
         const card = document.createElement("div");
         card.className = "card tarea";
@@ -283,12 +383,12 @@
             <p>${t.detalle}</p>
             <button class="cta">${t.cta}</button>
           </div>
-          <span class="badge ${t.nivel}">${t.sla}</span>
+          <span class="badge ${t.sem.nivel}">${t.sem.sla}</span>
         `;
         bandeja.appendChild(card);
       });
 
-    // Feed "Hecho hoy"
+    // feed "Hecho hoy"
     const feed = document.getElementById("hechoHoy");
     D.hechoHoy.forEach(h => {
       const row = document.createElement("div");

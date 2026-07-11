@@ -65,6 +65,7 @@ window.DATA = {
       diagnostico: "Lumbalgia",
       inicio: "2026-06-23",
       diaDeBaja: 19,
+      partePendienteDesde: "2026-07-05",
       estado: "ambar",
       estadoTexto: "⚠ Parte de confirmación pendiente de la mutua desde hace 6 días",
       mutua: "Mutua Universal",
@@ -147,6 +148,11 @@ window.DATA = {
   // nuevas tablas (+2,2 %) y 1 alta nueva prorrateada.
   // -------------------------------------------------------------------
   nominas: {
+    mesActual: {
+      mes: "Julio",
+      avancePct: 60,
+      etapa: "Cálculo previo listo — pendiente de cierre y envío"
+    },
     meses: [
       { mes: "Febrero",   bruto: 41890, ssEmpresa: 13363, neto: 33022, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
       { mes: "Marzo",     bruto: 42060, ssEmpresa: 13417, neto: 33156, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
@@ -169,24 +175,29 @@ window.DATA = {
   },
 
   // -------------------------------------------------------------------
-  // Bandeja del asesor (tab "Hoy") — priorizada por SLA
-  // nivel: alert | warn | ok
+  // Bandeja del asesor (tab "Hoy") — lista "Requiere acción".
+  // SIN semáforo hardcodeado: el nivel (rojo/ámbar/verde) lo calcula
+  // index.html desde estos datos con las reglas de negocio:
+  //   · tipo "it-parte": ámbar si el parte lleva > 5 días pendiente
+  //   · tipo "baja-ss": rojo si el plazo legal de 3 días hábiles para
+  //     comunicar la baja a la SS está a menos de 1 día
+  //   · tipo "fecha": genérico por proximidad del vencimiento
   // -------------------------------------------------------------------
   bandeja: [
     {
       id: "t-1",
       prioridad: 1,
-      nivel: "warn",
-      sla: "Vence hoy",
+      tipo: "it-parte",
+      ref: "it-1",
       titulo: "Reclamar a la mutua el parte de confirmación de Antonio Vega",
-      detalle: "IT por lumbalgia, día 19 de baja. El 2.º parte de confirmación lleva 6 días sin llegar de Mutua Universal. Sin él no se puede acreditar la prórroga.",
+      detalle: "IT por lumbalgia, día 19 de baja. El 2.º parte de confirmación sigue sin llegar de Mutua Universal. Sin él no se puede acreditar la prórroga.",
       cta: "Reclamar a la mutua"
     },
     {
       id: "t-2",
       prioridad: 2,
-      nivel: "warn",
-      sla: "4 días",
+      tipo: "fecha",
+      vence: "2026-07-15",
       titulo: "Preparar el finiquito de Jorge Salas",
       detalle: "Baja voluntaria con último día el 15/07. Cálculo previo: 1.395,40 € brutos (salario de 15 días + 4 días de vacaciones + extras prorrateadas).",
       cta: "Revisar finiquito"
@@ -194,20 +205,29 @@ window.DATA = {
     {
       id: "t-3",
       prioridad: 3,
-      nivel: "ok",
-      sla: "En plazo · 25/07",
-      titulo: "Cerrar la nómina de julio con atrasos del convenio",
-      detalle: "Aplicadas las nuevas tablas (+2,2 % desde abril): 3.712 € en atrasos y tablas. Variación total de julio: +5.080 €, explicada y lista para revisar.",
-      cta: "Ver cálculo previo"
+      tipo: "baja-ss",
+      empleadoId: 15,
+      titulo: "Comunicar la baja de Jorge Salas al Sistema RED",
+      detalle: "Último día trabajado: 15/07. El plazo legal es de 3 días hábiles desde el cese; la comunicación debe presentarse entre el 16/07 y el 20/07.",
+      cta: "Preparar comunicación"
     },
     {
       id: "t-4",
       prioridad: 4,
-      nivel: "ok",
-      sla: "En plazo · 20/07",
+      tipo: "fecha",
+      vence: "2026-07-20",
       titulo: "Comprobar la deducción del pago delegado en el RLC de julio",
       detalle: "861 € anticipados a Antonio Vega por la IT. Verificar que la deducción queda reflejada en la liquidación (RLC) antes de la presentación.",
       cta: "Ver RLC"
+    },
+    {
+      id: "t-5",
+      prioridad: 5,
+      tipo: "fecha",
+      vence: "2026-07-25",
+      titulo: "Cerrar la nómina de julio con atrasos del convenio",
+      detalle: "Aplicadas las nuevas tablas (+2,2 % desde abril): 3.712 € en atrasos y tablas. Variación total de julio: +5.080 €, explicada y lista para revisar.",
+      cta: "Ver cálculo previo"
     }
   ],
 
