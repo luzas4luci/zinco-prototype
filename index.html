@@ -233,6 +233,46 @@
     .hito .hfecha { font-size: 0.66rem; color: var(--text-soft); margin-top: 2px; }
     .it-abrir { font-size: 0.76rem; color: var(--text-soft); margin-top: 16px; text-align: right; }
 
+    /* ---------- Tab Nóminas ---------- */
+    .grafico-card { padding: 20px; }
+    .grafico-card .gtitulo { font-size: 0.88rem; font-weight: 700; margin-bottom: 2px; }
+    .grafico-card .gsub { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 14px; }
+    .grafico-wrap { position: relative; height: 230px; }
+    .variacion .vresumen { font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; }
+    .vconcepto { display: flex; gap: 12px; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--line); }
+    .vconcepto:last-child { border-bottom: none; }
+    .vconcepto .vtexto { font-size: 0.84rem; color: var(--text-soft); line-height: 1.4; flex: 1; }
+    .vconcepto .vimporte { font-size: 0.9rem; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .vconcepto .vimporte .neutro { display: block; font-size: 0.68rem; font-weight: 600; color: var(--text-soft); text-align: right; }
+    .nom-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.6fr) auto auto minmax(150px, 1.2fr);
+      gap: 6px 16px;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .nom-row:last-child { border-bottom: none; }
+    .nom-row .nnombre { font-size: 0.86rem; font-weight: 600; }
+    .nom-row .npuesto { font-size: 0.72rem; color: var(--text-soft); }
+    .nom-row .nimporte { font-size: 0.84rem; font-variant-numeric: tabular-nums; text-align: right; }
+    .nom-row .nimporte .netiqueta { display: block; font-size: 0.66rem; color: var(--text-soft); }
+    .nom-row .nestado { font-size: 0.76rem; font-weight: 600; text-align: right; }
+    .nom-row .nestado.ok { color: var(--ok); }
+    .nom-row .nestado.warn { color: var(--warn); }
+    @media (max-width: 640px) {
+      .nom-row { grid-template-columns: 1fr auto; }
+      .nom-row .nimporte:first-of-type { display: none; }
+      .nom-row .nestado { grid-column: 1 / -1; text-align: left; }
+    }
+
+    /* ---------- Tab Altas y Bajas ---------- */
+    .mov-detalle { font-size: 0.82rem; color: var(--text-soft); line-height: 1.5; margin-top: 6px; }
+    .finiquito-tabla { margin-top: 10px; background: var(--bg-page); border-radius: 10px; padding: 10px 14px; }
+    .finiquito-tabla .frow { display: flex; justify-content: space-between; gap: 12px; font-size: 0.8rem; padding: 4px 0; }
+    .finiquito-tabla .frow .fimporte { font-variant-numeric: tabular-nums; }
+    .finiquito-tabla .frow.ftotal { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 8px; font-weight: 700; }
+
     /* ---------- Modal ---------- */
     .overlay {
       position: fixed; inset: 0;
@@ -339,12 +379,32 @@
 
       <!-- ---- Tab Nóminas ---- -->
       <div id="tab-nominas" hidden>
-        <div class="card placeholder">La tab de Nóminas se construye en una próxima iteración.</div>
+        <h1>Nóminas</h1>
+        <p class="sub" id="subNominas"></p>
+
+        <div class="resumen" id="kpisNominas"></div>
+
+        <h2>Evolución — últimos 6 meses</h2>
+        <div class="card grafico-card">
+          <div class="gtitulo">Bruto total por mes (€)</div>
+          <div class="gsub">Julio en preparación: incluye atrasos del convenio y una incorporación. Desglose abajo.</div>
+          <div class="grafico-wrap"><canvas id="chartNominas"></canvas></div>
+          <div id="chartFallback"></div>
+        </div>
+
+        <h2>Variación explicada</h2>
+        <div class="card variacion" id="variacionNominas"></div>
+
+        <h2>Nóminas de julio por empleado</h2>
+        <div class="card" id="listaNominas"></div>
       </div>
 
       <!-- ---- Tab Altas y Bajas ---- -->
       <div id="tab-movs" hidden>
-        <div class="card placeholder">La tab de Altas y Bajas se construye en una próxima iteración.</div>
+        <h1>Altas y bajas</h1>
+        <p class="sub" id="subMovs"></p>
+        <h2>Movimientos de julio</h2>
+        <div id="listaMovs"></div>
       </div>
     </section>
 
@@ -357,6 +417,8 @@
 
   </main>
 
+  <!-- Chart.js por CDN; si no carga (sin conexión), la tab Nóminas muestra la tabla de respaldo -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
   <script src="data.js"></script>
   <script>
     const D = window.DATA;
@@ -549,6 +611,175 @@
       card.addEventListener("click", () => abrirModalIT(it));
       card.addEventListener("keydown", e => { if (e.key === "Enter") abrirModalIT(it); });
       listaITs.appendChild(card);
+    });
+
+    // ---------- tab Nóminas ----------
+    function eur(n) { return n.toLocaleString("es-ES") + " €"; }
+    const meses = D.nominas.meses;
+    const mesActualNom = meses[meses.length - 1];
+
+    document.getElementById("subNominas").textContent =
+      mesActualNom.mes + " de 2026 · " + D.empresa.empleados + " empleados · " + D.empresa.convenio;
+
+    document.getElementById("kpisNominas").innerHTML = `
+      <div class="card kpi">
+        <div class="num">${eur(mesActualNom.bruto)}</div>
+        <div class="label">Bruto total</div>
+        <div class="nota">${mesActualNom.mes} · ${mesActualNom.estadoTexto}</div>
+      </div>
+      <div class="card kpi">
+        <div class="num">${eur(mesActualNom.ssEmpresa)}</div>
+        <div class="label">SS a cargo de empresa</div>
+        <div class="nota">Se liquida con el RLC de ${mesActualNom.mes.toLowerCase()}</div>
+      </div>
+      <div class="card kpi">
+        <div class="num">${eur(mesActualNom.neto)}</div>
+        <div class="label">Neto a pagar</div>
+        <div class="nota">Cálculo previo — pendiente de cierre</div>
+      </div>
+    `;
+
+    // gráfico de barras (Chart.js por CDN) con tabla de respaldo si no carga
+    if (window.Chart) {
+      const css = getComputedStyle(document.documentElement);
+      const verde = css.getPropertyValue("--zinco-green").trim();
+      const linea = css.getPropertyValue("--line").trim();
+      const suave = css.getPropertyValue("--text-soft").trim();
+      new Chart(document.getElementById("chartNominas"), {
+        type: "bar",
+        data: {
+          labels: meses.map(m => m.mes),
+          datasets: [{
+            data: meses.map(m => m.bruto),
+            backgroundColor: verde,
+            borderRadius: 4,
+            barPercentage: 0.55,
+            categoryPercentage: 0.72
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => "Bruto: " + eur(ctx.parsed.y),
+                afterLabel: ctx => {
+                  const m = meses[ctx.dataIndex];
+                  return ["SS empresa: " + eur(m.ssEmpresa), "Neto: " + eur(m.neto), m.estadoTexto];
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              grid: { color: linea },
+              border: { display: false },
+              ticks: { color: suave, font: { family: "Inter" }, callback: v => (v / 1000) + " k€" },
+              suggestedMin: 0
+            },
+            x: {
+              grid: { display: false },
+              border: { display: false },
+              ticks: { color: suave, font: { family: "Inter" } }
+            }
+          }
+        }
+      });
+    } else {
+      document.querySelector(".grafico-wrap").style.display = "none";
+      document.getElementById("chartFallback").innerHTML = meses.map(m => `
+        <div class="vconcepto">
+          <div class="vtexto">${m.mes} — ${m.estadoTexto}</div>
+          <div class="vimporte">${eur(m.bruto)}</div>
+        </div>
+      `).join("");
+    }
+
+    // bloque "Variación explicada"
+    const v = D.nominas.variacionJulio;
+    document.getElementById("variacionNominas").innerHTML = `
+      <div class="vresumen">${v.resumen}</div>
+      ${v.conceptos.map(c => `
+        <div class="vconcepto">
+          <div class="vtexto">${c.concepto}</div>
+          <div class="vimporte">+${eur(c.importe)}${c.neutro ? '<span class="neutro">coste neutro</span>' : ""}</div>
+        </div>
+      `).join("")}
+    `;
+
+    // lista de nóminas por empleado, con estados derivados de su situación
+    function estadoNominaEmpleado(e) {
+      if (!e.situacion) return { nivel: "ok", texto: "✓ Calculada — lista para enviar" };
+      if (e.situacion.startsWith("IT")) return { nivel: "warn", texto: "⏳ Pago delegado — revisar deducción en RLC" };
+      if (e.situacion.startsWith("Nacimiento")) return { nivel: "ok", texto: "✓ Pago directo INSS — sin nómina de empresa" };
+      if (e.situacion.startsWith("Baja voluntaria")) return { nivel: "warn", texto: "⏳ Finiquito en preparación" };
+      if (e.situacion.startsWith("Alta nueva")) return { nivel: "warn", texto: "⏳ Prorrateo desde el 04/07" };
+      return { nivel: "ok", texto: "✓ Calculada" };
+    }
+    document.getElementById("listaNominas").innerHTML = D.empleados.map(e => {
+      const est = estadoNominaEmpleado(e);
+      return `
+        <div class="nom-row">
+          <div>
+            <div class="nnombre">${e.nombre}</div>
+            <div class="npuesto">${e.puesto}</div>
+          </div>
+          <div class="nimporte">${eur(e.brutoMensual)}<span class="netiqueta">bruto</span></div>
+          <div class="nimporte">${e.netoMensual.toLocaleString("es-ES", { minimumFractionDigits: 2 })} €<span class="netiqueta">neto</span></div>
+          <div class="nestado ${est.nivel}">${est.texto}</div>
+        </div>
+      `;
+    }).join("");
+
+    // ---------- tab Altas y Bajas ----------
+    function fmtHoraDia(iso) {
+      const DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+      const d = new Date(iso);
+      return DIAS[d.getDay()] + " " + fmtCorta(d) + " " +
+        String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+    }
+    const totalMovs = D.movimientos.altas.length + D.movimientos.bajas.length;
+    document.getElementById("subMovs").textContent =
+      totalMovs + " movimientos en julio · " + D.empresa.nombre;
+
+    const listaMovs = document.getElementById("listaMovs");
+    D.movimientos.altas.forEach(a => {
+      const card = document.createElement("div");
+      card.className = "card tarea";
+      card.innerHTML = `
+        <div class="cuerpo">
+          <h3>Alta — ${a.empleado} · ${a.puesto}</h3>
+          <div class="mov-detalle">
+            Contrato: ${a.contrato}.<br>
+            Solicitada ${fmtHoraDia(a.solicitud)} · comunicada a la SS ${fmtHoraDia(a.comunicadaRED)}.
+          </div>
+        </div>
+        <span class="badge ok">✓ En ${a.slaHoras} h — SLA cumplido</span>
+      `;
+      listaMovs.appendChild(card);
+    });
+    D.movimientos.bajas.forEach(b => {
+      const limiteRED = sumaDiasHabiles(fecha(b.ultimoDia), 3);
+      const card = document.createElement("div");
+      card.className = "card tarea";
+      card.innerHTML = `
+        <div class="cuerpo">
+          <h3>${b.tipo} — ${b.empleado} · ${b.puesto}</h3>
+          <div class="mov-detalle">
+            Preaviso el ${fmtCorta(fecha(b.preaviso))} · último día el ${fmtCorta(fecha(b.ultimoDia))} ·
+            plazo para comunicar a la SS: hasta el ${fmtCorta(limiteRED)}.
+          </div>
+          <div class="finiquito-tabla">
+            ${b.finiquito.conceptos.map(c => `
+              <div class="frow"><span>${c.concepto}</span><span class="fimporte">${c.importe.toLocaleString("es-ES", { minimumFractionDigits: 2 })} €</span></div>
+            `).join("")}
+            <div class="frow ftotal"><span>Total finiquito (bruto)</span><span class="fimporte">${b.finiquito.totalBruto.toLocaleString("es-ES", { minimumFractionDigits: 2 })} €</span></div>
+          </div>
+        </div>
+        <span class="badge warn">${b.estadoTexto}</span>
+      `;
+      listaMovs.appendChild(card);
     });
 
     // ---------- modal de detalle de IT ----------
