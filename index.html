@@ -323,6 +323,65 @@
     .zinco-ahora .zt { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--zinco-green-dark); margin-bottom: 6px; }
     .zinco-ahora p { font-size: 0.85rem; line-height: 1.5; color: var(--text); }
 
+    /* ---------- Vista Cliente ---------- */
+    .semaforo-card { display: flex; gap: 18px; align-items: center; padding: 24px 22px; }
+    .semaforo-luz { width: 48px; height: 48px; border-radius: 50%; flex: none; box-shadow: 0 0 0 8px var(--bg-page); }
+    .semaforo-luz.ok { background: var(--ok); }
+    .semaforo-luz.warn { background: var(--warn); }
+    .semaforo-luz.alert { background: var(--alert); }
+    .semaforo-frase { font-size: 1.02rem; font-weight: 600; line-height: 1.55; }
+    .coste-num { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+    .coste-label { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 10px; }
+    .coste-linea { font-size: 0.88rem; line-height: 1.55; }
+    .it-plano { display: flex; gap: 12px; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid var(--line); }
+    .it-plano:last-child { border-bottom: none; }
+    .it-plano .icono { flex: none; font-weight: 700; }
+    .it-plano .icono.ok { color: var(--ok); }
+    .it-plano .icono.warn { color: var(--warn); }
+    .it-plano p { font-size: 0.88rem; line-height: 1.5; }
+    .it-plano p .extra { color: var(--text-soft); }
+
+    /* ---------- Chat flotante ---------- */
+    .chat-fab {
+      position: fixed; right: 20px; bottom: 20px; z-index: 40;
+      font-family: var(--font); font-size: 0.86rem; font-weight: 700;
+      background: var(--zinco-green); color: #fff;
+      border: none; border-radius: 999px;
+      padding: 12px 20px; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(27, 31, 27, 0.25);
+    }
+    .chat-fab:hover { background: var(--zinco-green-dark); }
+    .chat-panel {
+      position: fixed; right: 20px; bottom: 76px; z-index: 40;
+      width: min(360px, calc(100vw - 40px));
+      max-height: min(480px, calc(100vh - 120px));
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 40px rgba(27, 31, 27, 0.25);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-head {
+      background: var(--zinco-green); color: #fff;
+      font-size: 0.9rem; font-weight: 700;
+      padding: 12px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .chat-head button { border: none; background: transparent; color: #fff; font-size: 1rem; cursor: pointer; padding: 2px 6px; }
+    .chat-msgs { padding: 14px; overflow-y: auto; flex: 1; }
+    .burbuja { max-width: 85%; border-radius: 12px; padding: 9px 12px; font-size: 0.84rem; line-height: 1.5; margin-bottom: 10px; }
+    .burbuja.zinco { background: var(--bg-page); border: 1px solid var(--line); }
+    .burbuja.user { background: var(--zinco-green-tint); color: var(--zinco-green-dark); font-weight: 600; margin-left: auto; }
+    .chat-sugeridas { padding: 10px 14px 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+    .chat-sugeridas button {
+      font-family: var(--font); font-size: 0.8rem; font-weight: 600; text-align: left;
+      color: var(--zinco-green-dark); background: var(--bg-card);
+      border: 1px solid var(--zinco-green); border-radius: 999px;
+      padding: 8px 14px; cursor: pointer;
+    }
+    .chat-sugeridas button:hover { background: var(--zinco-green-tint); }
+
     /* ---------- Placeholder ---------- */
     .placeholder { text-align: center; padding: 44px 20px; color: var(--text-soft); font-size: 0.9rem; }
 
@@ -410,12 +469,37 @@
 
     <!-- ================= VISTA CLIENTE ================= -->
     <section id="vistaCliente" hidden>
-      <div class="card placeholder">
-        La vista cliente se construye en una próxima iteración.
+      <h1>Tu resumen laboral</h1>
+      <p class="sub" id="subCliente"></p>
+
+      <div class="card semaforo-card">
+        <div class="semaforo-luz" id="semaforoLuz"></div>
+        <div class="semaforo-frase" id="semaforoFrase"></div>
       </div>
+
+      <h2>Lo que te cuesta este mes</h2>
+      <div class="card">
+        <div class="coste-num" id="costeNum"></div>
+        <div class="coste-label" id="costeLabel"></div>
+        <div class="coste-linea" id="costeLinea"></div>
+      </div>
+
+      <h2>Personas de baja</h2>
+      <div class="card" id="itsCliente"></div>
     </section>
 
   </main>
+
+  <!-- Chat flotante (ambas vistas) -->
+  <button class="chat-fab" id="chatFab">💬 Pregunta a Zinco</button>
+  <div class="chat-panel" id="chatPanel" hidden>
+    <div class="chat-head">
+      <span id="chatTitulo"></span>
+      <button id="chatCerrar" aria-label="Cerrar chat">✕</button>
+    </div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-sugeridas" id="chatSugeridas"></div>
+  </div>
 
   <!-- Chart.js por CDN; si no carga (sin conexión), la tab Nóminas muestra la tabla de respaldo -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
@@ -614,7 +698,10 @@
     });
 
     // ---------- tab Nóminas ----------
-    function eur(n) { return n.toLocaleString("es-ES") + " €"; }
+    // separador de miles siempre, también en 4 cifras (es-ES no agrupa 4 dígitos)
+    function sepMiles(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+    function eur(n) { return sepMiles(Math.round(n)) + " €"; }
+    function eurDec(n) { const p = n.toFixed(2).split("."); return sepMiles(p[0]) + "," + p[1] + " €"; }
     const meses = D.nominas.meses;
     const mesActualNom = meses[meses.length - 1];
 
@@ -726,7 +813,7 @@
             <div class="npuesto">${e.puesto}</div>
           </div>
           <div class="nimporte">${eur(e.brutoMensual)}<span class="netiqueta">bruto</span></div>
-          <div class="nimporte">${e.netoMensual.toLocaleString("es-ES", { minimumFractionDigits: 2 })} €<span class="netiqueta">neto</span></div>
+          <div class="nimporte">${eurDec(e.netoMensual)}<span class="netiqueta">neto</span></div>
           <div class="nestado ${est.nivel}">${est.texto}</div>
         </div>
       `;
@@ -772,9 +859,9 @@
           </div>
           <div class="finiquito-tabla">
             ${b.finiquito.conceptos.map(c => `
-              <div class="frow"><span>${c.concepto}</span><span class="fimporte">${c.importe.toLocaleString("es-ES", { minimumFractionDigits: 2 })} €</span></div>
+              <div class="frow"><span>${c.concepto}</span><span class="fimporte">${eurDec(c.importe)}</span></div>
             `).join("")}
-            <div class="frow ftotal"><span>Total finiquito (bruto)</span><span class="fimporte">${b.finiquito.totalBruto.toLocaleString("es-ES", { minimumFractionDigits: 2 })} €</span></div>
+            <div class="frow ftotal"><span>Total finiquito (bruto)</span><span class="fimporte">${eurDec(b.finiquito.totalBruto)}</span></div>
           </div>
         </div>
         <span class="badge warn">${b.estadoTexto}</span>
@@ -820,8 +907,98 @@
       overlay.addEventListener("click", e => { if (e.target === overlay) cerrarModal(); });
       document.body.appendChild(overlay);
     }
-    // cierre con Esc
-    document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarModal(); });
+    // cierre con Esc (modal y chat)
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") { cerrarModal(); chatPanel.hidden = true; }
+    });
+
+    // ---------- vista Cliente ----------
+    // semáforo global calculado con las mismas reglas que la bandeja del asesor
+    const semsCliente = D.bandeja.map(t => ({ tarea: t, sem: semaforoTarea(t) }));
+    const nivelGlobal = semsCliente.some(x => x.sem.nivel === "alert") ? "alert"
+      : semsCliente.some(x => x.sem.nivel === "warn") ? "warn" : "ok";
+
+    // frase humana generada desde los datos
+    const mesNomTxt = D.nominas.mesActual.mes.toLowerCase();
+    const fraseNominas = `Tus nóminas de ${mesNomTxt} estarán listas el ${fmtLarga(D.nominas.mesActual.fechaPrevista)}.`;
+    let fraseGlobal;
+    if (nivelGlobal === "ok") {
+      fraseGlobal = "Todo en orden. " + fraseNominas;
+    } else {
+      const causa = semsCliente.find(x => x.sem.nivel !== "ok").tarea;
+      if (causa.tipo === "it-parte") {
+        const it = D.its.find(i => i.id === causa.ref);
+        fraseGlobal = `Casi todo en orden: falta un papel de la mutua por la baja de ${it.empleado.split(" ")[0]}. ` +
+          `Ya lo estamos reclamando; no tienes que hacer nada. ` + fraseNominas;
+      } else if (causa.tipo === "baja-ss") {
+        fraseGlobal = "Atención: hay una comunicación a la Seguridad Social con el plazo a punto de vencer. Estamos en ello. " + fraseNominas;
+      } else {
+        fraseGlobal = "Casi todo en orden: tenemos un trámite con plazo cercano y estamos en ello. " + fraseNominas;
+      }
+    }
+    document.getElementById("subCliente").textContent =
+      D.empresa.nombre + " · " + D.hoyTexto;
+    document.getElementById("semaforoLuz").classList.add(nivelGlobal);
+    document.getElementById("semaforoFrase").textContent = fraseGlobal;
+
+    // coste laboral del mes, explicado en una línea de lenguaje llano
+    const costeTotal = mesActualNom.bruto + mesActualNom.ssEmpresa;
+    const costeJunio = meses[meses.length - 2].bruto + meses[meses.length - 2].ssEmpresa;
+    const altaJulio = D.movimientos.altas[0];
+    document.getElementById("costeNum").textContent = eur(costeTotal);
+    document.getElementById("costeLabel").textContent =
+      "Coste laboral de " + mesNomTxt + " (sueldos + Seguridad Social)";
+    document.getElementById("costeLinea").textContent =
+      `Son ${eur(costeTotal - costeJunio)} más que en junio porque el convenio de hostelería ha subido los sueldos ` +
+      `(con atrasos desde abril) y porque ${altaJulio.empleado.split(" ")[0]} se incorporó el día 4. ` +
+      `Está revisado por tu asesor: no es un error.`;
+
+    // ITs contadas sin jerga
+    document.getElementById("itsCliente").innerHTML = D.its.map(it => {
+      const nombre = it.empleado.split(" ")[0];
+      const esNacimiento = it.tipo.startsWith("Nacimiento");
+      const conAviso = it.partePendienteDesde && diasEntre(fecha(it.partePendienteDesde), HOY) > 5;
+      const frase = esNacimiento
+        ? `${nombre} está de permiso por nacimiento; todo en orden. Vuelve el ${fmtLarga(it.previsionReincorporacion)}.`
+        : `${nombre} sigue de baja; nos encargamos de todo. Previsión de vuelta: ${fmtLarga(it.previsionReincorporacion)}.`;
+      const extra = conAviso
+        ? ` <span class="extra">Estamos reclamando un documento a la mutua — no afecta a su cobro.</span>`
+        : "";
+      return `
+        <div class="it-plano">
+          <span class="icono ${conAviso ? "warn" : "ok"}">${conAviso ? "⚠" : "✓"}</span>
+          <p>${frase}${extra}</p>
+        </div>
+      `;
+    }).join("");
+
+    // ---------- chat flotante (respuestas pre-escritas) ----------
+    const chatPanel = document.getElementById("chatPanel");
+    const chatMsgs = document.getElementById("chatMsgs");
+    document.getElementById("chatTitulo").textContent = D.chat.titulo;
+    document.getElementById("chatFab").addEventListener("click", () => {
+      chatPanel.hidden = !chatPanel.hidden;
+    });
+    document.getElementById("chatCerrar").addEventListener("click", () => { chatPanel.hidden = true; });
+
+    function burbuja(texto, quien) {
+      const div = document.createElement("div");
+      div.className = "burbuja " + quien;
+      div.textContent = texto;
+      chatMsgs.appendChild(div);
+      chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    }
+    burbuja(D.chat.saludo, "zinco");
+    const sugeridasBox = document.getElementById("chatSugeridas");
+    D.chat.sugeridas.forEach(s => {
+      const btn = document.createElement("button");
+      btn.textContent = s.q;
+      btn.addEventListener("click", () => {
+        burbuja(s.q, "user");
+        burbuja(s.a, "zinco");
+      });
+      sugeridasBox.appendChild(btn);
+    });
   </script>
 </body>
 </html>

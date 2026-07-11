@@ -169,7 +169,8 @@ window.DATA = {
     mesActual: {
       mes: "Julio",
       avancePct: 60,
-      etapa: "Cálculo previo listo — pendiente de cierre y envío"
+      etapa: "Cálculo previo listo — pendiente de cierre y envío",
+      fechaPrevista: "2026-07-28"
     },
     meses: [
       { mes: "Febrero",   bruto: 41890, ssEmpresa: 13363, neto: 33022, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
@@ -259,11 +260,25 @@ window.DATA = {
   ],
 
   // -------------------------------------------------------------------
-  // Estado global (para la vista Cliente): semáforo + frase humana
+  // Chat (respuestas SIEMPRE pre-escritas, coherentes con estos datos)
   // -------------------------------------------------------------------
-  estadoGlobal: {
-    nivel: "ambar",
-    frase: "Casi todo en orden: hay un papel de la mutua que estamos reclamando por la baja de Antonio. Del resto nos ocupamos nosotros."
+  chat: {
+    titulo: "Pregunta a Zinco",
+    saludo: "Hola 👋 Soy el asistente de Zinco · Laboral. Elige una pregunta:",
+    sugeridas: [
+      {
+        q: "¿Por qué sube la nómina de julio?",
+        a: "Sube 5.080 € por tres motivos, todos revisados: la subida del convenio de hostelería (con atrasos desde abril), la incorporación de Hugo el 4 de julio y un anticipo por la baja de Antonio que la Seguridad Social nos devuelve. No hay ningún error."
+      },
+      {
+        q: "¿Qué pasa con la baja de Antonio?",
+        a: "Antonio (cocina) sigue de baja por lumbalgia, hoy es su día 19. Falta un documento de la mutua que ya estamos reclamando; no afecta a su cobro. Previsión de vuelta: 21 de julio."
+      },
+      {
+        q: "¿Está todo al día con la Seguridad Social?",
+        a: "Sí. Los seguros sociales de junio están presentados sin incidencias y el alta de Hugo se comunicó en 9 horas, dentro de plazo. Lo único en curso es interno: tus nóminas de julio estarán listas el día 28."
+      }
+    ]
   }
 };
 
