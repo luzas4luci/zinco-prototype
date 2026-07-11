@@ -35,14 +35,14 @@ window.DATA = {
     { id: 7,  nombre: "Sergio Lara",       puesto: "Ayudante de cocina",              salarioBase: 1450, pluses: 120, irpfPct: 10.8, fechaAlta: "2022-04-04" },
     { id: 8,  nombre: "Fátima El Idrissi", puesto: "Ayudante de cocina",              salarioBase: 1450, pluses: 110, irpfPct: 10.7, fechaAlta: "2023-01-16" },
     { id: 9,  nombre: "María Robles",      puesto: "Responsable de sala",             salarioBase: 2050, pluses: 250, irpfPct: 15.6, fechaAlta: "2019-07-08" },
-    { id: 10, nombre: "Lucía Gil",         puesto: "Camarera",                        salarioBase: 1560, pluses: 150, irpfPct: 11.9, fechaAlta: "2021-03-15", situacion: "Nacimiento y cuidado de menor" },
+    { id: 10, nombre: "Lucía Gil",         puesto: "Camarera",                        salarioBase: 1560, pluses: 150, irpfPct: 11.9, fechaAlta: "2021-03-15", situacion: "Nacimiento y cuidado de menor", brutoJulio: 0 },
     { id: 11, nombre: "Diego Antúnez",     puesto: "Camarero",                        salarioBase: 1560, pluses: 160, irpfPct: 12.0, fechaAlta: "2021-10-04" },
     { id: 12, nombre: "Sara Peña",         puesto: "Camarera",                        salarioBase: 1560, pluses: 140, irpfPct: 11.8, fechaAlta: "2022-06-01" },
     { id: 13, nombre: "Rubén Cano",        puesto: "Camarero",                        salarioBase: 1560, pluses: 155, irpfPct: 11.9, fechaAlta: "2022-09-12" },
     { id: 14, nombre: "Alba Serrano",      puesto: "Camarera",                        salarioBase: 1560, pluses: 145, irpfPct: 11.8, fechaAlta: "2023-05-08" },
-    { id: 15, nombre: "Jorge Salas",       puesto: "Camarero",                        salarioBase: 1560, pluses: 150, irpfPct: 11.9, fechaAlta: "2021-02-01", situacion: "Baja voluntaria el 15/07 — finiquito en preparación" },
+    { id: 15, nombre: "Jorge Salas",       puesto: "Camarero",                        salarioBase: 1560, pluses: 150, irpfPct: 11.9, fechaAlta: "2021-02-01", situacion: "Baja voluntaria el 15/07 — finiquito en preparación", brutoJulio: 1395 },
     { id: 16, nombre: "Andrea Molina",     puesto: "Ayudante de camarera",            salarioBase: 1430, pluses: 95,  irpfPct: 10.5, fechaAlta: "2023-11-20" },
-    { id: 17, nombre: "Hugo Pardo",        puesto: "Ayudante de camarero",            salarioBase: 1430, pluses: 90,  irpfPct: 10.5, fechaAlta: "2026-07-04", situacion: "Alta nueva (04/07)" },
+    { id: 17, nombre: "Hugo Pardo",        puesto: "Ayudante de camarero",            salarioBase: 1430, pluses: 90,  irpfPct: 10.5, fechaAlta: "2026-07-04", situacion: "Alta nueva (04/07)", brutoJulio: 1368 },
     { id: 18, nombre: "Marcos Río",        puesto: "Barman",                          salarioBase: 1680, pluses: 210, irpfPct: 13.0, fechaAlta: "2020-07-13" },
     { id: 19, nombre: "Raúl Estévez",      puesto: "Encargado de barra",              salarioBase: 1860, pluses: 220, irpfPct: 14.2, fechaAlta: "2019-11-04" },
     { id: 20, nombre: "Teresa Blanco",     puesto: "Hostess — recepción de sala",     salarioBase: 1520, pluses: 110, irpfPct: 11.5, fechaAlta: "2022-03-07" },
@@ -151,9 +151,9 @@ window.DATA = {
           conceptos: [
             { concepto: "Salario del 1 al 15 de julio", importe: 855.0 },
             { concepto: "Vacaciones no disfrutadas (4 días)", importe: 228.0 },
-            { concepto: "Pagas extra prorrateadas pendientes", importe: 312.4 }
+            { concepto: "Pagas extra prorrateadas pendientes", importe: 312.0 }
           ],
-          totalBruto: 1395.4
+          totalBruto: 1395.0
         }
       }
     ]
@@ -162,8 +162,9 @@ window.DATA = {
   // -------------------------------------------------------------------
   // Nóminas feb–jul (totales de empresa, en €/mes)
   // ssEmpresa ≈ 31,9 % del bruto (CC 23,6 + desempleo 5,5 + FOGASA 0,2
-  // + FP 0,7 + AT/EP 1,9). Julio sube por: atrasos del convenio,
-  // nuevas tablas (+2,2 %) y 1 alta nueva prorrateada.
+  // + FP 0,7 + AT/EP 1,9). Junio baja porque Lucía pasa a pago directo
+  // del INSS. Julio (45.205) = suma de nóminas por empleado (42.423)
+  // + atrasos del convenio (2.782): cuadra con la lista de la tab.
   // -------------------------------------------------------------------
   nominas: {
     mesActual: {
@@ -177,17 +178,22 @@ window.DATA = {
       { mes: "Marzo",     bruto: 42060, ssEmpresa: 13417, neto: 33156, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
       { mes: "Abril",     bruto: 42310, ssEmpresa: 13497, neto: 33353, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
       { mes: "Mayo",      bruto: 42020, ssEmpresa: 13404, neto: 33124, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
-      { mes: "Junio",     bruto: 42150, ssEmpresa: 13446, neto: 33227, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
-      { mes: "Julio",     bruto: 47230, ssEmpresa: 15066, neto: 37231, estado: "warn", estadoTexto: "⏳ En preparación — cálculo previo listo" }
+      { mes: "Junio",     bruto: 40480, ssEmpresa: 12913, neto: 31910, estado: "ok",   estadoTexto: "✓ Cerrada y enviada — Lucía Gil pasa a pago directo del INSS" },
+      { mes: "Julio",     bruto: 45205, ssEmpresa: 14420, neto: 35635, estado: "warn", estadoTexto: "⏳ En preparación — cálculo previo listo" }
     ],
+    // La variación cuadra al euro: 2.782 + 875 + 1.368 + 540 − 840 = 4.725
+    // = 45.205 (julio) − 40.480 (junio). El pago delegado no suma: es neutro.
     variacionJulio: {
       respectoA: "Junio",
-      importe: 5080,
-      porcentaje: 12.1,
-      resumen: "La nómina de julio sube 5.080 € respecto a junio. Está explicado: no es un error.",
+      importe: 4725,
+      porcentaje: 11.7,
+      resumen: "La nómina de julio sube 4.725 € respecto a junio. Está explicado: no es un error.",
       conceptos: [
-        { concepto: "Atrasos del convenio de hostelería (subida 2,2 % con efectos 1 de abril, tablas publicadas en junio) + aplicación de nuevas tablas", importe: 3712 },
+        { concepto: "Atrasos del convenio de hostelería: subida del 2,2 % con efectos 1 de abril, tablas publicadas en junio", importe: 2782 },
+        { concepto: "Aplicación de las nuevas tablas del convenio en la nómina de julio", importe: 875 },
         { concepto: "Alta nueva: Hugo Pardo, ayudante de camarero (del 4 al 31 de julio, prorrateado)", importe: 1368 },
+        { concepto: "Finiquito de Jorge Salas: vacaciones no disfrutadas y pagas extra prorrateadas", importe: 540 },
+        { concepto: "Jorge Salas devenga solo hasta el 15 de julio (baja voluntaria)", importe: -840 },
         { concepto: "Pago delegado de la IT de Antonio Vega — anticipado en nómina y recuperado en el RLC (coste neutro para la empresa)", importe: 861, neutro: true }
       ]
     }
@@ -218,7 +224,7 @@ window.DATA = {
       tipo: "fecha",
       vence: "2026-07-15",
       titulo: "Preparar el finiquito de Jorge Salas",
-      detalle: "Baja voluntaria con último día el 15/07. Cálculo previo: 1.395,40 € brutos (salario de 15 días + 4 días de vacaciones + extras prorrateadas).",
+      detalle: "Baja voluntaria con último día el 15/07. Cálculo previo: 1.395 € brutos (salario de 15 días + 4 días de vacaciones + extras prorrateadas).",
       cta: "Revisar finiquito"
     },
     {
@@ -245,7 +251,7 @@ window.DATA = {
       tipo: "fecha",
       vence: "2026-07-25",
       titulo: "Cerrar la nómina de julio con atrasos del convenio",
-      detalle: "Aplicadas las nuevas tablas (+2,2 % desde abril): 3.712 € en atrasos y tablas. Variación total de julio: +5.080 €, explicada y lista para revisar.",
+      detalle: "Aplicadas las nuevas tablas (+2,2 % desde abril): 3.657 € entre atrasos y nuevas tablas. Variación total de julio: +4.725 €, explicada y lista para revisar.",
       cta: "Ver cálculo previo"
     }
   ],
@@ -256,7 +262,7 @@ window.DATA = {
   hechoHoy: [
     { hora: "09:12", texto: "Presentado el RLC de junio en el Sistema RED — sin incidencias" },
     { hora: "10:05", texto: "Registrado el parte de confirmación de Lucía Gil (nacimiento y cuidado de menor)" },
-    { hora: "11:38", texto: "Generado el cálculo previo de la nómina de julio (variación +5.080 € explicada)" }
+    { hora: "11:38", texto: "Generado el cálculo previo de la nómina de julio (variación +4.725 € explicada)" }
   ],
 
   // -------------------------------------------------------------------
@@ -268,7 +274,7 @@ window.DATA = {
     sugeridas: [
       {
         q: "¿Cuánto me cuesta el equipo este mes?",
-        a: "En julio el equipo cuesta 62.296 € en total: 47.230 € de sueldos y 15.066 € de Seguridad Social a cargo de la empresa. Son unos 6.700 € más que en junio por la subida del convenio (con atrasos desde abril) y la incorporación de Hugo; está revisado, no hay error."
+        a: "En julio el equipo cuesta 59.625 € en total: 45.205 € de sueldos y 14.420 € de Seguridad Social a cargo de la empresa. Son 6.232 € más que en junio por la subida del convenio (con atrasos desde abril) y la incorporación de Hugo; está revisado, no hay error."
       },
       {
         q: "¿Cómo va la baja de Antonio?",
@@ -286,7 +292,12 @@ window.DATA = {
 // Neto calculado siempre a partir del bruto para garantizar coherencia:
 // neto = bruto − SS trabajador (6,47 %) − IRPF individual.
 // Ej.: María Robles → 2.300 − 148,81 − 358,80 = 1.792,39 €
+// brutoJulio solo existe en los casos especiales (pago directo INSS,
+// prorrateo de alta, media mensualidad + finiquito); para el resto es
+// el bruto contractual del mes.
 window.DATA.empleados.forEach(function (e) {
   e.brutoMensual = e.salarioBase + e.pluses;
   e.netoMensual = Math.round(e.brutoMensual * (1 - 0.0647 - e.irpfPct / 100) * 100) / 100;
+  if (e.brutoJulio === undefined) e.brutoJulio = e.brutoMensual;
+  e.netoJulio = Math.round(e.brutoJulio * (1 - 0.0647 - e.irpfPct / 100) * 100) / 100;
 });

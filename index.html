@@ -83,7 +83,7 @@
     }
     .toggle button.active {
       background: var(--zinco-green);
-      color: #fff;
+      color: var(--bg-card);
     }
 
     /* ---------- Layout ---------- */
@@ -174,7 +174,7 @@
       margin-top: 10px;
       cursor: pointer;
     }
-    .cta:hover { background: var(--zinco-green); color: #fff; }
+    .cta:hover { background: var(--zinco-green); color: var(--bg-card); }
 
     /* ---------- Hecho hoy ---------- */
     .hecho { display: flex; gap: 12px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line); }
@@ -260,6 +260,9 @@
     .nom-row .nestado { font-size: 0.76rem; font-weight: 600; text-align: right; }
     .nom-row .nestado.ok { color: var(--ok); }
     .nom-row .nestado.warn { color: var(--warn); }
+    .nom-cuadre { padding-top: 12px; font-size: 0.78rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .nom-cuadre.ok { color: var(--ok); }
+    .nom-cuadre.warn { color: var(--warn); }
     @media (max-width: 640px) {
       .nom-row { grid-template-columns: 1fr auto; }
       .nom-row .nimporte:first-of-type { display: none; }
@@ -345,7 +348,7 @@
     .chat-fab {
       position: fixed; right: 20px; bottom: 20px; z-index: 40;
       font-family: var(--font); font-size: 0.86rem; font-weight: 700;
-      background: var(--zinco-green); color: #fff;
+      background: var(--zinco-green); color: var(--bg-card);
       border: none; border-radius: 999px;
       padding: 12px 20px; cursor: pointer;
       box-shadow: 0 6px 18px rgba(27, 31, 27, 0.25);
@@ -362,13 +365,15 @@
       display: flex; flex-direction: column;
       overflow: hidden;
     }
+    /* el display:flex de arriba pisaría el atributo hidden sin esta regla */
+    .chat-panel[hidden] { display: none; }
     .chat-head {
-      background: var(--zinco-green); color: #fff;
+      background: var(--zinco-green); color: var(--bg-card);
       font-size: 0.9rem; font-weight: 700;
       padding: 12px 16px;
       display: flex; justify-content: space-between; align-items: center;
     }
-    .chat-head button { border: none; background: transparent; color: #fff; font-size: 1rem; cursor: pointer; padding: 2px 6px; }
+    .chat-head button { border: none; background: transparent; color: var(--bg-card); font-size: 1rem; cursor: pointer; padding: 2px 6px; }
     .chat-msgs { padding: 14px; overflow-y: auto; flex: 1; }
     .burbuja { max-width: 85%; border-radius: 12px; padding: 9px 12px; font-size: 0.84rem; line-height: 1.5; margin-bottom: 10px; }
     .burbuja.zinco { background: var(--bg-page); border: 1px solid var(--line); }
@@ -416,6 +421,8 @@
       .toggle { margin-left: 0; }
       .container { padding: 18px 14px 48px; }
       .resumen { flex-direction: column; }
+      .tarea { flex-direction: column; gap: 8px; }
+      .tarea .badge { order: -1; align-self: flex-start; }
     }
   </style>
 </head>
@@ -820,7 +827,7 @@
       ${v.conceptos.map(c => `
         <div class="vconcepto">
           <div class="vtexto">${c.concepto}</div>
-          <div class="vimporte">+${eur(c.importe)}${c.neutro ? '<span class="neutro">coste neutro</span>' : ""}</div>
+          <div class="vimporte">${c.importe >= 0 ? "+" : "−"}${eur(Math.abs(c.importe))}${c.neutro ? '<span class="neutro">coste neutro</span>' : ""}</div>
         </div>
       `).join("")}
     `;
@@ -834,6 +841,11 @@
       if (e.situacion.startsWith("Alta nueva")) return { nivel: "warn", texto: "⏳ Prorrateo desde el 04/07" };
       return { nivel: "ok", texto: "✓ Calculada" };
     }
+    // importes REALES de julio (pago directo INSS, prorrateos, finiquito),
+    // con fila de cuadre contra el bruto total del mes
+    const sumaListaJulio = D.empleados.reduce((s, e) => s + e.brutoJulio, 0);
+    const atrasosConvenio = D.nominas.variacionJulio.conceptos[0].importe;
+    const cuadra = sumaListaJulio + atrasosConvenio === mesActualNom.bruto;
     document.getElementById("listaNominas").innerHTML = D.empleados.map(e => {
       const est = estadoNominaEmpleado(e);
       return `
@@ -842,12 +854,18 @@
             <div class="nnombre">${e.nombre}</div>
             <div class="npuesto">${e.puesto}</div>
           </div>
-          <div class="nimporte">${eur(e.brutoMensual)}<span class="netiqueta">bruto</span></div>
-          <div class="nimporte">${eurDec(e.netoMensual)}<span class="netiqueta">neto</span></div>
+          <div class="nimporte">${e.brutoJulio ? eur(e.brutoJulio) : "—"}<span class="netiqueta">bruto</span></div>
+          <div class="nimporte">${e.brutoJulio ? eurDec(e.netoJulio) : "—"}<span class="netiqueta">neto</span></div>
           <div class="nestado ${est.nivel}">${est.texto}</div>
         </div>
       `;
-    }).join("");
+    }).join("") + `
+      <div class="nom-cuadre ${cuadra ? "ok" : "warn"}">
+        Suma de nóminas: ${eur(sumaListaJulio)} · Atrasos de convenio: +${eur(atrasosConvenio)} ·
+        Total: ${eur(sumaListaJulio + atrasosConvenio)}
+        ${cuadra ? "— ✓ cuadra con el bruto total de julio" : "— ⚠ no cuadra con el bruto total de julio"}
+      </div>
+    `;
 
     // ---------- tab Altas y Bajas ----------
     function fmtHoraDia(iso) {
@@ -980,7 +998,8 @@
       "Coste laboral de " + mesNomTxt + " (sueldos + Seguridad Social)";
     document.getElementById("costeLinea").textContent =
       `Son ${eur(costeTotal - costeJunio)} más que en junio porque el convenio de hostelería ha subido los sueldos ` +
-      `(con atrasos desde abril) y porque ${altaJulio.empleado.split(" ")[0]} se incorporó el día 4. ` +
+      `(con atrasos desde abril), ${altaJulio.empleado.split(" ")[0]} se incorporó el día 4 y ` +
+      `${D.movimientos.bajas[0].empleado.split(" ")[0]} deja el equipo a mitad de mes con su finiquito. ` +
       `Está revisado por tu asesor: no es un error.`;
 
     // ITs contadas sin jerga
