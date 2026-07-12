@@ -20,6 +20,18 @@ window.DATA = {
     etiquetaSelector: "Grupo Fuego Lento SL — Hostelería · 24 empleados"
   },
 
+  // Señal de dato vivo: el valor no es mostrar el dato, es que nadie lo tecleó
+  sincronizacion: "Sistema RED · sincronizado hoy a las 08:02",
+
+  // Cartera del asesor (lleva ~40 empresas; esta demo entra en una)
+  cartera: { empresas: 40, tareasHoy: 11, urgentes: 3 },
+
+  // El argumento del dashboard: tiempo devuelto a lo que importa
+  valor: {
+    asesor: { tramitesAuto: 14, horasSemana: 4.5 },
+    cliente: { gestionesMes: 23, horasMes: 6 }
+  },
+
   // -------------------------------------------------------------------
   // Plantilla completa (24). salarioBase + pluses = bruto mensual actual
   // (tablas del convenio ya actualizadas, subida del 2,2 % desde julio).
@@ -72,6 +84,7 @@ window.DATA = {
       pagoDelegado: true,
       previsionReincorporacion: "2026-07-21",
       pelota: "Mutua",
+      origen: "⚡ Baja detectada automáticamente en el Sistema RED — nadie tuvo que comunicarla",
       hitos: [
         { label: "Parte recibido", done: true, fecha: "2026-06-23" },
         { label: "Comunicado a SS", done: true, fecha: "2026-06-24" },
@@ -102,6 +115,7 @@ window.DATA = {
       estadoTexto: "✓ Todo en orden — pago directo del INSS tramitado",
       previsionReincorporacion: "2026-09-21",
       pelota: "SS",
+      origen: "Comunicada por la empresa desde el portal y tramitada por Zinco el mismo día",
       hitos: [
         { label: "Parte recibido", done: true, fecha: "2026-06-02" },
         { label: "Comunicado a SS", done: true, fecha: "2026-06-03" },
@@ -215,6 +229,7 @@ window.DATA = {
       tipo: "it-parte",
       ref: "it-1",
       titulo: "Reclamar a la mutua el parte de confirmación de Antonio Vega",
+      alHacer: "Enviada 2.ª reclamación a Mutua Universal por el parte de Antonio Vega",
       detalle: "IT por lumbalgia, día 19 de baja. El 2.º parte de confirmación sigue sin llegar de Mutua Universal. Sin él no se puede acreditar la prórroga.",
       cta: "Reclamar a la mutua"
     },
@@ -224,6 +239,7 @@ window.DATA = {
       tipo: "fecha",
       vence: "2026-07-15",
       titulo: "Preparar el finiquito de Jorge Salas",
+      alHacer: "Finiquito de Jorge Salas revisado y validado (1.395 €)",
       detalle: "Baja voluntaria con último día el 15/07. Cálculo previo: 1.395 € brutos (salario de 15 días + 4 días de vacaciones + extras prorrateadas).",
       cta: "Revisar finiquito"
     },
@@ -233,6 +249,7 @@ window.DATA = {
       tipo: "baja-ss",
       empleadoId: 15,
       titulo: "Comunicar la baja de Jorge Salas al Sistema RED",
+      alHacer: "Preparada la comunicación de la baja de Jorge Salas (se presenta el 16/07)",
       detalle: "Último día trabajado: 15/07. El plazo legal es de 3 días hábiles desde el cese; la comunicación debe presentarse entre el 16/07 y el 20/07.",
       cta: "Preparar comunicación"
     },
@@ -242,6 +259,7 @@ window.DATA = {
       tipo: "fecha",
       vence: "2026-07-20",
       titulo: "Comprobar la deducción del pago delegado en el RLC de julio",
+      alHacer: "Verificada la deducción del pago delegado (861 €) en el borrador del RLC",
       detalle: "861 € anticipados a Antonio Vega por la IT. Verificar que la deducción queda reflejada en la liquidación (RLC) antes de la presentación.",
       cta: "Ver RLC"
     },
@@ -251,6 +269,7 @@ window.DATA = {
       tipo: "fecha",
       vence: "2026-07-25",
       titulo: "Cerrar la nómina de julio con atrasos del convenio",
+      alHacer: "Nómina de julio revisada y lista para cierre",
       detalle: "Aplicadas las nuevas tablas (+2,2 % desde abril): 3.657 € entre atrasos y nuevas tablas. Variación total de julio: +4.725 €, explicada y lista para revisar.",
       cta: "Ver cálculo previo"
     }
@@ -260,9 +279,10 @@ window.DATA = {
   // Feed "Hecho hoy" (tab "Hoy")
   // -------------------------------------------------------------------
   hechoHoy: [
-    { hora: "09:12", texto: "Presentado el RLC de junio en el Sistema RED — sin incidencias" },
-    { hora: "10:05", texto: "Registrado el parte de confirmación de Lucía Gil (nacimiento y cuidado de menor)" },
-    { hora: "11:38", texto: "Generado el cálculo previo de la nómina de julio (variación +4.725 € explicada)" }
+    { hora: "09:12", texto: "Presentado el RLC de junio en el Sistema RED — sin incidencias", auto: true },
+    { hora: "10:05", texto: "Registrado el parte de confirmación de Lucía Gil (nacimiento y cuidado de menor)", auto: true },
+    { hora: "11:38", texto: "Generado el cálculo previo de la nómina de julio (variación +4.725 € explicada)", auto: true },
+    { hora: "12:10", texto: "Llamada con Carmen (directora de operaciones): planificación de plantilla para agosto" }
   ],
 
   // -------------------------------------------------------------------
@@ -274,15 +294,18 @@ window.DATA = {
     sugeridas: [
       {
         q: "¿Cuánto me cuesta el equipo este mes?",
-        a: "En julio el equipo cuesta 59.625 € en total: 45.205 € de sueldos y 14.420 € de Seguridad Social a cargo de la empresa. Son 6.232 € más que en junio por la subida del convenio (con atrasos desde abril) y la incorporación de Hugo; está revisado, no hay error."
+        a: "En julio el equipo cuesta 59.625 € en total: 45.205 € de sueldos y 14.420 € de Seguridad Social a cargo de la empresa. Son 6.232 € más que en junio por la subida del convenio (con atrasos desde abril) y la incorporación de Hugo; está revisado, no hay error.",
+        fuente: { label: "Ver el desglose en Nóminas", tab: "nominas" }
       },
       {
         q: "¿Cómo va la baja de Antonio?",
-        a: "Antonio (cocina) sigue de baja por lumbalgia; hoy es su día 19. Falta un documento de la mutua que ya estamos reclamando y no afecta a su cobro. Previsión de vuelta: 21 de julio."
+        a: "Antonio (cocina) sigue de baja por lumbalgia; hoy es su día 19. Falta un documento de la mutua que ya estamos reclamando y no afecta a su cobro. Previsión de vuelta: 21 de julio.",
+        fuente: { label: "Ver la baja en ITs", tab: "its" }
       },
       {
         q: "¿Qué pasa si contrato un camarero más en agosto?",
-        a: "Un camarero a jornada completa por convenio ronda los 1.710 € brutos al mes, unos 2.250 € de coste total con la Seguridad Social. Si te decides, pásanos sus datos y comunicamos el alta al Sistema RED el mismo día, como hicimos con Hugo."
+        a: "Un camarero a jornada completa por convenio ronda los 1.710 € brutos al mes, unos 2.250 € de coste total con la Seguridad Social. Si te decides, pásanos sus datos y comunicamos el alta al Sistema RED el mismo día, como hicimos con Hugo.",
+        fuente: { label: "Ver los salarios en Nóminas", tab: "nominas" }
       }
     ],
     respuestaLibre: "Esa no la tengo a mano. La consulto con tu asesor y te respondemos en menos de 24 horas por aquí. Si corre prisa, llámanos y lo vemos al momento."
