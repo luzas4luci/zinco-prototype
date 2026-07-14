@@ -16,6 +16,8 @@ Resumen de la arquitectura del dashboard laboral de Zinco AI
 3. **Nóminas**: KPIs, gráfico de evolución de 6 meses, variación del
    mes explicada y lista de nóminas con estados.
 4. **Altas y Bajas**: movimientos de plantilla con badge de SLA.
+5. **Análisis**: tabla de recomendaciones del shadowing (9 pain points)
+   en 3 bloques — lo que hago ya / la visión / pregunta abierta.
 
 ## Vista CLIENTE (CEO pyme) — una sola pantalla
 - Semáforo global con frase humana ("¿está todo bien?").

@@ -282,6 +282,7 @@ window.DATA = {
     { hora: "09:12", texto: "Presentado el RLC de junio en el Sistema RED — sin incidencias", auto: true },
     { hora: "10:05", texto: "Registrado el parte de confirmación de Lucía Gil (nacimiento y cuidado de menor)", auto: true },
     { hora: "11:38", texto: "Generado el cálculo previo de la nómina de julio (variación +4.725 € explicada)", auto: true },
+    { hora: "11:41", texto: "Cálculo previo archivado en la carpeta de Grupo Fuego Lento y compartido con Carmen — 0 ficheros movidos a mano", auto: true },
     { hora: "12:10", texto: "Llamada con Carmen (directora de operaciones): planificación de plantilla para agosto" }
   ],
 
@@ -309,6 +310,45 @@ window.DATA = {
       }
     ],
     respuestaLibre: "Esa no la tengo a mano. La consulto con tu asesor y te respondemos en menos de 24 horas por aquí. Si corre prisa, llámanos y lo vemos al momento."
+  },
+
+  // -------------------------------------------------------------------
+  // Tab "Análisis" — tabla de recomendaciones del proceso de selección.
+  // Sale del shadowing a 7 asesores laborales (9 pain points).
+  // Regla de oro: máximo UNA línea por celda; el detalle va en el pitch
+  // hablado. 3 grupos con header de color: ya / vision / abierta.
+  // -------------------------------------------------------------------
+  analisis: {
+    sub: "9 pain points del shadowing a 7 asesores — qué hago con cada uno y cómo lo mido",
+    encabezado: [
+      { label: "Métrica que persigo", texto: "minutos de asesor por cliente/mes. Todo lo de abajo son inputs de eso." },
+      { label: "Lo que el cliente nota", texto: "cero sorpresas — el plazo no se pasa, la nómina llega, el número está a D+5." }
+    ],
+    bloques: [
+      {
+        tono: "ya",
+        titulo: "Lo que hago ya",
+        filas: [
+          { pain: "4 · FIE / bajas",        queHago: "Yoda cruza el fichero contra la cartera. El asesor solo confirma.", medicion: "Minutos por baja. N=10, cronómetro." },
+          { pain: "5+6+7 · Ficheros a mano", queHago: "Quito el paso. Y dos de estos ya existen — nadie lo sabía.",        medicion: "Ficheros movidos a mano → 0" },
+          { pain: "9 · No saben que pueden", queHago: "Doc + 30 min. Coste cero.",                                          medicion: "% asesores con envío automático" }
+        ]
+      },
+      {
+        tono: "vision",
+        titulo: "La visión — no lo construyo el lunes",
+        filas: [
+          { pain: "1+2 · Email y plazos", queHago: "<span class=\"nada\">Nada aún.</span> Es la visión: Yoda va al Gmail, no al revés.", medicion: "Plazos incumplidos/mes (futuro)" }
+        ]
+      },
+      {
+        tono: "abierta",
+        titulo: "Pregunta abierta",
+        filas: [
+          { pain: "3 · Convenios", queHago: "<span class=\"nada\">Nada.</span> No sé de dónde sale el dato.", medicion: "—" }
+        ]
+      }
+    ]
   }
 };
 

@@ -327,6 +327,47 @@
     .finiquito-tabla .frow .fimporte { font-variant-numeric: tabular-nums; }
     .finiquito-tabla .frow.ftotal { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 8px; font-weight: 700; }
 
+    /* ---------- Tab Análisis ---------- */
+    /* Formato clonado de la tabla de priorización del shadowing:
+       callout con borde izquierdo verde oscuro + título de grupo en color
+       + header de tabla con fondo tintado. Una línea por celda. */
+    .analisis-meta {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--zinco-green-dark);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      margin-bottom: 4px;
+    }
+    .analisis-meta p { font-size: 0.9rem; line-height: 1.55; }
+    .analisis-meta p + p { margin-top: 4px; }
+    .analisis-meta b { color: var(--zinco-green-dark); }
+    .grupo-analisis { margin-top: 26px; }
+    .grupo-titulo { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+    .tono-ya .grupo-titulo      { color: var(--zinco-green); }
+    .tono-vision .grupo-titulo  { color: var(--zinco-green-dark); }
+    .tono-abierta .grupo-titulo { color: var(--warn); }
+    .bloque-card { padding: 0; overflow: hidden; }
+    .tabla-analisis { width: 100%; border-collapse: collapse; }
+    .tabla-analisis th {
+      font-size: 0.8rem; font-weight: 700; text-align: left;
+      padding: 10px 18px;
+    }
+    .tono-ya th      { background: var(--zinco-green-tint); color: var(--zinco-green-dark); }
+    .tono-vision th  { background: var(--zinco-green-dark); color: var(--bg-card); }
+    .tono-abierta th { background: var(--warn-bg); color: var(--warn); }
+    .tabla-analisis td {
+      font-size: 0.86rem; line-height: 1.45; vertical-align: top;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .tabla-analisis tr:last-child td { border-bottom: none; }
+    .tabla-analisis .pain { font-weight: 600; }
+    .tabla-analisis th:first-child { width: 24%; }
+    .tabla-analisis th:last-child  { width: 30%; }
+    .tabla-analisis .nada { font-weight: 700; color: var(--zinco-green-dark); }
+    .tono-abierta .nada { color: var(--warn); }
+
     /* ---------- Modal ---------- */
     .overlay {
       position: fixed; inset: 0;
@@ -521,6 +562,7 @@
         <button data-tab="its">ITs</button>
         <button data-tab="nominas">Nóminas</button>
         <button data-tab="movs">Altas y Bajas</button>
+        <button data-tab="analisis">Análisis</button>
       </nav>
 
       <!-- ---- Tab HOY ---- -->
@@ -572,6 +614,14 @@
         <p class="sub" id="subMovs"></p>
         <h2>Movimientos de julio</h2>
         <div id="listaMovs"></div>
+      </div>
+
+      <!-- ---- Tab Análisis ---- -->
+      <div id="tab-analisis" hidden>
+        <h1>Análisis y recomendaciones</h1>
+        <p class="sub" id="subAnalisis"></p>
+        <div class="analisis-meta" id="analisisMeta"></div>
+        <div id="analisisBloques"></div>
       </div>
     </section>
 
@@ -710,7 +760,7 @@
       const btn = e.target.closest("button[data-tab]");
       if (!btn) return;
       tabsNav.querySelectorAll("button").forEach(b => b.classList.toggle("active", b === btn));
-      ["hoy", "its", "nominas", "movs"].forEach(id => {
+      ["hoy", "its", "nominas", "movs", "analisis"].forEach(id => {
         document.getElementById("tab-" + id).hidden = id !== btn.dataset.tab;
       });
     });
@@ -1054,6 +1104,36 @@
       `;
       listaMovs.appendChild(card);
     });
+
+    // ---------- tab Análisis ----------
+    // Tabla de recomendaciones del shadowing, en el formato de la tabla
+    // de priorización: título de grupo en color + header tintado.
+    // Una línea por celda; el detalle se cuenta hablando.
+    const A = D.analisis;
+    document.getElementById("subAnalisis").textContent = A.sub;
+    document.getElementById("analisisMeta").innerHTML =
+      A.encabezado.map(l => `<p><b>${l.label}:</b> ${l.texto}</p>`).join("");
+    document.getElementById("analisisBloques").innerHTML = A.bloques.map(b => `
+      <section class="grupo-analisis tono-${b.tono}">
+        <div class="grupo-titulo">${b.titulo}</div>
+        <div class="card bloque-card">
+          <table class="tabla-analisis">
+            <thead>
+              <tr><th>Pain</th><th>Qué hago</th><th>Cómo lo mido</th></tr>
+            </thead>
+            <tbody>
+              ${b.filas.map(f => `
+                <tr>
+                  <td class="pain">${f.pain}</td>
+                  <td>${f.queHago}</td>
+                  <td>${f.medicion}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    `).join("");
 
     // ---------- modal de detalle de IT ----------
     let overlay = null;
