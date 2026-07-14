@@ -327,6 +327,47 @@
     .finiquito-tabla .frow .fimporte { font-variant-numeric: tabular-nums; }
     .finiquito-tabla .frow.ftotal { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 8px; font-weight: 700; }
 
+    /* ---------- Tab Análisis ---------- */
+    .analisis-meta {
+      background: var(--zinco-green-tint);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 8px;
+    }
+    .analisis-meta p { font-size: 0.9rem; line-height: 1.55; }
+    .analisis-meta p + p { margin-top: 6px; }
+    .analisis-meta b { color: var(--zinco-green-dark); }
+    .bloque-head { display: flex; align-items: center; gap: 10px; margin: 26px 0 10px; }
+    .bloque-head h2 { margin: 0; }
+    .bloque-card { padding: 6px 20px 10px; overflow-x: auto; }
+    .bloque-card.tono-ya      { border-left: 4px solid var(--zinco-green); }
+    .bloque-card.tono-vision  { border-left: 4px dashed var(--zinco-green-dark); }
+    .bloque-card.tono-abierta { border-left: 4px solid var(--warn); }
+    .tabla-analisis { width: 100%; border-collapse: collapse; }
+    .tabla-analisis th {
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--text-soft); text-align: left;
+      padding: 12px 18px 8px 0;
+      border-bottom: 1px solid var(--line);
+      width: 25%;
+    }
+    .tabla-analisis th:last-child, .tabla-analisis td:last-child { padding-right: 0; }
+    .tabla-analisis td {
+      font-size: 0.83rem; line-height: 1.5;
+      vertical-align: top;
+      padding: 14px 18px 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .tabla-analisis tr:last-child td { border-bottom: none; }
+    .pain-label {
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.03em;
+      color: var(--zinco-green-dark);
+      margin-bottom: 6px;
+    }
+    .tono-abierta .pain-label { color: var(--warn); }
+
     /* ---------- Modal ---------- */
     .overlay {
       position: fixed; inset: 0;
@@ -521,6 +562,7 @@
         <button data-tab="its">ITs</button>
         <button data-tab="nominas">Nóminas</button>
         <button data-tab="movs">Altas y Bajas</button>
+        <button data-tab="analisis">Análisis</button>
       </nav>
 
       <!-- ---- Tab HOY ---- -->
@@ -572,6 +614,14 @@
         <p class="sub" id="subMovs"></p>
         <h2>Movimientos de julio</h2>
         <div id="listaMovs"></div>
+      </div>
+
+      <!-- ---- Tab Análisis ---- -->
+      <div id="tab-analisis" hidden>
+        <h1>Análisis y recomendaciones</h1>
+        <p class="sub" id="subAnalisis"></p>
+        <div class="analisis-meta" id="analisisMeta"></div>
+        <div id="analisisBloques"></div>
       </div>
     </section>
 
@@ -710,7 +760,7 @@
       const btn = e.target.closest("button[data-tab]");
       if (!btn) return;
       tabsNav.querySelectorAll("button").forEach(b => b.classList.toggle("active", b === btn));
-      ["hoy", "its", "nominas", "movs"].forEach(id => {
+      ["hoy", "its", "nominas", "movs", "analisis"].forEach(id => {
         document.getElementById("tab-" + id).hidden = id !== btn.dataset.tab;
       });
     });
@@ -1054,6 +1104,40 @@
       `;
       listaMovs.appendChild(card);
     });
+
+    // ---------- tab Análisis ----------
+    // Tabla de recomendaciones del shadowing. Los 3 bloques llevan tono
+    // visual propio (ya / visión / abierta) para que se lea de un vistazo
+    // qué es entregable, qué es visión y qué es incertidumbre.
+    const A = D.analisis;
+    document.getElementById("subAnalisis").textContent = A.sub;
+    document.getElementById("analisisMeta").innerHTML =
+      A.encabezado.map(l => `<p><b>${l.label}:</b> ${l.texto}</p>`).join("");
+    document.getElementById("analisisBloques").innerHTML = A.bloques.map(b => `
+      <section>
+        <div class="bloque-head">
+          <h2>${b.titulo}</h2>
+          <span class="chip ${b.chipClase}">${b.chip}</span>
+        </div>
+        <div class="card bloque-card tono-${b.tono}">
+          <table class="tabla-analisis">
+            <thead>
+              <tr><th>Razonamiento</th><th>Recomendación</th><th>Hipótesis</th><th>Cómo lo mido</th></tr>
+            </thead>
+            <tbody>
+              ${b.filas.map(f => `
+                <tr>
+                  <td><div class="pain-label">${f.pain}</div>${f.razonamiento}</td>
+                  <td>${f.recomendacion}</td>
+                  <td>${f.hipotesis}</td>
+                  <td>${f.medicion}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    `).join("");
 
     // ---------- modal de detalle de IT ----------
     let overlay = null;
