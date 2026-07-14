@@ -282,6 +282,7 @@ window.DATA = {
     { hora: "09:12", texto: "Presentado el RLC de junio en el Sistema RED — sin incidencias", auto: true },
     { hora: "10:05", texto: "Registrado el parte de confirmación de Lucía Gil (nacimiento y cuidado de menor)", auto: true },
     { hora: "11:38", texto: "Generado el cálculo previo de la nómina de julio (variación +4.725 € explicada)", auto: true },
+    { hora: "11:41", texto: "Cálculo previo archivado en la carpeta de Grupo Fuego Lento y compartido con Carmen — 0 ficheros movidos a mano", auto: true },
     { hora: "12:10", texto: "Llamada con Carmen (directora de operaciones): planificación de plantilla para agosto" }
   ],
 
