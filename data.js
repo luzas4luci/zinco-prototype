@@ -314,10 +314,11 @@ window.DATA = {
   // -------------------------------------------------------------------
   // Tab "Análisis" — tabla de recomendaciones del proceso de selección.
   // Sale del shadowing a 7 asesores laborales (9 pain points).
-  // 3 bloques con tono visual distinto: ya / vision / abierta.
+  // Regla de oro: máximo UNA línea por celda; el detalle va en el pitch
+  // hablado. 3 grupos con header de color: ya / vision / abierta.
   // -------------------------------------------------------------------
   analisis: {
-    sub: "9 pain points del shadowing a 7 asesores — qué construyo ya, qué es visión y qué queda por validar",
+    sub: "9 pain points del shadowing a 7 asesores — qué hago con cada uno y cómo lo mido",
     encabezado: [
       { label: "Métrica que persigo", texto: "minutos de asesor por cliente/mes. Todo lo de abajo son inputs de eso." },
       { label: "Lo que el cliente nota", texto: "cero sorpresas — el plazo no se pasa, la nómina llega, el número está a D+5." }
@@ -326,60 +327,24 @@ window.DATA = {
       {
         tono: "ya",
         titulo: "Lo que hago ya",
-        chip: "Entregable ahora",
-        chipClase: "ok",
         filas: [
-          {
-            pain: "Pain 4 · Fichero FIE / bajas",
-            razonamiento: "Cruce mecánico con reglas claras: hoy el asesor abre el fichero FIE de la mutua y lo compara a mano contra su cartera para ver qué bajas le afectan. Trabajo de máquina que hace una persona.",
-            recomendacion: "Cruce automático del fichero FIE contra la cartera: cada baja detectada llega a la bandeja del asesor ya asignada a su empresa y con el plazo calculado.",
-            hipotesis: "El formato del FIE es estable y el emparejamiento empleado ↔ empresa se resuelve solo con reglas, sin criterio humano. Si hay ambigüedad frecuente, la propuesta cae.",
-            medicion: "<b>Minutos por baja</b>, antes vs. después. N = 10 bajas, cronómetro en mano."
-          },
-          {
-            pain: "Pains 5 + 6 + 7 · Ficheros a mano",
-            razonamiento: "Tres pains distintos (el baile del Drive, el envío manual de nóminas, los seguros sociales a mano) con la misma causa raíz. Los empaqueto en un principio: el asesor no debería mover ficheros a mano.",
-            recomendacion: "Automatizar el recorrido completo del fichero: del cálculo a la carpeta del cliente, de la carpeta al envío, de la liquidación al Sistema RED. Sin pasos manuales intermedios.",
-            hipotesis: "Las rutas y los destinatarios son predecibles mes a mes (misma estructura de carpetas, mismos contactos); las excepciones que exigen criterio son residuales.",
-            medicion: "<b>Ficheros movidos a mano por asesor y semana → 0</b>. Baseline: el conteo de la semana de shadowing."
-          },
-          {
-            pain: "Pain 9 · Ya se puede y no lo saben",
-            razonamiento: "El envío automático ya existe y casi nadie lo usa. Parte de la baja adopción es falta de enablement — arreglable el lunes, coste cero. La otra parte no: María probó Yoda y tardó 20 minutos más. Eso no se arregla con formación.",
-            recomendacion: "Coste cero: documentación de uso + 30 minutos con el equipo. Y escuchar a quienes lo probaron y lo dejaron — ahí está la otra mitad del problema.",
-            hipotesis: "La barrera dominante es el desconocimiento, no que la herramienta sea más lenta que el proceso manual de cada asesor.",
-            medicion: "<b>% de asesores usando el envío automático</b>. Semana 1: de 2 de 7 a 7 de 7."
-          }
+          { pain: "4 · FIE / bajas",        queHago: "Yoda cruza el fichero contra la cartera. El asesor solo confirma.", medicion: "Minutos por baja. N=10, cronómetro." },
+          { pain: "5+6+7 · Ficheros a mano", queHago: "Quito el paso. Y dos de estos ya existen — nadie lo sabía.",        medicion: "Ficheros movidos a mano → 0" },
+          { pain: "9 · No saben que pueden", queHago: "Doc + 30 min. Coste cero.",                                          medicion: "% asesores con envío automático" }
         ]
       },
       {
         tono: "vision",
-        titulo: "La visión",
-        chip: "No lo construyo el lunes",
-        chipClase: "",
+        titulo: "La visión — no lo construyo el lunes",
         filas: [
-          {
-            pain: "Pains 1 + 2 · El email es la cola de tareas · nadie avisa de plazos",
-            razonamiento: "El pain de más impacto: los encargos entran por Gmail y los plazos legales viven en la cabeza del asesor. Pero exige un agente fiable sobre el correo — no se construye el lunes. Restricción clave del shadowing: «Yoda pide en vez de dar».",
-            recomendacion: "Capa de intake tipo agente: el asesor sigue en su Gmail y Yoda le trae el trabajo ya masticado — clasificado, con plazo legal y con la tarea creada en la bandeja. No le pide que se mueva a Yoda.",
-            hipotesis: "Un agente puede clasificar el correo entrante con precisión suficiente para que el asesor confíe en la bandeja y deje de repasar el Gmail «por si acaso».",
-            medicion: "Métrica futura: <b>plazos incumplidos / mes</b>. Hoy no hay baseline fiable — instrumentarla es parte del trabajo."
-          }
+          { pain: "1+2 · Email y plazos", queHago: "<span class=\"nada\">Nada aún.</span> Es la visión: Yoda va al Gmail, no al revés.", medicion: "Plazos incumplidos/mes (futuro)" }
         ]
       },
       {
         tono: "abierta",
         titulo: "Pregunta abierta",
-        chip: "Feasibility sin validar",
-        chipClase: "warn",
         filas: [
-          {
-            pain: "Pain 3 · Convenios sin notificación",
-            razonamiento: "Las actualizaciones de convenio llegan sin aviso y enterarse tarde es caro: atrasos, nóminas recalculadas, cliente sorprendido (los +2.782 € de atrasos de esta demo salen de ahí). Pero no sé todavía si es automatizable.",
-            recomendacion: "No prometo nada. Feasibility sin validar: ¿de qué fuente sale el dato del convenio — BOE, boletines provinciales, un tercero? Quiero averiguarlo antes de comprometerme.",
-            hipotesis: "Existe una fuente consultable de forma sistemática con las actualizaciones de convenio. Sin validar — si no existe, aquí no hay producto.",
-            medicion: "Resultado de un spike de 1 semana: fuente identificada sí/no y con qué fiabilidad. La métrica de producto, solo después."
-          }
+          { pain: "3 · Convenios", queHago: "<span class=\"nada\">Nada.</span> No sé de dónde sale el dato.", medicion: "—" }
         ]
       }
     ]

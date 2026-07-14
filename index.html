@@ -328,45 +328,45 @@
     .finiquito-tabla .frow.ftotal { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 8px; font-weight: 700; }
 
     /* ---------- Tab Análisis ---------- */
+    /* Formato clonado de la tabla de priorización del shadowing:
+       callout con borde izquierdo verde oscuro + título de grupo en color
+       + header de tabla con fondo tintado. Una línea por celda. */
     .analisis-meta {
-      background: var(--zinco-green-tint);
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--zinco-green-dark);
       border-radius: var(--radius);
-      padding: 16px 20px;
-      margin-bottom: 8px;
+      padding: 14px 20px;
+      margin-bottom: 4px;
     }
     .analisis-meta p { font-size: 0.9rem; line-height: 1.55; }
-    .analisis-meta p + p { margin-top: 6px; }
+    .analisis-meta p + p { margin-top: 4px; }
     .analisis-meta b { color: var(--zinco-green-dark); }
-    .bloque-head { display: flex; align-items: center; gap: 10px; margin: 26px 0 10px; }
-    .bloque-head h2 { margin: 0; }
-    .bloque-card { padding: 6px 20px 10px; overflow-x: auto; }
-    .bloque-card.tono-ya      { border-left: 4px solid var(--zinco-green); }
-    .bloque-card.tono-vision  { border-left: 4px dashed var(--zinco-green-dark); }
-    .bloque-card.tono-abierta { border-left: 4px solid var(--warn); }
+    .grupo-analisis { margin-top: 26px; }
+    .grupo-titulo { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+    .tono-ya .grupo-titulo      { color: var(--zinco-green); }
+    .tono-vision .grupo-titulo  { color: var(--zinco-green-dark); }
+    .tono-abierta .grupo-titulo { color: var(--warn); }
+    .bloque-card { padding: 0; overflow: hidden; }
     .tabla-analisis { width: 100%; border-collapse: collapse; }
     .tabla-analisis th {
-      font-size: 0.7rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.04em;
-      color: var(--text-soft); text-align: left;
-      padding: 12px 18px 8px 0;
-      border-bottom: 1px solid var(--line);
-      width: 25%;
+      font-size: 0.8rem; font-weight: 700; text-align: left;
+      padding: 10px 18px;
     }
-    .tabla-analisis th:last-child, .tabla-analisis td:last-child { padding-right: 0; }
+    .tono-ya th      { background: var(--zinco-green-tint); color: var(--zinco-green-dark); }
+    .tono-vision th  { background: var(--zinco-green-dark); color: var(--bg-card); }
+    .tono-abierta th { background: var(--warn-bg); color: var(--warn); }
     .tabla-analisis td {
-      font-size: 0.83rem; line-height: 1.5;
-      vertical-align: top;
-      padding: 14px 18px 14px 0;
+      font-size: 0.86rem; line-height: 1.45; vertical-align: top;
+      padding: 13px 18px;
       border-bottom: 1px solid var(--line);
     }
     .tabla-analisis tr:last-child td { border-bottom: none; }
-    .pain-label {
-      font-size: 0.7rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.03em;
-      color: var(--zinco-green-dark);
-      margin-bottom: 6px;
-    }
-    .tono-abierta .pain-label { color: var(--warn); }
+    .tabla-analisis .pain { font-weight: 600; }
+    .tabla-analisis th:first-child { width: 24%; }
+    .tabla-analisis th:last-child  { width: 30%; }
+    .tabla-analisis .nada { font-weight: 700; color: var(--zinco-green-dark); }
+    .tono-abierta .nada { color: var(--warn); }
 
     /* ---------- Modal ---------- */
     .overlay {
@@ -1106,30 +1106,26 @@
     });
 
     // ---------- tab Análisis ----------
-    // Tabla de recomendaciones del shadowing. Los 3 bloques llevan tono
-    // visual propio (ya / visión / abierta) para que se lea de un vistazo
-    // qué es entregable, qué es visión y qué es incertidumbre.
+    // Tabla de recomendaciones del shadowing, en el formato de la tabla
+    // de priorización: título de grupo en color + header tintado.
+    // Una línea por celda; el detalle se cuenta hablando.
     const A = D.analisis;
     document.getElementById("subAnalisis").textContent = A.sub;
     document.getElementById("analisisMeta").innerHTML =
       A.encabezado.map(l => `<p><b>${l.label}:</b> ${l.texto}</p>`).join("");
     document.getElementById("analisisBloques").innerHTML = A.bloques.map(b => `
-      <section>
-        <div class="bloque-head">
-          <h2>${b.titulo}</h2>
-          <span class="chip ${b.chipClase}">${b.chip}</span>
-        </div>
-        <div class="card bloque-card tono-${b.tono}">
+      <section class="grupo-analisis tono-${b.tono}">
+        <div class="grupo-titulo">${b.titulo}</div>
+        <div class="card bloque-card">
           <table class="tabla-analisis">
             <thead>
-              <tr><th>Razonamiento</th><th>Recomendación</th><th>Hipótesis</th><th>Cómo lo mido</th></tr>
+              <tr><th>Pain</th><th>Qué hago</th><th>Cómo lo mido</th></tr>
             </thead>
             <tbody>
               ${b.filas.map(f => `
                 <tr>
-                  <td><div class="pain-label">${f.pain}</div>${f.razonamiento}</td>
-                  <td>${f.recomendacion}</td>
-                  <td>${f.hipotesis}</td>
+                  <td class="pain">${f.pain}</td>
+                  <td>${f.queHago}</td>
                   <td>${f.medicion}</td>
                 </tr>
               `).join("")}
