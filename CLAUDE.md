@@ -39,6 +39,12 @@ por cliente → tablero Kanban con lo que tiene que hacer cada gestor.
   Sistema RED, RLC/RNT, pago delegado, fichero FIE, convenio, finiquito.
 - Toda interacción "inteligente" (agente, avisos) usa datos pre-escritos
   de data.js; no hay backend.
+- REALISMO OBLIGATORIO: toda feature debe tener un mecanismo real
+  defendible (API de datos abiertos del BOE para convenios, carpetas de
+  SILTRA para RLC/RNT, Gmail API para envíos, API de a3innuva para A3,
+  carpeta vigilada para SAGE, fichero FIE para bajas). El panel "¿Cómo
+  funciona?" de la UI y `comoFunciona` en data.js documentan cada una.
+  No añadir promesas sin fuente.
 
 ## Qué NO hacer
 - No añadir pantallas o features fuera de lo que se pida por prompt.

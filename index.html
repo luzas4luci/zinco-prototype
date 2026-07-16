@@ -164,6 +164,58 @@
 
   .lbl-sm{display:none}
 
+  /* ---------- Subtabs (Nóminas / Seguros sociales) ---------- */
+  .subtabs{display:flex;gap:8px;margin-top:16px}
+  .subtabs button{background:var(--bg-card);border:1px solid var(--line);border-radius:99px;padding:8px 18px;font-size:13.5px;font-weight:600;color:var(--text-soft);transition:.15s}
+  .subtabs button:hover{border-color:var(--zinco-green);color:var(--zinco-green-dark)}
+  .subtabs button.active{background:var(--zinco-green);border-color:var(--zinco-green);color:#fff}
+  .subtabs .mini-badge{background:var(--warn-bg);color:var(--warn);border-radius:99px;font-size:11px;font-weight:700;padding:1px 7px;margin-left:5px}
+
+  /* ---------- Cinta del día ---------- */
+  .diames{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);margin-top:16px}
+  .diames-head{font-size:13.5px;font-weight:700;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .diames-head span{font-weight:500;color:var(--text-soft);font-size:12.5px}
+  .diames-track{position:relative;height:26px;background:var(--bg-page);border:1px solid var(--line);border-radius:99px;margin:24px 6px 8px}
+  .diames-seg{position:absolute;top:3px;bottom:3px;border-radius:99px;cursor:help;min-width:9px}
+  .seg-variables,.seg-calculo{background:var(--zinco-green-tint);border:1px solid #cfe0d0}
+  .seg-impuestos,.seg-rlc{background:var(--warn-bg);border:1px solid #f0dcaa}
+  .seg-envio{background:var(--zinco-green);opacity:.85}
+  .diames-hoy{position:absolute;top:-7px;bottom:-7px;width:2.5px;background:var(--alert);border-radius:2px}
+  .diames-hoy::after{content:"HOY";position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-size:9.5px;font-weight:800;color:var(--alert);letter-spacing:.05em}
+  .diames-legend{display:flex;gap:5px 16px;flex-wrap:wrap;font-size:11.5px;color:var(--text-soft);font-weight:500;padding:0 6px}
+  .diames-legend b{color:var(--text);font-weight:700}
+  .hoy-toca{list-style:none;margin-top:11px;border-top:1px dashed var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+  .hoy-toca li{font-size:13px;display:flex;gap:8px;line-height:1.4}
+  .hoy-toca li::before{content:"→";color:var(--zinco-green);font-weight:700}
+
+  /* ---------- Tab Seguros sociales ---------- */
+  .ss-head{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);margin:16px 0 14px}
+  .ss-head .nums{display:flex;gap:24px}
+  .ss-head .nums b{font-size:22px;font-weight:800;display:block;letter-spacing:-.02em}
+  .ss-head .nums .pend b{color:var(--warn)}
+  .ss-head .nums span{font-size:11.5px;color:var(--text-soft);font-weight:500}
+  .ss-head .nota{font-size:12.5px;color:var(--text-soft);max-width:330px;line-height:1.4}
+  .ss-head .btn{margin-left:auto}
+  .ss-table-wrap{overflow-x:auto;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  table.ss{width:100%;border-collapse:collapse;min-width:640px}
+  table.ss th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-soft);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.ss td{padding:11px 14px;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:middle}
+  table.ss tr:last-child td{border-bottom:none}
+  table.ss td .sub{display:block;font-size:11.5px;color:var(--text-soft)}
+  .ss-ok{color:var(--ok);font-weight:600;font-size:12.5px;white-space:nowrap}
+  .ss-wait{color:var(--warn);font-weight:600;font-size:12.5px}
+  .btn.sm{font-size:12px;padding:5px 12px}
+
+  /* ---------- Panel "¿Cómo funciona?" ---------- */
+  .como{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow)}
+  .como h3{font-size:13.5px;font-weight:700}
+  .como p{font-size:12.5px;color:var(--text-soft);margin-top:5px;line-height:1.45}
+  .como .fuente{margin-top:8px;font-size:11.5px;font-weight:600;color:var(--zinco-green-dark);background:var(--zinco-green-tint);border-radius:8px;padding:5px 9px;display:inline-block}
+  .link-btn{background:none;border:none;color:var(--zinco-green);font-weight:600;font-size:12.5px;text-decoration:underline;cursor:pointer}
+
+  .aviso.info{border-left-color:var(--zinco-green)}
+  .filters input[type=search]{font-family:var(--font);font-size:13.5px;font-weight:500;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg-card);color:var(--text);min-width:170px;max-width:100%}
+
   /* ---------- Tooltips ---------- */
   .tip{border-bottom:1.5px dotted var(--text-soft);cursor:help}
   .tip-info{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--text-soft);color:var(--text-soft);font-size:10px;font-weight:700;cursor:help;flex-shrink:0;font-style:normal}
@@ -210,31 +262,64 @@
     <div class="fecha" id="fecha"></div>
   </div>
 
-  <div class="stats" id="stats"></div>
-
-  <div class="valor-line" id="valor-line"></div>
-
-  <div class="filters">
-    <label for="f-gestor">Gestor</label>
-    <select id="f-gestor"><option value="">Todos</option></select>
-    <label for="f-cliente">Cliente</label>
-    <select id="f-cliente"><option value="">Todos</option></select>
-    <button class="clear" id="f-clear">Quitar filtros</button>
+  <div class="subtabs" role="tablist">
+    <button class="active" data-view="nominas">Nóminas</button>
+    <button data-view="ss">Seguros sociales <span class="mini-badge" id="ss-badge"></span></button>
   </div>
 
-  <section class="board" id="board" aria-label="Tablero Kanban del ciclo de nóminas"></section>
+  <section id="view-nominas">
+    <div class="diames" id="diames"></div>
 
-  <p class="foot-note">⏱ <b>Tiempo registrado automáticamente</b> desde el correo y las llamadas — nadie ha tenido que reportar nada a mano hoy.</p>
+    <div class="stats" id="stats"></div>
+
+    <div class="valor-line" id="valor-line"></div>
+
+    <div class="filters">
+      <label for="f-gestor">Gestor</label>
+      <select id="f-gestor"><option value="">Todos</option></select>
+      <label for="f-cliente">Cliente</label>
+      <select id="f-cliente"><option value="">Todos</option></select>
+      <label for="f-estado">Estado</label>
+      <select id="f-estado">
+        <option value="">Todos</option>
+        <option value="criticas">⚠ Críticas</option>
+        <option value="encurso">En curso</option>
+        <option value="finalizadas">✓ Finalizadas</option>
+      </select>
+      <input type="search" id="f-buscar" placeholder="Buscar cliente, incidencia…">
+      <button class="clear" id="f-clear">Quitar filtros</button>
+    </div>
+
+    <section class="board" id="board" aria-label="Tablero Kanban del ciclo de nóminas"></section>
+  </section>
+
+  <section id="view-ss" hidden>
+    <div class="ss-head" id="ss-head"></div>
+    <div class="ss-table-wrap">
+      <table class="ss" id="ss-table"></table>
+    </div>
+  </section>
+
+  <p class="foot-note">⏱ <b>Tiempo registrado automáticamente</b> desde el correo y las llamadas — nadie ha tenido que reportar nada a mano hoy. · <button class="link-btn" id="btn-como">ⓘ ¿Cómo funciona esta demo?</button></p>
 </main>
 
 <!-- Drawer: bandeja del agente -->
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer-agente" aria-label="Bandeja del agente">
   <div class="drawer-head">
-    <div><h2>✨ Bandeja del agente</h2><p>Correos y ficheros ya analizados. Tú solo confirmas.</p></div>
+    <div><h2>✨ Bandeja del agente</h2><p>El agente ha leído el buzón esta noche a las 23:00. Tú solo confirmas.</p></div>
     <button class="drawer-close" data-close>✕</button>
   </div>
   <div class="drawer-body" id="agente-body"></div>
+</aside>
+
+<!-- Drawer: ¿cómo funciona esta demo? -->
+<aside class="drawer" id="drawer-como" aria-label="Cómo funciona">
+  <div class="drawer-head">
+    <div><h2>ⓘ ¿Cómo funciona?</h2><p>El mecanismo real detrás de cada promesa. Sin humo.</p></div>
+    <button class="drawer-close" data-close>✕</button>
+  </div>
+  <div class="drawer-body" id="como-body"></div>
 </aside>
 
 <!-- Drawer: avisos -->
@@ -266,6 +351,9 @@
   var state = {
     filtroGestor: "",
     filtroCliente: "",
+    filtroEstado: "",
+    busqueda: "",
+    vista: "nominas",       // "nominas" | "ss"
     aceptadas: {},          // id de propuesta -> true
     avisosVistos: {},       // id de aviso -> true
     incidenciasNuevas: 0
@@ -331,11 +419,29 @@
   D.clientes.forEach(function(c){
     var o = document.createElement("option"); o.value = c.id; o.textContent = c.nombre; selC.appendChild(o);
   });
+  var selE = $("#f-estado"), inpB = $("#f-buscar");
   selG.addEventListener("change", function(){ state.filtroGestor = this.value; render(); });
   selC.addEventListener("change", function(){ state.filtroCliente = this.value; render(); });
+  selE.addEventListener("change", function(){ state.filtroEstado = this.value; render(); });
+  inpB.addEventListener("input", function(){ state.busqueda = this.value.trim().toLowerCase(); render(); });
   $("#f-clear").addEventListener("click", function(){
-    state.filtroGestor = ""; state.filtroCliente = "";
-    selG.value = ""; selC.value = ""; render();
+    state.filtroGestor = ""; state.filtroCliente = ""; state.filtroEstado = ""; state.busqueda = "";
+    selG.value = ""; selC.value = ""; selE.value = ""; inpB.value = ""; render();
+  });
+
+  // ---------- subtabs Nóminas / Seguros sociales ----------
+  function showView(v){
+    state.vista = v;
+    $("#view-nominas").hidden = (v !== "nominas");
+    $("#view-ss").hidden = (v !== "ss");
+    document.querySelectorAll(".subtabs button").forEach(function(b){
+      b.classList.toggle("active", b.getAttribute("data-view") === v);
+    });
+    if (v === "ss") renderSS();
+  }
+  document.querySelector(".subtabs").addEventListener("click", function(e){
+    var b = e.target.closest("[data-view]");
+    if (b) showView(b.getAttribute("data-view"));
   });
 
   // ---------- toasts ----------
@@ -398,6 +504,15 @@
     var visibles = D.clientes.filter(function(c){
       if (state.filtroGestor && c.gestorId !== state.filtroGestor) return false;
       if (state.filtroCliente && c.id !== state.filtroCliente) return false;
+      if (state.filtroEstado === "criticas" && !(c.sla !== "ok" && c.fase !== "cerrada")) return false;
+      if (state.filtroEstado === "encurso" && c.fase === "cerrada") return false;
+      if (state.filtroEstado === "finalizadas" && c.fase !== "cerrada") return false;
+      if (state.busqueda){
+        var pajar = (c.nombre + " " + c.sector + " " + c.slaTexto + " " +
+          (c.bloqueo ? c.bloqueo.texto : "") + " " +
+          c.incidencias.map(function(i){ return i.texto; }).join(" ")).toLowerCase();
+        if (pajar.indexOf(state.busqueda) === -1) return false;
+      }
       return true;
     });
     var html = "";
@@ -410,8 +525,101 @@
       html += "</div></div>";
     });
     board.innerHTML = html;
-    $("#f-clear").classList.toggle("visible", !!(state.filtroGestor || state.filtroCliente));
+    $("#f-clear").classList.toggle("visible", !!(state.filtroGestor || state.filtroCliente || state.filtroEstado || state.busqueda));
     renderBadges();
+  }
+
+  // ---------- cinta del día ("estás a día 11, ¿qué toca hoy?") ----------
+  function renderCinta(){
+    var cal = D.calendarioMes;
+    var html = '<div class="diames-head">📅 Julio, día ' + cal.diaHoy +
+      ' de ' + cal.diasMes + '<span>— el ciclo del mes de un vistazo</span></div>';
+    html += '<div class="diames-track">';
+    cal.hitos.forEach(function(h){
+      var left = ((h.desde - 1) / cal.diasMes * 100).toFixed(2);
+      var width = ((h.hasta - h.desde + 1) / cal.diasMes * 100).toFixed(2);
+      html += '<div class="diames-seg seg-' + h.tipo + '" style="left:' + left + '%;width:' + width +
+        '%" data-tip="' + h.tip.replace(/"/g, "&quot;") + '"></div>';
+    });
+    var hoyLeft = ((cal.diaHoy - 0.5) / cal.diasMes * 100).toFixed(2);
+    html += '<div class="diames-hoy" style="left:' + hoyLeft + '%"></div>';
+    html += "</div>";
+    html += '<div class="diames-legend">' + cal.hitos.map(function(h){
+      return "<span><b>" + h.desde + (h.hasta > h.desde ? "-" + h.hasta : "") + "</b> " + h.label + "</span>";
+    }).join("") + "</div>";
+    html += '<ul class="hoy-toca">' + cal.hoyToca.map(function(t){
+      return "<li>" + glosar(t) + "</li>";
+    }).join("") + "</ul>";
+    $("#diames").innerHTML = html;
+  }
+
+  // ---------- tab Seguros sociales ----------
+  function ssPendientes(){
+    return D.segurosSociales.clientes.filter(function(r){ return r.recibido && !r.enviado; });
+  }
+  function fmtDia(iso){
+    return iso ? iso.slice(8,10) + "/" + iso.slice(5,7) : "";
+  }
+  function renderSS(){
+    var ss = D.segurosSociales;
+    var recibidos = ss.clientes.filter(function(r){ return r.recibido; }).length;
+    var enviados = ss.clientes.filter(function(r){ return r.enviado; }).length;
+    var pendientes = ssPendientes().length;
+    var head = '<div class="nums">' +
+      "<div><b>" + recibidos + "/" + ss.clientes.length + "</b><span>RLC/RNT recibidos de SILTRA</span></div>" +
+      "<div><b>" + enviados + "</b><span>enviados al cliente</span></div>" +
+      '<div class="pend"><b>' + pendientes + "</b><span>pendientes de envío</span></div>" +
+      "</div>";
+    head += '<div class="nota">' + glosar(ss.nota) + "</div>";
+    if (pendientes) head += '<button class="btn green" id="ss-enviar-todo">📤 Enviar pendientes (' + pendientes + ") por Gmail</button>";
+    else head += '<span class="ss-ok" style="margin-left:auto">✓ Todo enviado — seguros sociales de ' + ss.periodo + " al día</span>";
+    $("#ss-head").innerHTML = head;
+
+    var rows = '<thead><tr><th>Cliente</th><th>Período</th><th>RLC/RNT desde SILTRA</th><th>Envío al cliente (Gmail)</th><th></th></tr></thead><tbody>';
+    ss.clientes.forEach(function(r){
+      var c = clienteById(r.clienteId);
+      var g = gestorById(c.gestorId);
+      rows += "<tr><td><b>" + c.nombre + '</b><span class="sub">' + g.nombre + " · " + c.empleados + " empleados</span></td>";
+      rows += "<td>" + ss.periodo + "</td>";
+      rows += "<td>" + (r.recibido
+        ? '<span class="ss-ok">✓ Importado el ' + fmtDia(r.recibido) + "</span>"
+        : '<span class="ss-wait">⏳ ' + (r.notaFila || "Pendiente") + "</span>") + "</td>";
+      rows += "<td>" + (r.enviado
+        ? '<span class="ss-ok">✓ Enviado el ' + fmtDia(r.enviado) + "</span>"
+        : (r.recibido ? '<span class="ss-wait">Pendiente</span>' : '<span class="sub">—</span>')) + "</td>";
+      rows += "<td>" + (r.recibido && !r.enviado
+        ? '<button class="btn green sm" data-ss-enviar="' + r.clienteId + '">Enviar</button>' : "") + "</td></tr>";
+    });
+    rows += "</tbody>";
+    $("#ss-table").innerHTML = rows;
+    renderBadges();
+  }
+
+  $("#view-ss").addEventListener("click", function(e){
+    var uno = e.target.closest("[data-ss-enviar]");
+    if (uno){
+      var r = null;
+      D.segurosSociales.clientes.forEach(function(x){ if (x.clienteId === uno.getAttribute("data-ss-enviar")) r = x; });
+      r.enviado = D.hoy;
+      var c = clienteById(r.clienteId);
+      toast("RLC y RNT de junio enviados a " + c.nombre + " por Gmail — +2 min registrados a su facturación.");
+      renderSS();
+      return;
+    }
+    if (e.target.closest("#ss-enviar-todo")){
+      var pend = ssPendientes();
+      pend.forEach(function(x){ x.enviado = D.hoy; });
+      toast(pend.length + " envíos de seguros sociales hechos por Gmail en un clic — +" + (pend.length * 2) + " min registrados. Antes: uno a uno con SAGE, Gmail y SILTRA.");
+      renderSS();
+    }
+  });
+
+  // ---------- drawer "¿Cómo funciona?" ----------
+  function renderComo(){
+    $("#como-body").innerHTML = D.comoFunciona.map(function(x){
+      return '<div class="como"><h3>' + x.titulo + "</h3><p>" + x.mecanismo +
+        '</p><div class="fuente">📎 ' + x.fuente + "</div></div>";
+    }).join("");
   }
 
   function avanzarFase(c){
@@ -525,7 +733,7 @@
     var env = e.target.closest("[data-enviar]");
     if (env){
       var c = clienteById(env.getAttribute("data-enviar"));
-      toast("Nóminas de julio y resumen enviados a "+c.nombre+" — copia guardada en su carpeta de Drive.");
+      toast("Nóminas de julio y resumen enviados a "+c.nombre+" por Gmail — copia en su Drive y +4 min registrados.");
       if (c.envioAuto && !c.envioAutoConocido){
         c.envioAutoConocido = true;
         if (c.sla === "warn" && c.fase === "envio"){ c.sla = "ok"; c.slaTexto = "Envío automático activado — nóminas enviadas"; }
@@ -551,9 +759,11 @@
     $("#overlay").classList.remove("open");
     $("#drawer-agente").classList.remove("open");
     $("#drawer-avisos").classList.remove("open");
+    $("#drawer-como").classList.remove("open");
   }
   $("#overlay").addEventListener("click", closeDrawers);
   $("#btn-agente").addEventListener("click", function(){ renderAgente(); openDrawer("#drawer-agente"); });
+  $("#btn-como").addEventListener("click", function(){ renderComo(); openDrawer("#drawer-como"); });
   $("#btn-avisos").addEventListener("click", function(){
     D.avisos.forEach(function(a){ state.avisosVistos[a.id] = true; });
     renderAvisos(); openDrawer("#drawer-avisos"); renderBadges();
@@ -572,6 +782,9 @@
     var noVistos = D.avisos.filter(function(a){ return !state.avisosVistos[a.id]; }).length;
     var bV = $("#badge-avisos");
     bV.textContent = noVistos; bV.style.display = noVistos ? "" : "none";
+    var pendSS = ssPendientes().length;
+    var bS = $("#ss-badge");
+    bS.textContent = pendSS + " pendientes"; bS.style.display = pendSS ? "" : "none";
   }
 
   var origenIcono = { email:"📧", fie:"📄" };
@@ -581,7 +794,8 @@
     D.bandejaAgente.forEach(function(p){
       var done = state.aceptadas[p.id];
       html += '<div class="prop'+(done?" done":"")+'">';
-      html += '<div class="origen">'+(origenIcono[p.origen]||"📧")+" "+p.origenTexto+"</div>";
+      html += '<div class="origen">'+(origenIcono[p.origen]||"📧")+" "+p.origenTexto+
+        (p.categoria ? ' <span class="chip" style="margin-left:auto">'+p.categoria+"</span>" : "")+"</div>";
       html += "<h3>"+p.asunto+"</h3>";
       html += '<div class="analisis">'+glosar(p.analisis)+"</div>";
       html += '<div class="propuesta">→ '+glosar(p.propuesta)+"</div>";
@@ -604,7 +818,7 @@
         c.incidencias.push({ texto: p.incidencia.texto, origen: p.incidencia.origen, fecha: D.hoy });
         state.incidenciasNuevas++;
       }
-      toast("Hecho: "+p.propuesta.replace(/\.$/,"")+" ("+c.nombre+").");
+      toast("Hecho: "+p.propuesta.replace(/\.$/,"")+" ("+c.nombre+") — +3 min registrados a su facturación.");
       renderAgente(); render();
       return;
     }
@@ -620,7 +834,7 @@
       html += '<div class="aviso '+a.nivel+'">';
       html += "<h3>"+(avisoIcono[a.tipo]||"🔔")+" "+glosar(a.titulo)+"</h3>";
       html += "<p>"+glosar(a.detalle)+"</p>";
-      html += '<button class="btn" data-aviso-cliente="'+(a.clienteId||"")+'">'+a.cta+" →</button>";
+      html += '<button class="btn" data-aviso-cliente="'+(a.clienteId||"")+'" data-aviso-accion="'+(a.accion||"")+'">'+a.cta+" →</button>";
       html += "</div>";
     });
     body.innerHTML = html;
@@ -629,8 +843,9 @@
   $("#avisos-body").addEventListener("click", function(e){
     var b = e.target.closest("[data-aviso-cliente]");
     if (!b) return;
-    var cid = b.getAttribute("data-aviso-cliente");
     closeDrawers();
+    if (b.getAttribute("data-aviso-accion") === "tab-ss"){ showView("ss"); return; }
+    var cid = b.getAttribute("data-aviso-cliente");
     if (cid) openModal(cid);
   });
 
@@ -665,6 +880,7 @@
   window.addEventListener("scroll", hideTip, true);
 
   // ---------- init ----------
+  renderCinta();
   render();
 })();
 </script>

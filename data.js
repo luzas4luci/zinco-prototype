@@ -26,6 +26,32 @@ window.DATA = {
     registroAuto: "Tiempo registrado automáticamente desde el correo y las llamadas — hoy nadie ha tenido que reportar nada a mano."
   },
 
+  // -------------------------------------------------------------------
+  // Calendario del ciclo mensual: "estás a día 11, ¿qué toca hoy?"
+  // (petición de las entrevistas: visualización por día del mes)
+  // -------------------------------------------------------------------
+  calendarioMes: {
+    diaHoy: 11,
+    diasMes: 31,
+    hitos: [
+      { desde: 1,  hasta: 5,  label: "Variables e incidencias", tipo: "variables",
+        tip: "Días 1-5: recoger todo lo que cambia la nómina del mes (horas extra, bajas, altas, anticipos)." },
+      { desde: 20, hasta: 20, label: "Impuestos", tipo: "impuestos",
+        tip: "Día 20: presentación del modelo 111 del 2.º trimestre (retenciones de IRPF de las nóminas)." },
+      { desde: 21, hasta: 24, label: "Cálculo y revisión", tipo: "calculo",
+        tip: "Días 21-24: cálculo de las nóminas en A3/SAGE y revisión del gestor." },
+      { desde: 25, hasta: 28, label: "Envío y pago", tipo: "envio",
+        tip: "Días 25-28: envío de nóminas y resumen a cada cliente, y pago a los trabajadores." },
+      { desde: 29, hasta: 31, label: "Seguros sociales", tipo: "rlc",
+        tip: "Días 29-31: presentación de los RLC/RNT del mes por SILTRA (plazo hasta fin de mes)." }
+    ],
+    hoyToca: [
+      "Reclamar las variables bloqueadas de Taberna El Roble y Academia Lumen — sin ellas no arranca el cálculo",
+      "Revisar el cálculo previo de Grupo Fuego Lento (variación +4.725 €, explicada)",
+      "Enviar los seguros sociales de junio pendientes (4 clientes) — recordatorio del lunes"
+    ]
+  },
+
   // Proyectos de Yoda (como el módulo de contabilidad que sirvió de
   // referencia). Solo Nóminas está activo en este prototipo.
   proyectos: [
@@ -73,7 +99,10 @@ window.DATA = {
     "convenio": "Convenio colectivo: el acuerdo del sector que fija los salarios mínimos y las condiciones de trabajo.",
     "base de cotización": "La cifra de sueldo sobre la que se calculan las cuotas de la Seguridad Social y las prestaciones.",
     "seguros sociales": "Las cuotas que la empresa paga cada mes a la Seguridad Social por sus trabajadores.",
-    "pelota": "De quién depende que esto avance ahora mismo: el cliente, la mutua, la Seguridad Social o el gestor."
+    "pelota": "De quién depende que esto avance ahora mismo: el cliente, la mutua, la Seguridad Social o el gestor.",
+    "SILTRA": "El programa oficial de la Seguridad Social para enviar y recibir los ficheros de cotización (RLC/RNT). Deja los documentos en carpetas locales que Yoda puede vigilar.",
+    "TGSS": "Tesorería General de la Seguridad Social: el organismo que recauda las cuotas y devuelve los recibos de liquidación.",
+    "modelo 111": "La declaración de las retenciones de IRPF de las nóminas, que se presenta a Hacienda cada trimestre (o cada mes en empresas grandes)."
   },
 
   // -------------------------------------------------------------------
@@ -338,6 +367,80 @@ window.DATA = {
   ],
 
   // -------------------------------------------------------------------
+  // Seguros sociales de junio (se envían al cliente en julio).
+  // El dolor nº 1 de las entrevistas: SILTRA los deja en una carpeta
+  // local (Yoda la vigila) y el envío se hace por Gmail API, no Outlook.
+  // -------------------------------------------------------------------
+  segurosSociales: {
+    periodo: "Junio 2026",
+    nota: "Los RLC/RNT llegan solos desde la carpeta de SILTRA. El envío sale por tu Gmail, con el recibo adjunto.",
+    clientes: [
+      { clienteId: "fuego-lento",     recibido: "2026-07-08", enviado: "2026-07-09" },
+      { clienteId: "taberna-roble",   recibido: "2026-07-08", enviado: null },
+      { clienteId: "sonrisalud",      recibido: "2026-07-08", enviado: null },
+      { clienteId: "vega-norte",      recibido: "2026-07-09", enviado: null },
+      { clienteId: "horno-ana",       recibido: "2026-07-08", enviado: "2026-07-09" },
+      { clienteId: "talleres-marquez",recibido: "2026-07-08", enviado: null },
+      { clienteId: "riofrio",         recibido: "2026-07-08", enviado: "2026-07-08" },
+      { clienteId: "petalos",         recibido: "2026-07-08", enviado: "2026-07-09" },
+      { clienteId: "academia-lumen",  recibido: null,          enviado: null,
+        notaFila: "Pendiente de respuesta de la TGSS" }
+    ]
+  },
+
+  // -------------------------------------------------------------------
+  // Panel "¿Cómo funciona?": el mecanismo REAL detrás de cada promesa.
+  // Nada de humo: cada línea es defendible con su fuente.
+  // -------------------------------------------------------------------
+  comoFunciona: [
+    {
+      titulo: "Avisos de convenios",
+      mecanismo: "Un proceso diario consulta el sumario del BOE por su API de datos abiertos (XML/JSON) y el registro REGCON, filtrando los convenios de los sectores de tu cartera. Existe incluso un MCP del BOE que Claude puede usar directamente.",
+      fuente: "boe.es/datosabiertos · expinterweb.mites.gob.es/regcon"
+    },
+    {
+      titulo: "Seguros sociales que llegan solos",
+      mecanismo: "SILTRA guarda los RLC/RNT que devuelve la TGSS en carpetas locales documentadas (XDCR/RLC y XDCR/RNT). Yoda vigila esas carpetas e importa cada documento al cliente que corresponde.",
+      fuente: "Estructura de directorios del manual oficial de SILTRA (seg-social.es)"
+    },
+    {
+      titulo: "Envío por Gmail (no Outlook)",
+      mecanismo: "Lo que SAGE hace con Outlook (MAPI), Yoda lo hace con la API oficial de Gmail: OAuth de Google Workspace y envío en nombre del gestor, con las nóminas o el RLC adjuntos.",
+      fuente: "Gmail API (developers.google.com/gmail)"
+    },
+    {
+      titulo: "Conexión con A3",
+      mecanismo: "a3innuva Nómina tiene API REST oficial (portal a3developers, integración Conectia): empleados, nóminas y costes se sincronizan sin exportar nada a mano.",
+      fuente: "a3developers.wolterskluwer.es"
+    },
+    {
+      titulo: "Conexión con SAGE",
+      mecanismo: "SAGE Despachos no tiene API pública, así que el patrón es otro: exportas los PDF a una carpeta sincronizada con Drive y Yoda la vigila, clasifica cada documento y lo archiva en la carpeta del cliente. Nunca más bajar y volver a subir.",
+      fuente: "Carpeta vigilada + Drive for Desktop (patrón estándar)"
+    },
+    {
+      titulo: "Bajas detectadas sin buscar (FIE)",
+      mecanismo: "El Sistema RED publica cada día el fichero FIE (INSS-Empresas) con bajas, altas y partes médicos. Yoda lo cruza con tu cartera: trabajador, base de cotización y convenio ya vienen resueltos.",
+      fuente: "Fichero FIE del Sistema RED (también accesible vía SILTRA)"
+    },
+    {
+      titulo: "Bandeja del agente",
+      mecanismo: "Cada noche a las 23:00 un agente (Claude) lee el buzón de Gmail por API, clasifica los correos — altas y bajas, verificaciones, impuestos — y deja la propuesta preparada. Tú solo confirmas, con enlace al email original.",
+      fuente: "Gmail API + Claude (Zinco ya trabaja con Claude)"
+    },
+    {
+      titulo: "Facturación sin teclear",
+      mecanismo: "Cada acción en Yoda ya sabe el cliente y el tiempo empleado; junto con el correo y el calendario alimenta la facturación sola. Se acabó reportar en 5 herramientas (Excel, Yoda, Slack, Gmail, Adbook).",
+      fuente: "Registro de actividad de Yoda + Gmail API + Google Calendar API"
+    },
+    {
+      titulo: "Lo que Yoda NO hace",
+      mecanismo: "No calcula la nómina. Eso lo hacen A3 y SAGE, que llevan la normativa al día y no se sustituyen. Yoda orquesta todo lo demás alrededor: recoger, avisar, enviar, archivar y registrar.",
+      fuente: "Decisión de alcance — asumida a propósito"
+    }
+  ],
+
+  // -------------------------------------------------------------------
   // Bandeja del agente: correos y ficheros ya analizados por Yoda.
   // Cada propuesta se acepta con 1 clic y crea la incidencia en el
   // control de nóminas del cliente (antes: copiar a mano a un Excel).
@@ -345,6 +448,7 @@ window.DATA = {
   bandejaAgente: [
     {
       id: "a-1",
+      categoria: "Variables",
       origen: "email",
       origenTexto: "Email de Carmen (Grupo Fuego Lento) · hoy 09:41",
       asunto: "Sara Peña, 2 días de asuntos propios",
@@ -356,6 +460,7 @@ window.DATA = {
     },
     {
       id: "a-2",
+      categoria: "Altas y bajas",
       origen: "fie",
       origenTexto: "Fichero FIE · descargado hoy 08:05",
       asunto: "2 movimientos nuevos en el FIE",
@@ -367,6 +472,7 @@ window.DATA = {
     },
     {
       id: "a-3",
+      categoria: "Altas y bajas",
       origen: "email",
       origenTexto: "Email de Construcciones Vega Norte · ayer 18:22",
       asunto: "Alta de un peón para el lunes 20/07",
@@ -378,6 +484,7 @@ window.DATA = {
     },
     {
       id: "a-4",
+      categoria: "Altas y bajas",
       origen: "email",
       origenTexto: "Email de Taberna El Roble · hoy 10:15",
       asunto: "Nacimiento y cuidado de menor de Aitana Robles",
@@ -389,6 +496,7 @@ window.DATA = {
     },
     {
       id: "a-5",
+      categoria: "Envíos",
       origen: "email",
       origenTexto: "Email de Panadería Horno de Ana · hoy 11:02",
       asunto: "¿Me mandas las nóminas de junio?",
@@ -439,6 +547,23 @@ window.DATA = {
       detalle: "El certificado de Talleres Márquez caduca el 04/08. Sin él no se pueden presentar los seguros sociales de agosto.",
       cta: "Iniciar renovación",
       clienteId: "talleres-marquez"
+    },
+    {
+      id: "av-5",
+      tipo: "recurrente",
+      nivel: "warn",
+      titulo: "Recurrente: los seguros sociales de junio se envían el lunes",
+      detalle: "Quedan 4 clientes sin enviar. Los RLC/RNT ya están importados desde SILTRA; el envío sale por tu Gmail en un clic.",
+      cta: "Ir a Seguros sociales",
+      accion: "tab-ss"
+    },
+    {
+      id: "av-6",
+      tipo: "interno",
+      nivel: "info",
+      titulo: "Cambios en el equipo: Claudia se incorpora al área laboral",
+      detalle: "Desde el lunes 14, Claudia se une al equipo. Nadie más tiene que enterarse por casualidad: Yoda avisa de los cambios internos.",
+      cta: "Ver quién lleva cada cliente"
     }
   ]
 };
