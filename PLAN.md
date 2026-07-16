@@ -26,7 +26,17 @@ la propia UI. No se promete nada sin fuente.
 ## Cinta del día (v2 — "estás a día 11, ¿qué toca hoy?")
 - Línea temporal del mes con los hitos del ciclo (1-5 variables ·
   20 impuestos · 21-24 cálculo · 25-28 envío y pago · 29-31 RLC/RNT),
-  marcador HOY y lista "hoy toca".
+  marcador HOY, lista "hoy toca" y los contadores del tablero integrados
+  (una sola banda de resumen; la línea de valor del agente vive en el pie).
+
+## Coherencia temporal (v2.1 — revisión de experto)
+- El estado del tablero DEBE ser creíble para la fecha simulada: a día 11
+  la mayoría de la cartera está en "Variables e incidencias" (la ventana
+  de cálculo abre el 21), los adelantos llevan motivo explícito en su
+  slaTexto (atrasos del convenio, anticipos del día 15, cuadrar una IT),
+  y Envío/Cerrada están vacíos con texto propio ("la ventana de envío
+  abre el 25"). Nunca mover una tarjeta de fase sin una razón que un
+  gestor laboral aceptaría.
 
 ## Tablero Kanban del ciclo mensual (pieza central)
 - Columnas = fases del ciclo: **Variables e incidencias → Cálculo →

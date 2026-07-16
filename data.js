@@ -77,9 +77,11 @@ window.DATA = {
     { id: "revision",  nombre: "Revisión",
       descripcion: "El gestor comprueba que el resultado cuadra (y que las subidas o bajadas del mes tienen explicación) antes de enviar nada al cliente." },
     { id: "envio",     nombre: "Envío al cliente",
-      descripcion: "Mandar las nóminas y el resumen del mes a la empresa, y archivarlas en su carpeta de Drive." },
+      descripcion: "Mandar las nóminas y el resumen del mes a la empresa, y archivarlas en su carpeta de Drive.",
+      vacio: "La ventana de envío abre el día 25" },
     { id: "cerrada",   nombre: "Cerrada",
-      descripcion: "Mes terminado: nóminas enviadas y seguros sociales presentados a la Seguridad Social." }
+      descripcion: "Mes terminado: nóminas enviadas y seguros sociales presentados a la Seguridad Social.",
+      vacio: "Nada cerrado todavía — lo normal a día 11" }
   ],
 
   // Glosario para tooltips: términos de jerga → explicación en llano.
@@ -122,7 +124,7 @@ window.DATA = {
       herramienta: "SAGE",
       fase: "revision",
       sla: "warn",
-      slaTexto: "Cerrar antes del 25/07 — atrasos del convenio pendientes de revisión",
+      slaTexto: "Cálculo previo adelantado por los atrasos del convenio — revisar y cerrar antes del 25/07",
       plazo: "2026-07-25",
       bloqueo: null,
       envioAuto: true,
@@ -193,7 +195,7 @@ window.DATA = {
       herramienta: "A3",
       fase: "calculo",
       sla: "ok",
-      slaTexto: "En plazo — cierre previsto el 24/07",
+      slaTexto: "Cálculo previo adelantado para cuadrar la IT de Marta Ruiz — cierre en plazo (24/07)",
       plazo: "2026-07-24",
       bloqueo: null,
       envioAuto: true,
@@ -245,9 +247,9 @@ window.DATA = {
       empleados: 6,
       gestorId: "maria",
       herramienta: "SAGE",
-      fase: "envio",
+      fase: "calculo",
       sla: "ok",
-      slaTexto: "Nóminas listas — envío programado hoy",
+      slaTexto: "Adelantada: el cliente paga anticipos el día 15 y pide el cálculo antes",
       plazo: "2026-07-28",
       bloqueo: null,
       envioAuto: true,
@@ -256,8 +258,8 @@ window.DATA = {
       incidencias: [],
       checklist: [
         { label: "Variables e incidencias recogidas", done: true },
-        { label: "Cálculo de nóminas", done: true },
-        { label: "Revisión del gestor", done: true },
+        { label: "Cálculo de nóminas (anticipos del día 15)", done: false },
+        { label: "Revisión del gestor", done: false },
         { label: "Envío de nóminas y resumen al cliente", done: false },
         { label: "Seguros sociales (RLC/RNT)", done: false }
       ]
@@ -269,9 +271,9 @@ window.DATA = {
       empleados: 11,
       gestorId: "nerea",
       herramienta: "A3",
-      fase: "envio",
-      sla: "warn",
-      slaTexto: "Envío manual pendiente — el envío automático está disponible y sin activar",
+      fase: "variables",
+      sla: "ok",
+      slaTexto: "Variables completas — a la espera de la ventana de cálculo (día 21)",
       plazo: "2026-07-28",
       bloqueo: null,
       envioAuto: true,
@@ -282,8 +284,8 @@ window.DATA = {
       ],
       checklist: [
         { label: "Variables e incidencias recogidas", done: true },
-        { label: "Cálculo de nóminas", done: true },
-        { label: "Revisión del gestor", done: true },
+        { label: "Cálculo de nóminas", done: false },
+        { label: "Revisión del gestor", done: false },
         { label: "Envío de nóminas y resumen al cliente", done: false },
         { label: "Seguros sociales (RLC/RNT)", done: false }
       ]
@@ -295,10 +297,10 @@ window.DATA = {
       empleados: 15,
       gestorId: "pedro",
       herramienta: "SAGE",
-      fase: "cerrada",
-      sla: "ok",
-      slaTexto: "✓ Cerrada — nóminas enviadas y RLC presentado",
-      plazo: null,
+      fase: "variables",
+      sla: "warn",
+      slaTexto: "El contrato de Iker Sanz termina el 26/07 — decidir prórroga antes de calcular",
+      plazo: "2026-07-26",
       bloqueo: null,
       envioAuto: true,
       envioAutoConocido: true,
@@ -307,11 +309,11 @@ window.DATA = {
         { texto: "El contrato temporal de Iker Sanz termina el 26/07 — decidir prórroga o cese", origen: "aviso", fecha: "2026-07-11" }
       ],
       checklist: [
-        { label: "Variables e incidencias recogidas", done: true },
-        { label: "Cálculo de nóminas", done: true },
-        { label: "Revisión del gestor", done: true },
-        { label: "Envío de nóminas y resumen al cliente", done: true },
-        { label: "Seguros sociales (RLC/RNT)", done: true }
+        { label: "Variables e incidencias recogidas", done: false },
+        { label: "Cálculo de nóminas", done: false },
+        { label: "Revisión del gestor", done: false },
+        { label: "Envío de nóminas y resumen al cliente", done: false },
+        { label: "Seguros sociales (RLC/RNT)", done: false }
       ]
     },
     {
@@ -321,10 +323,10 @@ window.DATA = {
       empleados: 4,
       gestorId: "maria",
       herramienta: "A3",
-      fase: "cerrada",
+      fase: "variables",
       sla: "ok",
-      slaTexto: "✓ Cerrada — sin incidencias en julio",
-      plazo: null,
+      slaTexto: "Sin incidencias en julio — lista para la ventana de cálculo",
+      plazo: "2026-07-28",
       bloqueo: null,
       envioAuto: true,
       envioAutoConocido: true,
@@ -332,10 +334,10 @@ window.DATA = {
       incidencias: [],
       checklist: [
         { label: "Variables e incidencias recogidas", done: true },
-        { label: "Cálculo de nóminas", done: true },
-        { label: "Revisión del gestor", done: true },
-        { label: "Envío de nóminas y resumen al cliente", done: true },
-        { label: "Seguros sociales (RLC/RNT)", done: true }
+        { label: "Cálculo de nóminas", done: false },
+        { label: "Revisión del gestor", done: false },
+        { label: "Envío de nóminas y resumen al cliente", done: false },
+        { label: "Seguros sociales (RLC/RNT)", done: false }
       ]
     },
     {
@@ -345,7 +347,7 @@ window.DATA = {
       empleados: 8,
       gestorId: "nerea",
       herramienta: "A3",
-      fase: "calculo",
+      fase: "variables",
       sla: "warn",
       slaTexto: "Pendiente confirmar el plus de formación de julio",
       plazo: "2026-07-24",
@@ -357,7 +359,7 @@ window.DATA = {
         { texto: "Reducción de jornada de Paula Íñiguez al 80 % desde el 01/07 (cuidado de menor)", origen: "email", fecha: "2026-06-26" }
       ],
       checklist: [
-        { label: "Variables e incidencias recogidas", done: true },
+        { label: "Variables e incidencias recogidas", done: false },
         { label: "Cálculo de nóminas", done: false },
         { label: "Revisión del gestor", done: false },
         { label: "Envío de nóminas y resumen al cliente", done: false },

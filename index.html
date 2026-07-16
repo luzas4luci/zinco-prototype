@@ -51,13 +51,10 @@
   .wrap{max-width:1280px;margin:0 auto;padding:22px 20px 60px}
   .board-head h1{font-size:22px;font-weight:800;letter-spacing:-.01em}
   .board-head .fecha{color:var(--text-soft);font-size:13.5px;margin-top:2px}
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0 6px}
-  .stat{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
-  .stat b{font-size:26px;font-weight:800;letter-spacing:-.02em;display:block}
-  .stat span{font-size:12px;color:var(--text-soft);font-weight:500}
-  .stat.warn b{color:var(--warn)} .stat.alert b{color:var(--alert)} .stat.ok b{color:var(--ok)}
-  .valor-line{margin:10px 0 16px;background:var(--zinco-green-tint);border:1px solid #d5e3d6;border-radius:var(--radius);padding:11px 16px;font-size:13.5px;color:var(--zinco-green-dark);font-weight:500;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .diames-stats{margin-left:auto;font-size:12.5px;color:var(--text-soft);font-weight:500;display:flex;gap:5px 14px;flex-wrap:wrap}
+  .diames-stats b{font-size:15px;font-weight:800;color:var(--text)}
+  .diames-stats .warn b{color:var(--warn)}
+  .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0}
   .filters label{font-size:12.5px;font-weight:600;color:var(--text-soft)}
   .filters select{font-family:var(--font);font-size:13.5px;font-weight:500;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg-card);color:var(--text);max-width:100%}
   .filters .clear{background:none;border:none;font-size:12.5px;font-weight:600;color:var(--zinco-green);text-decoration:underline;display:none}
@@ -270,10 +267,6 @@
   <section id="view-nominas">
     <div class="diames" id="diames"></div>
 
-    <div class="stats" id="stats"></div>
-
-    <div class="valor-line" id="valor-line"></div>
-
     <div class="filters">
       <label for="f-gestor">Gestor</label>
       <select id="f-gestor"><option value="">Todos</option></select>
@@ -300,6 +293,7 @@
     </div>
   </section>
 
+  <p class="foot-note" id="valor-foot"></p>
   <p class="foot-note">⏱ <b>Tiempo registrado automáticamente</b> desde el correo y las llamadas — nadie ha tenido que reportar nada a mano hoy. · <button class="link-btn" id="btn-como">ⓘ ¿Cómo funciona esta demo?</button></p>
 </main>
 
@@ -307,7 +301,7 @@
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer-agente" aria-label="Bandeja del agente">
   <div class="drawer-head">
-    <div><h2>✨ Bandeja del agente</h2><p>El agente ha leído el buzón esta noche a las 23:00. Tú solo confirmas.</p></div>
+    <div><h2>✨ Bandeja del agente</h2><p>Leído del buzón esta noche a las 23:00 — aquí solo está lo que necesita tu confirmación.</p></div>
     <button class="drawer-close" data-close>✕</button>
   </div>
   <div class="drawer-body" id="agente-body"></div>
@@ -325,7 +319,7 @@
 <!-- Drawer: avisos -->
 <aside class="drawer" id="drawer-avisos" aria-label="Avisos">
   <div class="drawer-head">
-    <div><h2>🔔 Avisos</h2><p>Convenios, plazos y caducidades que antes nadie avisaba.</p></div>
+    <div><h2>🔔 Avisos</h2><p>Plazos, cambios y recordatorios para tener en el radar — aquí no hay nada que confirmar.</p></div>
     <button class="drawer-close" data-close>✕</button>
   </div>
   <div class="drawer-body" id="avisos-body"></div>
@@ -391,8 +385,12 @@
       .join("|") +
     ")(?![\\wáéíóúñÁÉÍÓÚÑ])", "gi");
   function glosar(txt){
+    var vistos = {}; // solo la primera aparición de cada término por texto
     return txt.replace(glosRe, function(m){
-      return '<span class="tip" data-tip="' + escAttr(glosLower[m.toLowerCase()]) + '">' + m + "</span>";
+      var k = m.toLowerCase();
+      if (vistos[k]) return m;
+      vistos[k] = true;
+      return '<span class="tip" data-tip="' + escAttr(glosLower[k]) + '">' + m + "</span>";
     });
   }
   var origenClase = { email:"origen-email", fie:"origen-fie", red:"origen-red", convenio:"origen-convenio", aviso:"origen-aviso" };
@@ -454,7 +452,7 @@
     setTimeout(function(){ t.classList.add("out"); setTimeout(function(){ t.remove(); }, 350); }, 3800);
   }
 
-  // ---------- stats + línea de valor ----------
+  // ---------- contadores (dentro de la cinta) + línea de valor (pie) ----------
   function renderStats(){
     var enCurso=0, bloqueados=0, listos=0, cerradas=0;
     D.clientes.forEach(function(c){
@@ -465,15 +463,16 @@
         if (c.fase === "envio") listos++;
       }
     });
-    $("#stats").innerHTML =
-      '<div class="stat"><b>'+enCurso+'</b><span>ciclos en curso</span></div>'+
-      '<div class="stat warn"><b>'+bloqueados+'</b><span>bloqueados esperando al cliente</span></div>'+
-      '<div class="stat ok"><b>'+listos+'</b><span>listos para enviar</span></div>'+
-      '<div class="stat"><b>'+cerradas+'</b><span>cerradas este mes</span></div>';
+    var el = $("#diames-stats");
+    if (el) el.innerHTML =
+      "<span><b>"+enCurso+"</b> en curso</span>"+
+      '<span class="warn"><b>'+bloqueados+"</b> bloqueados</span>"+
+      "<span><b>"+listos+"</b> para enviar</span>"+
+      "<span><b>"+cerradas+"</b> cerradas</span>";
     var v = D.valor;
-    $("#valor-line").innerHTML =
-      "✨ El agente ha preparado hoy <b>&nbsp;"+(v.incidenciasPreparadasHoy + state.incidenciasNuevas)+
-      " incidencias&nbsp;</b> y guardado <b>&nbsp;"+v.docsGuardadosDrive+" documentos&nbsp;</b> en Drive — ~"+
+    $("#valor-foot").innerHTML =
+      "✨ El agente ha preparado hoy <b>"+(v.incidenciasPreparadasHoy + state.incidenciasNuevas)+
+      " incidencias</b> y guardado <b>"+v.docsGuardadosDrive+" documentos</b> en Drive — ~"+
       v.minutosAhorradosHoy+" min devueltos a la cartera.";
   }
 
@@ -483,13 +482,13 @@
     var html = '<article class="card" data-cliente="'+c.id+'">';
     html += "<h3>"+c.nombre+"</h3>";
     html += '<div class="meta">'+c.sector+" · "+c.empleados+" empleados</div>";
-    html += '<div class="chips"><span class="chip gestor">'+g.nombre+'</span><span class="chip">'+c.herramienta+"</span></div>";
-    html += '<div class="sla '+c.sla+'"><span>'+slaIcon[c.sla]+"</span><span>"+glosar(c.slaTexto)+"</span></div>";
+    html += '<div class="chips"><span class="chip gestor">'+g.nombre+"</span></div>";
+    html += '<div class="sla '+c.sla+'"><span>'+slaIcon[c.sla]+"</span><span>"+c.slaTexto+"</span></div>";
     if (c.bloqueo){
-      html += '<div class="bloqueo">⏳ '+glosar(c.bloqueo.texto+" — pelota: "+c.bloqueo.pelota)+" ("+c.bloqueo.dias+" días)</div>";
+      html += '<div class="bloqueo">⏳ '+c.bloqueo.texto+" — pelota: "+c.bloqueo.pelota+" ("+c.bloqueo.dias+" días)</div>";
     }
     html += '<div class="card-foot"><span class="inc-count">'+
-      (c.incidencias.length ? "📋 "+c.incidencias.length+" incidencia"+(c.incidencias.length>1?"s":"") : "Sin incidencias")+
+      (c.incidencias.length ? "📋 "+c.incidencias.length+" incidencia"+(c.incidencias.length>1?"s":"") : "")+
       "</span>";
     if (c.fase !== "cerrada"){
       html += '<button class="next-btn" data-next="'+c.id+'">Pasar fase →</button>';
@@ -520,7 +519,7 @@
       var enFase = visibles.filter(function(c){ return c.fase === f.id; });
       html += '<div class="col"><div class="col-head"><h2>'+f.nombre+'</h2><span class="tip-info" data-tip="'+f.descripcion.replace(/"/g,"&quot;")+'">i</span><span class="count">'+enFase.length+"</span></div>";
       html += '<div class="col-body">';
-      if (!enFase.length) html += '<div class="col-empty">Nada aquí ahora mismo</div>';
+      if (!enFase.length) html += '<div class="col-empty">'+(f.vacio || "Nada aquí ahora mismo")+"</div>";
       else enFase.forEach(function(c){ html += cardHTML(c); });
       html += "</div></div>";
     });
@@ -533,7 +532,8 @@
   function renderCinta(){
     var cal = D.calendarioMes;
     var html = '<div class="diames-head">📅 Julio, día ' + cal.diaHoy +
-      ' de ' + cal.diasMes + '<span>— el ciclo del mes de un vistazo</span></div>';
+      ' de ' + cal.diasMes + '<span>— el ciclo del mes de un vistazo</span>' +
+      '<span class="diames-stats" id="diames-stats"></span></div>';
     html += '<div class="diames-track">';
     cal.hitos.forEach(function(h){
       var left = ((h.desde - 1) / cal.diasMes * 100).toFixed(2);
