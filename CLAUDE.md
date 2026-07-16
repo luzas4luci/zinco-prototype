@@ -1,20 +1,26 @@
 # CLAUDE.md
 
 ## Qué es esto
-Prototipo clickable en UN SOLO index.html (+ data.js) de un dashboard
-laboral para Zinco AI (asesoría estratégica para pymes, España).
-Dos vistas con toggle: ASESOR laboral (principal) y CLIENTE (CEO pyme).
-Construido para una entrevista de AI Product Manager.
+Prototipo clickable en UN SOLO index.html (+ data.js) de "Yoda · Nóminas":
+el proyecto de nóminas dentro de Yoda, la herramienta interna de gestión
+para los gestores laborales de la asesoría (Zinco AI, pymes, España).
+Estructura calcada del módulo de contabilidad de Yoda: proyectos → filtro
+por cliente → tablero Kanban con lo que tiene que hacer cada gestor.
 
 ## Usuarios
-- Asesor laboral Zinco: lleva ~40 empresas; necesita bandeja priorizada
-  por plazos legales, no un ERP. Su pregunta: "¿qué toca YA?"
-- CEO de pyme hostelera (24 empleados): no sabe de laboral; su pregunta:
-  "¿está todo bien o me tengo que preocupar?"
+- Gestores laborales de la asesoría (María, Pedro, Nerea): llevan una
+  cartera de pymes cada uno y trabajan con A3 o SAGE (que NO se sustituyen;
+  Yoda orquesta alrededor). Su pregunta: "¿qué ciclo de nómina toca YA y
+  qué me ha preparado el agente?"
+- Dolores reales (de entrevistas): bajar/subir nóminas a Drive a mano,
+  envío manual al cliente, cero avisos de convenios/vencimientos, todo
+  llega por email sin estandarizar, control de nóminas en un Excel, FIE
+  manual, y Yoda solo servía para reportar lo hecho.
 
 ## Reglas técnicas
 - HTML + CSS + JS vanilla en index.html. Datos en data.js. SIN frameworks,
-  SIN build, SIN npm. Chart.js y Google Fonts (Inter) por CDN, nada más.
+  SIN build, SIN npm. Google Fonts (Inter) por CDN, nada más (Chart.js
+  solo si se pide un gráfico).
 - Debe funcionar abriendo el archivo con doble click (file://) Y en
   GitHub Pages. Rutas siempre relativas.
 - Design tokens (usar SIEMPRE, jamás colores ad-hoc):
@@ -27,14 +33,22 @@ Construido para una entrevista de AI Product Manager.
   Estilo: cards blancas sobre fondo casi-blanco, sombras suaves, números
   grandes con etiquetas pequeñas en gris, estados con icono + texto
   ("✓ Comunicada a SS"), densidad media con aire, mobile-friendly.
-- Marca: wordmark de TEXTO "Zinco · Laboral" en el verde de marca,
-  peso 700. NUNCA usar el archivo de logo real de Zinco.
+- Marca: wordmark de TEXTO "Yoda · Nóminas" (subtítulo "por Zinco AI") en
+  el verde de marca, peso 700. NUNCA usar el archivo de logo real de Zinco.
 - Español de España, terminología laboral real: IT, parte de confirmación,
-  Sistema RED, RLC, pago delegado, convenio de hostelería, finiquito.
-- El chat usa siempre respuestas pre-escritas.
+  Sistema RED, RLC/RNT, pago delegado, fichero FIE, convenio, finiquito.
+- Toda interacción "inteligente" (agente, avisos) usa datos pre-escritos
+  de data.js; no hay backend.
+- REALISMO OBLIGATORIO: toda feature debe tener un mecanismo real
+  defendible (API de datos abiertos del BOE para convenios, carpetas de
+  SILTRA para RLC/RNT, Gmail API para envíos, API de a3innuva para A3,
+  carpeta vigilada para SAGE, fichero FIE para bajas). El panel "¿Cómo
+  funciona?" de la UI y `comoFunciona` en data.js documentan cada una.
+  No añadir promesas sin fuente.
 
 ## Qué NO hacer
 - No añadir pantallas o features fuera de lo que se pida por prompt.
 - No usar lorem ipsum ni datos genéricos: nombres, puestos e importes
-  realistas de hostelería, coherentes entre sí (brutos ↔ SS ↔ netos).
+  realistas y coherentes entre sí (brutos ↔ SS ↔ netos). El cliente
+  estrella (Grupo Fuego Lento SL) cuadra al euro.
 - No commitear ninguna key ni secreto, jamás.
