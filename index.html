@@ -164,6 +164,12 @@
 
   .lbl-sm{display:none}
 
+  /* ---------- Tooltips ---------- */
+  .tip{border-bottom:1.5px dotted var(--text-soft);cursor:help}
+  .tip-info{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--text-soft);color:var(--text-soft);font-size:10px;font-weight:700;cursor:help;flex-shrink:0;font-style:normal}
+  .tip-info:hover{border-color:var(--zinco-green);color:var(--zinco-green)}
+  .tipbox{position:fixed;z-index:120;background:var(--text);color:#fff;font-size:12.5px;font-weight:400;padding:9px 12px;border-radius:9px;max-width:260px;box-shadow:var(--shadow-lift);display:none;line-height:1.45;pointer-events:none}
+
   /* ---------- Pie ---------- */
   .foot-note{margin-top:26px;text-align:center;font-size:12.5px;color:var(--text-soft)}
   .foot-note b{color:var(--zinco-green-dark);font-weight:600}
@@ -247,6 +253,7 @@
 </div>
 
 <div class="toasts" id="toasts"></div>
+<div class="tipbox" id="tipbox" role="tooltip"></div>
 
 <script src="data.js"></script>
 <script>
@@ -280,6 +287,26 @@
     return -1;
   };
   var slaIcon = { ok:"✓", warn:"⚠", alert:"⏰" };
+
+  // ---------- glosario: subraya términos de jerga con su tooltip ----------
+  // Una sola pasada con una regex combinada: lo insertado (las definiciones)
+  // nunca se vuelve a escanear, así los términos dentro de una definición
+  // no rompen el HTML.
+  var escAttr = function(s){ return s.replace(/"/g, "&quot;"); };
+  var glosLower = {};
+  Object.keys(D.glosario).forEach(function(t){ glosLower[t.toLowerCase()] = D.glosario[t]; });
+  var glosRe = new RegExp(
+    "(?<![\\wáéíóúñÁÉÍÓÚÑ])(" +
+    Object.keys(D.glosario)
+      .sort(function(a,b){ return b.length - a.length; })
+      .map(function(t){ return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); })
+      .join("|") +
+    ")(?![\\wáéíóúñÁÉÍÓÚÑ])", "gi");
+  function glosar(txt){
+    return txt.replace(glosRe, function(m){
+      return '<span class="tip" data-tip="' + escAttr(glosLower[m.toLowerCase()]) + '">' + m + "</span>";
+    });
+  }
   var origenClase = { email:"origen-email", fie:"origen-fie", red:"origen-red", convenio:"origen-convenio", aviso:"origen-aviso" };
   var origenLabel = { email:"Email", fie:"FIE", red:"RED", convenio:"Convenio", aviso:"Aviso" };
 
@@ -351,9 +378,9 @@
     html += "<h3>"+c.nombre+"</h3>";
     html += '<div class="meta">'+c.sector+" · "+c.empleados+" empleados</div>";
     html += '<div class="chips"><span class="chip gestor">'+g.nombre+'</span><span class="chip">'+c.herramienta+"</span></div>";
-    html += '<div class="sla '+c.sla+'"><span>'+slaIcon[c.sla]+"</span><span>"+c.slaTexto+"</span></div>";
+    html += '<div class="sla '+c.sla+'"><span>'+slaIcon[c.sla]+"</span><span>"+glosar(c.slaTexto)+"</span></div>";
     if (c.bloqueo){
-      html += '<div class="bloqueo">⏳ '+c.bloqueo.texto+" — pelota: "+c.bloqueo.pelota+" ("+c.bloqueo.dias+" días)</div>";
+      html += '<div class="bloqueo">⏳ '+glosar(c.bloqueo.texto+" — pelota: "+c.bloqueo.pelota)+" ("+c.bloqueo.dias+" días)</div>";
     }
     html += '<div class="card-foot"><span class="inc-count">'+
       (c.incidencias.length ? "📋 "+c.incidencias.length+" incidencia"+(c.incidencias.length>1?"s":"") : "Sin incidencias")+
@@ -376,7 +403,7 @@
     var html = "";
     D.fases.forEach(function(f){
       var enFase = visibles.filter(function(c){ return c.fase === f.id; });
-      html += '<div class="col"><div class="col-head"><h2>'+f.nombre+'</h2><span class="count">'+enFase.length+"</span></div>";
+      html += '<div class="col"><div class="col-head"><h2>'+f.nombre+'</h2><span class="tip-info" data-tip="'+f.descripcion.replace(/"/g,"&quot;")+'">i</span><span class="count">'+enFase.length+"</span></div>";
       html += '<div class="col-body">';
       if (!enFase.length) html += '<div class="col-empty">Nada aquí ahora mismo</div>';
       else enFase.forEach(function(c){ html += cardHTML(c); });
@@ -423,7 +450,7 @@
     html += "<h2>"+c.nombre+"</h2>";
     html += '<div class="meta">'+c.sector+" · "+c.empleados+" empleados · Gestor: "+g.nombre+" · "+c.herramienta+
       " · Fase: "+D.fases[faseIdx(c.fase)].nombre+"</div>";
-    html += '<div class="sla '+c.sla+'" style="margin-top:8px">'+slaIcon[c.sla]+" "+c.slaTexto+"</div>";
+    html += '<div class="sla '+c.sla+'" style="margin-top:8px">'+slaIcon[c.sla]+" "+glosar(c.slaTexto)+"</div>";
     html += '</div><button class="drawer-close" data-close>✕</button></div>';
 
     html += '<div class="modal-body">';
@@ -439,7 +466,7 @@
         c.variacion.respectoA.toLowerCase()+" (+"+c.variacion.porcentaje.toLocaleString("es-ES")+" %). "+c.variacion.resumen+"</div><ul>";
       c.variacion.conceptos.forEach(function(x){
         var val = (x.importe>0?"+":"−") + fmtEur(Math.abs(x.importe)) + (x.neutro ? " (neutro)" : "");
-        html += "<li><span>"+x.concepto+'</span><b class="'+(x.importe<0?"neg":"")+'">'+val+"</b></li>";
+        html += "<li><span>"+glosar(x.concepto)+'</span><b class="'+(x.importe<0?"neg":"")+'">'+val+"</b></li>";
       });
       html += "</ul></div>";
     }
@@ -448,7 +475,7 @@
     // Checklist
     html += '<div class="sec"><h4>Checklist del ciclo</h4><ul class="check">';
     c.checklist.forEach(function(p){
-      html += '<li class="'+(p.done?"done":"todo")+'"><span class="tick '+(p.done?"done":"todo")+'">'+(p.done?"✓":"·")+"</span>"+p.label+"</li>";
+      html += '<li class="'+(p.done?"done":"todo")+'"><span class="tick '+(p.done?"done":"todo")+'">'+(p.done?"✓":"·")+"</span><span>"+glosar(p.label)+"</span></li>";
     });
     html += "</ul></div>";
 
@@ -457,7 +484,7 @@
     if (c.incidencias.length){
       html += '<ul class="inc-list">';
       c.incidencias.forEach(function(x){
-        html += '<li><span class="origen-chip '+origenClase[x.origen]+'">'+origenLabel[x.origen]+"</span><span>"+x.texto+"</span></li>";
+        html += '<li><span class="origen-chip '+origenClase[x.origen]+'">'+origenLabel[x.origen]+"</span><span>"+glosar(x.texto)+"</span></li>";
       });
       html += "</ul>";
     } else {
@@ -556,8 +583,8 @@
       html += '<div class="prop'+(done?" done":"")+'">';
       html += '<div class="origen">'+(origenIcono[p.origen]||"📧")+" "+p.origenTexto+"</div>";
       html += "<h3>"+p.asunto+"</h3>";
-      html += '<div class="analisis">'+p.analisis+"</div>";
-      html += '<div class="propuesta">→ '+p.propuesta+"</div>";
+      html += '<div class="analisis">'+glosar(p.analisis)+"</div>";
+      html += '<div class="propuesta">→ '+glosar(p.propuesta)+"</div>";
       html += '<div class="acciones">';
       if (done) html += '<span class="hecho">✓ Hecho — incidencia añadida al control</span>';
       else html += '<button class="btn green" data-aceptar="'+p.id+'">'+p.cta+'</button><button class="btn" data-ver="'+p.clienteId+'">Ver cliente</button>';
@@ -591,8 +618,8 @@
     var html = "";
     D.avisos.forEach(function(a){
       html += '<div class="aviso '+a.nivel+'">';
-      html += "<h3>"+(avisoIcono[a.tipo]||"🔔")+" "+a.titulo+"</h3>";
-      html += "<p>"+a.detalle+"</p>";
+      html += "<h3>"+(avisoIcono[a.tipo]||"🔔")+" "+glosar(a.titulo)+"</h3>";
+      html += "<p>"+glosar(a.detalle)+"</p>";
       html += '<button class="btn" data-aviso-cliente="'+(a.clienteId||"")+'">'+a.cta+" →</button>";
       html += "</div>";
     });
@@ -606,6 +633,36 @@
     closeDrawers();
     if (cid) openModal(cid);
   });
+
+  // ---------- tooltips (hover en escritorio, toque en móvil) ----------
+  var tipbox = $("#tipbox");
+  var tipPinned = null;
+  function showTip(el){
+    tipbox.textContent = el.getAttribute("data-tip");
+    tipbox.style.display = "block";
+    var r = el.getBoundingClientRect();
+    var bw = tipbox.offsetWidth, bh = tipbox.offsetHeight;
+    var left = Math.max(8, Math.min(r.left + r.width/2 - bw/2, window.innerWidth - bw - 8));
+    var top = r.top - bh - 8;
+    if (top < 8) top = r.bottom + 8;
+    tipbox.style.left = left + "px";
+    tipbox.style.top = top + "px";
+  }
+  function hideTip(){ tipbox.style.display = "none"; tipPinned = null; }
+  document.addEventListener("mouseover", function(e){
+    var t = e.target.closest("[data-tip]");
+    if (t) showTip(t);
+    else if (!tipPinned) hideTip();
+  });
+  document.addEventListener("click", function(e){
+    var t = e.target.closest("[data-tip]");
+    if (t){
+      e.stopPropagation();
+      if (tipPinned === t){ hideTip(); }
+      else { showTip(t); tipPinned = t; }
+    } else hideTip();
+  }, true);
+  window.addEventListener("scroll", hideTip, true);
 
   // ---------- init ----------
   render();

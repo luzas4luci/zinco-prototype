@@ -42,13 +42,39 @@ window.DATA = {
   ],
 
   // Fases del ciclo mensual de nómina (columnas del Kanban).
+  // La descripción alimenta el tooltip ⓘ de cada columna.
   fases: [
-    { id: "variables", nombre: "Variables e incidencias" },
-    { id: "calculo",   nombre: "Cálculo" },
-    { id: "revision",  nombre: "Revisión" },
-    { id: "envio",     nombre: "Envío al cliente" },
-    { id: "cerrada",   nombre: "Cerrada" }
+    { id: "variables", nombre: "Variables e incidencias",
+      descripcion: "Recoger todo lo que cambia la nómina de este mes: horas extra, bajas médicas, altas de personal, anticipos, días sin sueldo… Hasta que no está todo, no se puede calcular." },
+    { id: "calculo",   nombre: "Cálculo",
+      descripcion: "Generar las nóminas del mes en el programa (A3 o SAGE) aplicando esas variables e incidencias." },
+    { id: "revision",  nombre: "Revisión",
+      descripcion: "El gestor comprueba que el resultado cuadra (y que las subidas o bajadas del mes tienen explicación) antes de enviar nada al cliente." },
+    { id: "envio",     nombre: "Envío al cliente",
+      descripcion: "Mandar las nóminas y el resumen del mes a la empresa, y archivarlas en su carpeta de Drive." },
+    { id: "cerrada",   nombre: "Cerrada",
+      descripcion: "Mes terminado: nóminas enviadas y seguros sociales presentados a la Seguridad Social." }
   ],
+
+  // Glosario para tooltips: términos de jerga → explicación en llano.
+  // index.html los subraya allá donde aparezcan en los textos.
+  glosario: {
+    "Sistema RED": "La plataforma online de la Seguridad Social donde se comunican altas, bajas y liquidaciones.",
+    "RED": "La plataforma online de la Seguridad Social donde se comunican altas, bajas y liquidaciones.",
+    "FIE": "Fichero INSS-Empresas: el archivo diario de la Seguridad Social con las bajas, altas y partes médicos de los trabajadores. Antes había que cruzarlo a mano con cada cliente.",
+    "RLC": "Recibo de Liquidación de Cotizaciones: los “seguros sociales” que la empresa paga cada mes a la Seguridad Social.",
+    "RNT": "Relación Nominal de Trabajadores: el listado que acompaña a la liquidación mensual de seguros sociales.",
+    "IT": "Incapacidad Temporal: la baja médica de un trabajador.",
+    "pago delegado": "La empresa adelanta al trabajador el dinero de su baja en la nómina y después lo recupera descontándolo de los seguros sociales.",
+    "pago directo": "La prestación la paga directamente el INSS al trabajador, no la empresa.",
+    "INSS": "Instituto Nacional de la Seguridad Social: el organismo que paga las prestaciones (bajas, maternidad…).",
+    "finiquito": "Lo que se paga al trabajador al terminar su contrato: días trabajados, vacaciones pendientes y pagas extra prorrateadas.",
+    "atrasos": "Diferencias de salario que se deben a los trabajadores cuando el convenio sube con efecto retroactivo.",
+    "convenio": "Convenio colectivo: el acuerdo del sector que fija los salarios mínimos y las condiciones de trabajo.",
+    "base de cotización": "La cifra de sueldo sobre la que se calculan las cuotas de la Seguridad Social y las prestaciones.",
+    "seguros sociales": "Las cuotas que la empresa paga cada mes a la Seguridad Social por sus trabajadores.",
+    "pelota": "De quién depende que esto avance ahora mismo: el cliente, la mutua, la Seguridad Social o el gestor."
+  },
 
   // -------------------------------------------------------------------
   // Cartera de clientes. Cada tarjeta del Kanban = cliente × Julio 2026.
