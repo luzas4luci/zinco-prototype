@@ -169,6 +169,41 @@
   .fsend-btn:hover{opacity:.9}
   .fsend-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
+  /* ---- Tarjeta de documento (dentro de Exportar) ---- */
+  .doc-card{display:flex;align-items:center;gap:12px;background:var(--c-bg-inner);border:1px solid var(--c-border);border-radius:var(--r-md);padding:10px 12px;margin-top:10px;cursor:pointer;transition:border-color .15s;text-align:left;width:100%;font-family:var(--font)}
+  .doc-card:hover{border-color:var(--c-primary)}
+  .doc-icon{width:36px;height:36px;border-radius:var(--r-sm);background:#fff;border:1px solid var(--c-border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .doc-icon svg{width:17px;height:17px;stroke:var(--c-text-2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .doc-info{flex:1;min-width:0}
+  .doc-info b{font-size:13px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--c-text-1)}
+  .doc-info span{font-size:11.5px;color:var(--c-text-2)}
+  .doc-view-btn{background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-sm);padding:5px 12px;font-size:12.5px;font-weight:600;color:var(--c-text-1);flex-shrink:0}
+  .doc-card:hover .doc-view-btn{border-color:var(--c-primary);color:var(--c-primary)}
+
+  /* ---- Modal centrado (documento, envío) ---- */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--c-bg-card);border-radius:var(--r-xl);box-shadow:0 8px 32px rgba(0,0,0,.16);width:100%;min-width:0;max-width:440px;max-height:88vh;overflow-y:auto;border:1px solid var(--c-border)}
+  .modal.modal-lg{max-width:560px}
+  .modal-head{padding:18px 22px 0;display:flex;align-items:flex-start;gap:10px}
+  .modal-head .mh-text{flex:1;min-width:0}
+  .modal-head h2{font-size:16.5px;font-weight:700}
+  .modal-head p{font-size:12.5px;color:var(--c-text-2);margin-top:3px;line-height:1.45}
+  .modal-body{padding:16px 22px}
+  .modal-foot{display:flex;gap:8px;justify-content:flex-end;padding:16px 22px 20px;border-top:1px solid var(--c-border);margin-top:16px}
+
+  /* contenido del modal "Ver documento" */
+  .docv-icon{width:56px;height:56px;border-radius:var(--r-lg);background:var(--c-bg-inner);border:1px solid var(--c-border);display:flex;align-items:center;justify-content:center;margin:4px auto 12px}
+  .docv-icon svg{width:26px;height:26px;stroke:var(--c-text-2);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .docv-name{font-size:14.5px;font-weight:700;text-align:center;word-break:break-word}
+  .doc-meta{margin-top:16px;display:flex;flex-direction:column;gap:0}
+  .doc-meta div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--c-border);font-size:13px}
+  .doc-meta div:last-child{border-bottom:none}
+  .doc-meta dt{color:var(--c-text-2);flex-shrink:0}
+  .doc-meta dd{font-weight:600;color:var(--c-text-1);text-align:right;min-width:0;word-break:break-word}
+  .doc-path{margin-top:14px;font-size:12px;color:var(--c-text-muted);background:var(--c-bg-inner);border-radius:var(--r-sm);padding:8px 10px;line-height:1.4}
+  .doc-extra{margin-top:8px;font-size:12px;color:var(--c-text-2);display:flex;gap:6px;align-items:flex-start}
+
   /* pie: hipótesis */
   .foot{margin-top:18px;text-align:center}
   .foot .link{background:none;border:none;color:var(--c-text-2);font-size:12.5px;text-decoration:underline;cursor:pointer;font-family:var(--font)}
@@ -330,6 +365,17 @@
   <div class="drawer-body" id="hip-body"></div>
 </aside>
 
+<!-- Modal: ver documento -->
+<div class="modal-overlay" id="modal-doc">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Ver documento">
+    <div class="modal-head">
+      <div class="mh-text"><h2>Documento</h2><p>Vista rápida del archivo generado por el cálculo previo.</p></div>
+      <button class="drawer-close" data-close-doc>✕</button>
+    </div>
+    <div class="modal-body" id="modal-doc-body"></div>
+  </div>
+</div>
+
 <div class="toasts" id="toasts"></div>
 <div class="tipbox" id="tipbox" role="tooltip"></div>
 
@@ -466,10 +512,16 @@
     var html = "";
 
     // Paso 1 — Exportar (done)
+    var doc = f.exportar.documento;
     html += '<div class="fstep done"><div class="fstep-rail"><div class="fstep-dot">✓</div><div class="fstep-line"></div></div>';
     html += '<div class="fstep-body"><h3>' + f.exportar.titulo + '<span class="fstep-tag ok">Importado</span></h3>';
     html += '<div class="fdet">' + glosar(f.exportar.detalle) + "</div>";
-    html += '<div class="fnota">' + glosar(f.exportar.nota) + "</div></div></div>";
+    html += '<div class="fnota">' + glosar(f.exportar.nota) + "</div>";
+    html += '<button type="button" class="doc-card" id="doc-card">' +
+      '<span class="doc-icon"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg></span>' +
+      '<span class="doc-info"><b>' + doc.archivo + '</b><span>' + doc.paginas + ' páginas · ' + doc.tamano + '</span></span>' +
+      '<span class="doc-view-btn">Ver</span></button>';
+    html += "</div></div>";
 
     // Paso 2 — Verificar (active, con la tabla viva)
     var v = f.verificar;
@@ -533,7 +585,32 @@
   $("#btn-hip").addEventListener("click", function(){ renderHip(); openDrawer(); });
   $("#overlay").addEventListener("click", closeDrawer);
   document.querySelector("#drawer-hip .drawer-close").addEventListener("click", closeDrawer);
-  document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeDrawer(); });
+
+  // ---------- modal: ver documento ----------
+  function openDocModal(){
+    var doc = D.flujo.exportar.documento;
+    $("#modal-doc-body").innerHTML =
+      '<div class="docv-icon"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg></div>' +
+      '<div class="docv-name">' + doc.archivo + "</div>" +
+      '<dl class="doc-meta">' +
+        "<div><dt>Cliente</dt><dd>" + D.cliente.nombre + "</dd></div>" +
+        "<div><dt>Período</dt><dd>" + D.calendario.mes + "</dd></div>" +
+        "<div><dt>Nóminas incluidas</dt><dd>" + doc.paginas + "</dd></div>" +
+        "<div><dt>Generado</dt><dd>" + doc.generado + "</dd></div>" +
+        "<div><dt>Tamaño</dt><dd>" + doc.tamano + "</dd></div>" +
+      "</dl>" +
+      '<div class="doc-path">📁 ' + doc.ruta + "</div>" +
+      '<div class="doc-extra">＋ <span>' + doc.extra + "</span></div>";
+    $("#modal-doc").classList.add("open");
+  }
+  function closeDocModal(){ $("#modal-doc").classList.remove("open"); }
+  document.getElementById("sec-flujo").addEventListener("click", function(e){
+    if (e.target.closest("#doc-card")) openDocModal();
+  });
+  $("#modal-doc").addEventListener("click", function(e){
+    if (e.target === this || e.target.closest("[data-close-doc]")) closeDocModal();
+  });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape"){ closeDrawer(); closeDocModal(); } });
 
   // ---------- tooltips flotantes ----------
   var tipbox = $("#tipbox");

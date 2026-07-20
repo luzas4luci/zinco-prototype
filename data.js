@@ -115,7 +115,15 @@ window.DATA = {
       titulo: "Exportar desde SAGE",
       hecho: true,
       detalle: "Cálculo previo de julio: 24 nóminas importadas a Yoda hoy a las 08:15 desde la carpeta de SAGE. Nada que bajar ni subir a mano.",
-      nota: "Adelantado por los atrasos del convenio — el definitivo se calcula el 21-24."
+      nota: "Adelantado por los atrasos del convenio — el definitivo se calcula el 21-24.",
+      documento: {
+        archivo: "Nóminas_Julio2026_GrupoFuegoLentoSL.pdf",
+        paginas: 24,
+        tamano: "1,8 MB",
+        generado: "10/07/2026 · 08:15",
+        ruta: "Documentos › Grupo Fuego Lento SL › Nóminas › 2026-07",
+        extra: "+ 1 resumen del mes, listo para adjuntar al envío"
+      }
     },
     verificar: {
       titulo: "Verificar el cálculo",
