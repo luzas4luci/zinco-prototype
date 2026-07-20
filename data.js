@@ -1,326 +1,210 @@
 // =====================================================================
-// data.js — Única fuente de verdad del prototipo Zinco · Laboral
-// Empresa demo: Grupo Fuego Lento SL (hostelería, Madrid, 24 empleados)
-// Fecha simulada de "hoy": viernes 11 de julio de 2026
-// Coherencia salarial: neto = bruto − SS trabajador (6,47%) − IRPF (%
-// individual). El neto se calcula al cargar para que siempre cuadre.
+// data.js — Yoda · Nóminas (rediseño según DECISIONES.md)
+// Pantalla de UN cliente: Grupo Fuego Lento SL, dentro de la navegación
+// real de Yoda (Sidebar → Cliente → Laboral → Nóminas).
+// Fecha simulada de "hoy": lunes 27 de julio de 2026 — día de envío
+// (calendario real: el 1 de julio de 2026 cae en miércoles; el 27, lunes).
+// Coherencia al euro (cálculo definitivo): 40.480 (junio) + 2.782 + 875
+// + 1.368 + 540 − 840 − 104 = 45.101 €. El pago delegado (861 €) es neutro
+// (se recupera en el RLC). Los 2 días de Sara Peña (−104 €) ya entran en el
+// definitivo: eso es lo que "Verificar" te enseña, cuadrando 6 de 6.
 // =====================================================================
 
 window.DATA = {
 
-  hoy: "2026-07-11",
-  hoyTexto: "viernes, 11 de julio de 2026",
+  hoy: "2026-07-27",
+  hoyTexto: "lunes, 27 de julio de 2026",
 
-  empresa: {
+  cliente: {
     nombre: "Grupo Fuego Lento SL",
     sector: "Hostelería",
     provincia: "Madrid",
     empleados: 24,
-    convenio: "Convenio colectivo de hostelería de la Comunidad de Madrid",
-    etiquetaSelector: "Grupo Fuego Lento SL — Hostelería · 24 empleados"
-  },
-
-  // Señal de dato vivo: el valor no es mostrar el dato, es que nadie lo tecleó
-  sincronizacion: "Sistema RED · sincronizado hoy a las 08:02",
-
-  // Cartera del asesor (lleva ~40 empresas; esta demo entra en una)
-  cartera: { empresas: 40, tareasHoy: 11, urgentes: 3 },
-
-  // El argumento del dashboard: tiempo devuelto a lo que importa
-  valor: {
-    asesor: { tramitesAuto: 14, horasSemana: 4.5 },
-    cliente: { gestionesMes: 23, horasMes: 6 }
+    estado: "Activo",
+    gestora: "María",
+    inicialesGestora: "MA",
+    herramienta: "SAGE",
+    envioAuto: true,
+    convenio: "Convenio colectivo de hostelería de la Comunidad de Madrid"
   },
 
   // -------------------------------------------------------------------
-  // Plantilla completa (24). salarioBase + pluses = bruto mensual actual
-  // (tablas del convenio ya actualizadas, subida del 2,2 % desde julio).
-  // irpfPct: retención individual estimada.
+  // Calendario del ciclo (julio 2026 real). primerDiaSemana: 1 = lunes;
+  // el 1 de julio de 2026 es miércoles → 3.
   // -------------------------------------------------------------------
-  empleados: [
-    { id: 1,  nombre: "Carmen Ortega",     puesto: "Directora de operaciones",        salarioBase: 3150, pluses: 420, irpfPct: 18.5, fechaAlta: "2019-03-01" },
-    { id: 2,  nombre: "Javier Sanz",       puesto: "Jefe de cocina",                  salarioBase: 2480, pluses: 390, irpfPct: 16.8, fechaAlta: "2019-05-15" },
-    { id: 3,  nombre: "Nuria Campos",      puesto: "Segunda de cocina",               salarioBase: 1980, pluses: 240, irpfPct: 14.9, fechaAlta: "2020-02-10" },
-    { id: 4,  nombre: "Antonio Vega",      puesto: "Cocinero",                        salarioBase: 1720, pluses: 210, irpfPct: 13.2, fechaAlta: "2020-09-01", situacion: "IT — lumbalgia (día 19)" },
-    { id: 5,  nombre: "Iván Morales",      puesto: "Cocinero",                        salarioBase: 1700, pluses: 190, irpfPct: 13.0, fechaAlta: "2021-06-21" },
-    { id: 6,  nombre: "Pablo Ferrer",      puesto: "Parrillero",                      salarioBase: 1760, pluses: 230, irpfPct: 13.4, fechaAlta: "2020-11-02" },
-    { id: 7,  nombre: "Sergio Lara",       puesto: "Ayudante de cocina",              salarioBase: 1450, pluses: 120, irpfPct: 10.8, fechaAlta: "2022-04-04" },
-    { id: 8,  nombre: "Fátima El Idrissi", puesto: "Ayudante de cocina",              salarioBase: 1450, pluses: 110, irpfPct: 10.7, fechaAlta: "2023-01-16" },
-    { id: 9,  nombre: "María Robles",      puesto: "Responsable de sala",             salarioBase: 2050, pluses: 250, irpfPct: 15.6, fechaAlta: "2019-07-08" },
-    { id: 10, nombre: "Lucía Gil",         puesto: "Camarera",                        salarioBase: 1560, pluses: 150, irpfPct: 11.9, fechaAlta: "2021-03-15", situacion: "Nacimiento y cuidado de menor", brutoJulio: 0 },
-    { id: 11, nombre: "Diego Antúnez",     puesto: "Camarero",                        salarioBase: 1560, pluses: 160, irpfPct: 12.0, fechaAlta: "2021-10-04" },
-    { id: 12, nombre: "Sara Peña",         puesto: "Camarera",                        salarioBase: 1560, pluses: 140, irpfPct: 11.8, fechaAlta: "2022-06-01" },
-    { id: 13, nombre: "Rubén Cano",        puesto: "Camarero",                        salarioBase: 1560, pluses: 155, irpfPct: 11.9, fechaAlta: "2022-09-12" },
-    { id: 14, nombre: "Alba Serrano",      puesto: "Camarera",                        salarioBase: 1560, pluses: 145, irpfPct: 11.8, fechaAlta: "2023-05-08" },
-    { id: 15, nombre: "Jorge Salas",       puesto: "Camarero",                        salarioBase: 1560, pluses: 150, irpfPct: 11.9, fechaAlta: "2021-02-01", situacion: "Baja voluntaria el 15/07 — finiquito en preparación", brutoJulio: 1395 },
-    { id: 16, nombre: "Andrea Molina",     puesto: "Ayudante de camarera",            salarioBase: 1430, pluses: 95,  irpfPct: 10.5, fechaAlta: "2023-11-20" },
-    { id: 17, nombre: "Hugo Pardo",        puesto: "Ayudante de camarero",            salarioBase: 1430, pluses: 90,  irpfPct: 10.5, fechaAlta: "2026-07-04", situacion: "Alta nueva (04/07)", brutoJulio: 1368 },
-    { id: 18, nombre: "Marcos Río",        puesto: "Barman",                          salarioBase: 1680, pluses: 210, irpfPct: 13.0, fechaAlta: "2020-07-13" },
-    { id: 19, nombre: "Raúl Estévez",      puesto: "Encargado de barra",              salarioBase: 1860, pluses: 220, irpfPct: 14.2, fechaAlta: "2019-11-04" },
-    { id: 20, nombre: "Teresa Blanco",     puesto: "Hostess — recepción de sala",     salarioBase: 1520, pluses: 110, irpfPct: 11.5, fechaAlta: "2022-03-07" },
-    { id: 21, nombre: "Elena Vidal",       puesto: "Administrativa",                  salarioBase: 1750, pluses: 130, irpfPct: 13.3, fechaAlta: "2020-01-13" },
-    { id: 22, nombre: "Pilar Doménech",    puesto: "Personal de limpieza",            salarioBase: 1390, pluses: 60,  irpfPct: 9.8,  fechaAlta: "2021-09-06" },
-    { id: 23, nombre: "Omar Haddad",       puesto: "Friegaplatos",                    salarioBase: 1390, pluses: 50,  irpfPct: 9.7,  fechaAlta: "2023-02-27" },
-    { id: 24, nombre: "Cristina Novo",     puesto: "Camarera (fin de semana, 60 %)",  salarioBase: 940,  pluses: 85,  irpfPct: 7.4,  fechaAlta: "2024-04-19" }
+  calendario: {
+    mes: "Julio 2026",
+    diasMes: 31,
+    primerDiaSemana: 3,
+    diaHoy: 27,
+    fases: [
+      { desde: 1,  hasta: 5,  id: "variables", label: "Variables e incidencias",
+        tip: "Días 1-5: recoger todo lo que cambia la nómina del mes (horas extra, bajas, altas, anticipos)." },
+      { desde: 20, hasta: 20, id: "impuestos", label: "Impuestos",
+        tip: "Día 20: presentación del modelo 111 del 2.º trimestre (retenciones de IRPF de las nóminas)." },
+      { desde: 21, hasta: 24, id: "calculo",   label: "Cálculo y revisión",
+        tip: "Días 21-24: cálculo definitivo de las nóminas en SAGE y revisión de la gestora." },
+      { desde: 25, hasta: 28, id: "envio",     label: "Envío y pago",
+        tip: "Días 25-28: envío de nóminas y resumen al cliente, y pago a los trabajadores." },
+      { desde: 29, hasta: 31, id: "rlc",       label: "Seguros sociales",
+        tip: "Días 29-31: presentación de los RLC/RNT del mes por SILTRA (plazo hasta fin de mes)." }
+    ]
+  },
+
+  // -------------------------------------------------------------------
+  // "Hoy toca" — tarjeta fija bajo el calendario. Servido, sin explorar.
+  // -------------------------------------------------------------------
+  hoyToca: [
+    "Enviar las nóminas de julio a Grupo Fuego Lento — el cálculo está cerrado y cuadra",
+    "Presentar los seguros sociales de junio (RLC/RNT) antes del viernes 31",
+    "Ordenar las transferencias de pago a los 24 trabajadores"
   ],
 
   // -------------------------------------------------------------------
-  // ITs activas
+  // Avisos importantes — mini-kanban Por hacer / Hecho.
+  // Ítems discretos del cliente que se resuelven y se mueven.
   // -------------------------------------------------------------------
-  its: [
-    {
-      id: "it-1",
-      empleadoId: 4,
-      empleado: "Antonio Vega",
-      puesto: "Cocinero",
-      tipo: "IT por contingencia común",
-      diagnostico: "Lumbalgia",
-      inicio: "2026-06-23",
-      diaDeBaja: 19,
-      partePendienteDesde: "2026-07-05",
-      estado: "ambar",
-      estadoTexto: "⚠ Parte de confirmación pendiente de la mutua desde hace 6 días",
-      mutua: "Mutua Universal",
-      pagoDelegado: true,
-      previsionReincorporacion: "2026-07-21",
-      pelota: "Mutua",
-      origen: "⚡ Baja detectada automáticamente en el Sistema RED — nadie tuvo que comunicarla",
-      hitos: [
-        { label: "Parte recibido", done: true, fecha: "2026-06-23" },
-        { label: "Comunicado a SS", done: true, fecha: "2026-06-24" },
-        { label: "Pago delegado activo", done: true, fecha: "2026-07-08" },
-        { label: "Previsión de reincorporación", done: false, fecha: "2026-07-21" }
-      ],
-      zincoAhora: "Hemos reclamado hoy a Mutua Universal el 2.º parte de confirmación (segunda reclamación por escrito). Si no llega antes del lunes 13, escalamos por teléfono con el gestor de la mutua. El pago delegado ya está activo, así que Antonio sigue cobrando con normalidad y la empresa recupera el anticipo en el RLC.",
-      timeline: [
-        { fecha: "2026-06-23", texto: "Parte de baja emitido (lumbalgia)", ok: true },
-        { fecha: "2026-06-24", texto: "Baja comunicada al Sistema RED", ok: true },
-        { fecha: "2026-06-30", texto: "1.er parte de confirmación recibido y registrado", ok: true },
-        { fecha: "2026-07-05", texto: "2.º parte de confirmación NO recibido — pendiente de la mutua", ok: false },
-        { fecha: "2026-07-08", texto: "Desde el día 16: pago delegado activado (861 € anticipados en nómina de julio)", ok: true }
-      ],
-      accionSugerida: "Reclamar a la mutua el 2.º parte de confirmación"
-    },
-    {
-      id: "it-2",
-      empleadoId: 10,
-      empleado: "Lucía Gil",
-      puesto: "Camarera",
-      tipo: "Nacimiento y cuidado de menor",
-      diagnostico: null,
-      inicio: "2026-06-02",
-      finPrevisto: "2026-09-21",
-      semanas: 16,
-      estado: "ok",
-      estadoTexto: "✓ Todo en orden — pago directo del INSS tramitado",
-      previsionReincorporacion: "2026-09-21",
-      pelota: "SS",
-      origen: "Comunicada por la empresa desde el portal y tramitada por Zinco el mismo día",
-      hitos: [
-        { label: "Parte recibido", done: true, fecha: "2026-06-02" },
-        { label: "Comunicado a SS", done: true, fecha: "2026-06-03" },
-        { label: "Pago directo INSS activo", done: true, fecha: "2026-06-05" },
-        { label: "Previsión de reincorporación", done: false, fecha: "2026-09-21" }
-      ],
-      zincoAhora: "Nada pendiente por tu parte: el pago directo del INSS está activo y confirmado. Haremos seguimiento del fin del descanso (21/09) y prepararemos la reincorporación de Lucía con 15 días de antelación.",
-      timeline: [
-        { fecha: "2026-06-02", texto: "Inicio del descanso por nacimiento y cuidado de menor", ok: true },
-        { fecha: "2026-06-03", texto: "Comunicada a la Seguridad Social (Sistema RED)", ok: true },
-        { fecha: "2026-06-05", texto: "Pago directo del INSS solicitado y confirmado", ok: true },
-        { fecha: "2026-09-21", texto: "Fin previsto (16 semanas)", ok: null }
-      ],
-      accionSugerida: null
-    }
-  ],
-
-  // -------------------------------------------------------------------
-  // Movimientos: altas y bajas recientes
-  // -------------------------------------------------------------------
-  movimientos: {
-    altas: [
+  avisos: {
+    porHacer: [
       {
-        empleadoId: 17,
-        empleado: "Hugo Pardo",
-        puesto: "Ayudante de camarero",
-        contrato: "Indefinido a tiempo completo",
-        solicitud: "2026-07-03T21:40",
-        comunicadaRED: "2026-07-04T06:55",
-        slaHoras: 9,
-        estado: "ok",
-        estadoTexto: "✓ Comunicada al Sistema RED en 9 h (recibida viernes noche, tramitada sábado)"
+        id: "av-7",
+        titulo: "Seguros sociales de junio",
+        detalle: "Presentar el RLC/RNT de junio por SILTRA antes del viernes 31/07. Ya está preparado; falta enviar.",
+        plazo: "Vence el 31/07"
+      },
+      {
+        id: "av-8",
+        titulo: "Transferencias de pago",
+        detalle: "Ordenar las transferencias de la nómina de julio a los 24 trabajadores tras el envío al cliente.",
+        plazo: "Ventana de pago 25-28"
       }
     ],
-    bajas: [
+    hecho: [
       {
-        empleadoId: 15,
-        empleado: "Jorge Salas",
-        puesto: "Camarero",
-        tipo: "Baja voluntaria",
-        preaviso: "2026-06-30",
-        ultimoDia: "2026-07-15",
-        estado: "warn",
-        estadoTexto: "⏳ Finiquito en preparación — vence el 15/07",
-        finiquito: {
-          estado: "En preparación",
-          conceptos: [
-            { concepto: "Salario del 1 al 15 de julio", importe: 855.0 },
-            { concepto: "Vacaciones no disfrutadas (4 días)", importe: 228.0 },
-            { concepto: "Pagas extra prorrateadas pendientes", importe: 312.0 }
-          ],
-          totalBruto: 1395.0
-        }
+        id: "av-1",
+        titulo: "Finiquito de Jorge Salas",
+        detalle: "Baja voluntaria; último día 15/07. Finiquito de 1.395 € brutos calculado y pagado (15 días + 4 de vacaciones + extras)."
+      },
+      {
+        id: "av-3",
+        titulo: "Asuntos propios de Sara Peña",
+        detalle: "2 días no retribuidos (8 y 9/07) incorporados al cálculo definitivo: −104 € brutos."
+      },
+      {
+        id: "av-2",
+        titulo: "2.º parte de confirmación de Antonio Vega",
+        detalle: "IT por lumbalgia: 2.º parte recibido de Mutua Universal; la baja continúa y el pago delegado sigue en el RLC."
+      },
+      {
+        id: "av-4",
+        titulo: "Alta de Hugo Pardo",
+        detalle: "Comunicada al Sistema RED el 04/07. Prorrateo de 1.368 € aplicado al cálculo de julio."
+      },
+      {
+        id: "av-5",
+        titulo: "Pago directo del INSS de Lucía Gil",
+        detalle: "Nacimiento y cuidado de menor: tramitado. Julio a 0 € en nómina; cobra directamente del INSS."
+      },
+      {
+        id: "av-6",
+        titulo: "Nuevas tablas del convenio de hostelería",
+        detalle: "Subida del 2,2 % con efectos 1 de abril, aplicada: 2.782 € de atrasos + 875 € en las tablas de julio."
       }
     ]
   },
 
   // -------------------------------------------------------------------
-  // Nóminas feb–jul (totales de empresa, en €/mes)
-  // ssEmpresa ≈ 31,9 % del bruto (CC 23,6 + desempleo 5,5 + FOGASA 0,2
-  // + FP 0,7 + AT/EP 1,9). Junio baja porque Lucía pasa a pago directo
-  // del INSS. Julio (45.205) = suma de nóminas por empleado (42.423)
-  // + atrasos del convenio (2.782): cuadra con la lista de la tab.
+  // Flujo de nómina — exportar → verificar → enviar (el corazón).
+  // Estado a día 27 (ventana de envío): el cálculo definitivo está cerrado
+  // y verificado; hoy toca enviar las nóminas a la empresa.
   // -------------------------------------------------------------------
-  nominas: {
-    mesActual: {
-      mes: "Julio",
-      avancePct: 60,
-      etapa: "Cálculo previo listo — pendiente de cierre y envío",
-      fechaPrevista: "2026-07-28"
+  flujo: {
+    exportar: {
+      titulo: "Exportar desde SAGE",
+      hecho: true,
+      detalle: "Cálculo definitivo de julio: 24 nóminas importadas a Yoda desde la carpeta de SAGE. Nada que bajar ni subir a mano.",
+      nota: "Cálculo cerrado tras la revisión del 21-24.",
+      documento: {
+        archivo: "Nóminas_Julio2026_GrupoFuegoLentoSL.pdf",
+        paginas: 24,
+        tamano: "1,8 MB",
+        generado: "24/07/2026 · 17:40",
+        ruta: "Documentos › Grupo Fuego Lento SL › Nóminas › 2026-07",
+        extra: "+ 1 resumen del mes, listo para adjuntar al envío"
+      }
     },
-    meses: [
-      { mes: "Febrero",   bruto: 41890, ssEmpresa: 13363, neto: 33022, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
-      { mes: "Marzo",     bruto: 42060, ssEmpresa: 13417, neto: 33156, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
-      { mes: "Abril",     bruto: 42310, ssEmpresa: 13497, neto: 33353, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
-      { mes: "Mayo",      bruto: 42020, ssEmpresa: 13404, neto: 33124, estado: "ok",   estadoTexto: "✓ Cerrada y enviada" },
-      { mes: "Junio",     bruto: 40480, ssEmpresa: 12913, neto: 31910, estado: "ok",   estadoTexto: "✓ Cerrada y enviada — Lucía Gil pasa a pago directo del INSS" },
-      { mes: "Julio",     bruto: 45205, ssEmpresa: 14420, neto: 35635, estado: "warn", estadoTexto: "⏳ En preparación — cálculo previo listo" }
-    ],
-    // La variación cuadra al euro: 2.782 + 875 + 1.368 + 540 − 840 = 4.725
-    // = 45.205 (julio) − 40.480 (junio). El pago delegado no suma: es neutro.
-    variacionJulio: {
-      respectoA: "Junio",
-      importe: 4725,
-      porcentaje: 11.7,
-      resumen: "La nómina de julio sube 4.725 € respecto a junio. Está explicado: no es un error.",
+    verificar: {
+      titulo: "Verificar el cálculo",
+      base: { label: "Nómina de junio (cerrada)", importe: 40480 },
       conceptos: [
-        { concepto: "Atrasos del convenio de hostelería: subida del 2,2 % con efectos 1 de abril, tablas publicadas en junio", importe: 2782 },
-        { concepto: "Aplicación de las nuevas tablas del convenio en la nómina de julio", importe: 875 },
-        { concepto: "Alta nueva: Hugo Pardo, ayudante de camarero (del 4 al 31 de julio, prorrateado)", importe: 1368 },
-        { concepto: "Finiquito de Jorge Salas: vacaciones no disfrutadas y pagas extra prorrateadas", importe: 540 },
-        { concepto: "Jorge Salas devenga solo hasta el 15 de julio (baja voluntaria)", importe: -840 },
-        { concepto: "Pago delegado de la IT de Antonio Vega — anticipado en nómina y recuperado en el RLC (coste neutro para la empresa)", importe: 861, neutro: true }
-      ]
+        { label: "Atrasos del convenio de hostelería (+2,2 % desde el 1 de abril)", importe: 2782, avisoId: "av-6" },
+        { label: "Nuevas tablas del convenio aplicadas a julio", importe: 875, avisoId: "av-6" },
+        { label: "Alta de Hugo Pardo — del 4 al 31 de julio, prorrateado", importe: 1368, avisoId: "av-4" },
+        { label: "Finiquito de Jorge Salas: vacaciones y extras prorrateadas", importe: 540, avisoId: "av-1" },
+        { label: "Jorge Salas devenga solo hasta el 15 de julio", importe: -840, avisoId: "av-1" },
+        { label: "Asuntos propios de Sara Peña (2 días no retribuidos)", importe: -104, avisoId: "av-3" }
+      ],
+      total: { label: "Cálculo definitivo de julio", importe: 45101 },
+      comprobaciones: [
+        { texto: "Alta de Hugo Pardo reflejada (+1.368 €)", ok: true },
+        { texto: "Baja de Jorge Salas prorrateada y finiquito incluido (+540 € / −840 €)", ok: true },
+        { texto: "Atrasos y tablas nuevas del convenio aplicados (+3.657 €)", ok: true },
+        { texto: "IT de Antonio Vega: pago delegado de 861 € anticipado y recuperado en el RLC — coste neutro", ok: true },
+        { texto: "Lucía Gil en pago directo del INSS: julio a 0 € en nómina", ok: true },
+        { texto: "Asuntos propios de Sara Peña reflejados (−104 €)", ok: true }
+      ],
+      resumen: "El cálculo definitivo cuadra al euro: 6 de 6 incidencias reflejadas.",
+      cifras: { bruto: 45101, ssEmpresa: 14387, neto: 35556 }
+    },
+    enviar: {
+      titulo: "Enviar en 1 clic",
+      detalle: "24 nóminas + resumen del mes a Carmen Ortega (directora de operaciones), desde tu Gmail. Copia en los Documentos del cliente.",
+      nota: "Hoy es el día de envío (ventana 25-28).",
+      destinatario: "carmen@grupofuegolento.es",
+      asunto: "Nóminas de julio 2026 — Grupo Fuego Lento SL",
+      cuerpo: "Hola Carmen,\n\nAdjunto las nóminas de julio y el resumen del mes.\n\nEl cálculo está cerrado y cuadra con las altas, bajas e incidencias registradas: alta de Hugo Pardo, baja y finiquito de Jorge Salas, IT de Antonio Vega, los 2 días de Sara Peña y los atrasos del convenio.\n\nCualquier cosa, aquí estoy.\n\nUn saludo,\nMaría",
+      adjuntos: ["Nóminas_Julio2026_GrupoFuegoLentoSL.pdf", "Resumen_Julio2026_GrupoFuegoLentoSL.pdf"]
     }
   },
 
   // -------------------------------------------------------------------
-  // Bandeja del asesor (tab "Hoy") — lista "Requiere acción".
-  // SIN semáforo hardcodeado: el nivel (rojo/ámbar/verde) lo calcula
-  // index.html desde estos datos con las reglas de negocio:
-  //   · tipo "it-parte": ámbar si el parte lleva > 5 días pendiente
-  //   · tipo "baja-ss": rojo si el plazo legal de 3 días hábiles para
-  //     comunicar la baja a la SS está a menos de 1 día
-  //   · tipo "fecha": genérico por proximidad del vencimiento
+  // Hipótesis de integración (DECISIONES §5) — enlace discreto en el pie.
+  // Se muestran funcionando; se nombran como hipótesis en el pitch.
   // -------------------------------------------------------------------
-  bandeja: [
+  hipotesis: [
     {
-      id: "t-1",
-      prioridad: 1,
-      tipo: "it-parte",
-      ref: "it-1",
-      titulo: "Reclamar a la mutua el parte de confirmación de Antonio Vega",
-      alHacer: "Enviada 2.ª reclamación a Mutua Universal por el parte de Antonio Vega",
-      detalle: "IT por lumbalgia, día 19 de baja. El 2.º parte de confirmación sigue sin llegar de Mutua Universal. Sin él no se puede acreditar la prórroga.",
-      cta: "Reclamar a la mutua"
+      titulo: "Exportar de SAGE/A3 directo a Yoda",
+      texto: "SAGE Despachos no tiene API pública: el prototipo asume una carpeta vigilada (SAGE exporta el PDF, Yoda lo ingiere y clasifica). Con A3 sí existe API oficial (a3innuva · Conectia). Pregunta abierta del discovery: dónde está el umbral real de integración."
     },
     {
-      id: "t-2",
-      prioridad: 2,
-      tipo: "fecha",
-      vence: "2026-07-15",
-      titulo: "Preparar el finiquito de Jorge Salas",
-      alHacer: "Finiquito de Jorge Salas revisado y validado (1.395 €)",
-      detalle: "Baja voluntaria con último día el 15/07. Cálculo previo: 1.395 € brutos (salario de 15 días + 4 días de vacaciones + extras prorrateadas).",
-      cta: "Revisar finiquito"
+      titulo: "Enviar por Gmail en 1 clic",
+      texto: "SAGE envía por Outlook (MAPI) y la gestoría usa Gmail. El prototipo asume envío por la API de Gmail con la cuenta del gestor. No sé aún dónde está el umbral de integración para que esto funcione con Gmail."
     },
     {
-      id: "t-3",
-      prioridad: 3,
-      tipo: "baja-ss",
-      empleadoId: 15,
-      titulo: "Comunicar la baja de Jorge Salas al Sistema RED",
-      alHacer: "Preparada la comunicación de la baja de Jorge Salas (se presenta el 16/07)",
-      detalle: "Último día trabajado: 15/07. El plazo legal es de 3 días hábiles desde el cese; la comunicación debe presentarse entre el 16/07 y el 20/07.",
-      cta: "Preparar comunicación"
-    },
-    {
-      id: "t-4",
-      prioridad: 4,
-      tipo: "fecha",
-      vence: "2026-07-20",
-      titulo: "Comprobar la deducción del pago delegado en el RLC de julio",
-      alHacer: "Verificada la deducción del pago delegado (861 €) en el borrador del RLC",
-      detalle: "861 € anticipados a Antonio Vega por la IT. Verificar que la deducción queda reflejada en la liquidación (RLC) antes de la presentación.",
-      cta: "Ver RLC"
-    },
-    {
-      id: "t-5",
-      prioridad: 5,
-      tipo: "fecha",
-      vence: "2026-07-25",
-      titulo: "Cerrar la nómina de julio con atrasos del convenio",
-      alHacer: "Nómina de julio revisada y lista para cierre",
-      detalle: "Aplicadas las nuevas tablas (+2,2 % desde abril): 3.657 € entre atrasos y nuevas tablas. Variación total de julio: +4.725 €, explicada y lista para revisar.",
-      cta: "Ver cálculo previo"
+      titulo: "Seguros sociales",
+      texto: "Es la misma hipótesis Gmail/Outlook que el envío de nóminas. Fuera del alcance de este primer prototipo: empecé por nóminas, pero seguros sociales escala con el mismo patrón."
     }
   ],
 
   // -------------------------------------------------------------------
-  // Feed "Hecho hoy" (tab "Hoy")
+  // Glosario para tooltips (se queda: oro para el veterano, invisible
+  // para el junior). Subrayado sutil, definición al hover.
   // -------------------------------------------------------------------
-  hechoHoy: [
-    { hora: "09:12", texto: "Presentado el RLC de junio en el Sistema RED — sin incidencias", auto: true },
-    { hora: "10:05", texto: "Registrado el parte de confirmación de Lucía Gil (nacimiento y cuidado de menor)", auto: true },
-    { hora: "11:38", texto: "Generado el cálculo previo de la nómina de julio (variación +4.725 € explicada)", auto: true },
-    { hora: "12:10", texto: "Llamada con Carmen (directora de operaciones): planificación de plantilla para agosto" }
-  ],
-
-  // -------------------------------------------------------------------
-  // Chat (respuestas SIEMPRE pre-escritas, coherentes con estos datos)
-  // -------------------------------------------------------------------
-  chat: {
-    titulo: "Pregunta a Zinco",
-    saludo: "Hola 👋 Soy el asistente de Zinco · Laboral. Pregunta lo que quieras o elige una sugerencia:",
-    sugeridas: [
-      {
-        q: "¿Cuánto me cuesta el equipo este mes?",
-        a: "En julio el equipo cuesta 59.625 € en total: 45.205 € de sueldos y 14.420 € de Seguridad Social a cargo de la empresa. Son 6.232 € más que en junio por la subida del convenio (con atrasos desde abril) y la incorporación de Hugo; está revisado, no hay error.",
-        fuente: { label: "Ver el desglose en Nóminas", tab: "nominas" }
-      },
-      {
-        q: "¿Cómo va la baja de Antonio?",
-        a: "Antonio (cocina) sigue de baja por lumbalgia; hoy es su día 19. Falta un documento de la mutua que ya estamos reclamando y no afecta a su cobro. Previsión de vuelta: 21 de julio.",
-        fuente: { label: "Ver la baja en ITs", tab: "its" }
-      },
-      {
-        q: "¿Qué pasa si contrato un camarero más en agosto?",
-        a: "Un camarero a jornada completa por convenio ronda los 1.710 € brutos al mes, unos 2.250 € de coste total con la Seguridad Social. Si te decides, pásanos sus datos y comunicamos el alta al Sistema RED el mismo día, como hicimos con Hugo.",
-        fuente: { label: "Ver los salarios en Nóminas", tab: "nominas" }
-      }
-    ],
-    respuestaLibre: "Esa no la tengo a mano. La consulto con tu asesor y te respondemos en menos de 24 horas por aquí. Si corre prisa, llámanos y lo vemos al momento."
+  glosario: {
+    "Sistema RED": "La plataforma online de la Seguridad Social donde se comunican altas, bajas y liquidaciones.",
+    "RED": "La plataforma online de la Seguridad Social donde se comunican altas, bajas y liquidaciones.",
+    "RLC": "Recibo de Liquidación de Cotizaciones: los “seguros sociales” que la empresa paga cada mes a la Seguridad Social.",
+    "RNT": "Relación Nominal de Trabajadores: el listado que acompaña a la liquidación mensual de seguros sociales.",
+    "IT": "Incapacidad Temporal: la baja médica de un trabajador.",
+    "pago delegado": "La empresa adelanta al trabajador el dinero de su baja en la nómina y después lo recupera descontándolo de los seguros sociales.",
+    "pago directo": "La prestación la paga directamente el INSS al trabajador, no la empresa.",
+    "INSS": "Instituto Nacional de la Seguridad Social: el organismo que paga las prestaciones (bajas, maternidad…).",
+    "finiquito": "Lo que se paga al trabajador al terminar su contrato: días trabajados, vacaciones pendientes y pagas extra prorrateadas.",
+    "atrasos": "Diferencias de salario que se deben a los trabajadores cuando el convenio sube con efecto retroactivo.",
+    "convenio": "Convenio colectivo: el acuerdo del sector que fija los salarios mínimos y las condiciones de trabajo.",
+    "seguros sociales": "Las cuotas que la empresa paga cada mes a la Seguridad Social por sus trabajadores.",
+    "SILTRA": "El programa oficial de la Seguridad Social para enviar y recibir los ficheros de cotización (RLC/RNT).",
+    "modelo 111": "La declaración de las retenciones de IRPF de las nóminas, que se presenta a Hacienda cada trimestre.",
+    "prorrateado": "Repartido en proporción a los días trabajados del mes."
   }
 };
-
-// Neto calculado siempre a partir del bruto para garantizar coherencia:
-// neto = bruto − SS trabajador (6,47 %) − IRPF individual.
-// Ej.: María Robles → 2.300 − 148,81 − 358,80 = 1.792,39 €
-// brutoJulio solo existe en los casos especiales (pago directo INSS,
-// prorrateo de alta, media mensualidad + finiquito); para el resto es
-// el bruto contractual del mes.
-window.DATA.empleados.forEach(function (e) {
-  e.brutoMensual = e.salarioBase + e.pluses;
-  e.netoMensual = Math.round(e.brutoMensual * (1 - 0.0647 - e.irpfPct / 100) * 100) / 100;
-  if (e.brutoJulio === undefined) e.brutoJulio = e.brutoMensual;
-  e.netoJulio = Math.round(e.brutoJulio * (1 - 0.0647 - e.irpfPct / 100) * 100) / 100;
-});
