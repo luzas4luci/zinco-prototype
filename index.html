@@ -204,6 +204,22 @@
   .doc-path{margin-top:14px;font-size:12px;color:var(--c-text-muted);background:var(--c-bg-inner);border-radius:var(--r-sm);padding:8px 10px;line-height:1.4}
   .doc-extra{margin-top:8px;font-size:12px;color:var(--c-text-2);display:flex;gap:6px;align-items:flex-start}
 
+  /* ---- Campos del modal de envío ---- */
+  .efield{margin-bottom:14px}
+  .efield:last-child{margin-bottom:0}
+  .elabel{display:block;font-size:12px;font-weight:600;color:var(--c-text-2);margin-bottom:5px}
+  .einput,.etextarea{font-family:var(--font);font-size:13.5px;color:var(--c-text-1);background:var(--c-bg-card);border:1px solid var(--c-border-input);border-radius:var(--r-md);padding:9px 12px;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+  .einput:focus,.etextarea:focus{border-color:var(--c-primary);box-shadow:0 0 0 3px rgba(28,56,41,.10)}
+  .etextarea{resize:vertical;min-height:130px;line-height:1.5}
+  .eattach{display:flex;flex-wrap:wrap;gap:8px}
+  .eattach-chip{display:inline-flex;align-items:center;gap:6px;background:var(--c-chip-bg);color:var(--c-chip-txt);border-radius:var(--r-sm);padding:5px 10px;font-size:12px;font-weight:500}
+  .eattach-chip svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .modal-btn-secondary{background:var(--c-bg-card);color:var(--c-text-1);border:1px solid var(--c-border-input);border-radius:var(--r-md);padding:9px 16px;font-size:14px;font-weight:600;font-family:var(--font)}
+  .modal-btn-secondary:hover{background:var(--c-bg-inner)}
+  .modal-btn-primary{background:var(--c-primary);color:#fff;border:none;border-radius:var(--r-md);padding:9px 16px;font-size:14px;font-weight:600;font-family:var(--font);display:inline-flex;align-items:center;gap:7px;transition:opacity .15s}
+  .modal-btn-primary:hover{opacity:.9}
+  .modal-btn-primary svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
   /* pie: hipótesis */
   .foot{margin-top:18px;text-align:center}
   .foot .link{background:none;border:none;color:var(--c-text-2);font-size:12.5px;text-decoration:underline;cursor:pointer;font-family:var(--font)}
@@ -373,6 +389,40 @@
       <button class="drawer-close" data-close-doc>✕</button>
     </div>
     <div class="modal-body" id="modal-doc-body"></div>
+  </div>
+</div>
+
+<!-- Modal: enviar nóminas -->
+<div class="modal-overlay" id="modal-send">
+  <div class="modal modal-lg" role="dialog" aria-modal="true" aria-label="Enviar nóminas">
+    <div class="modal-head">
+      <div class="mh-text"><h2>Enviar nóminas de julio</h2><p>Revisa el correo antes de enviarlo — se manda desde tu Gmail.</p></div>
+      <button class="drawer-close" data-close-send>✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="efield">
+        <label class="elabel" for="email-para">Para</label>
+        <input type="email" class="einput" id="email-para">
+      </div>
+      <div class="efield">
+        <label class="elabel" for="email-asunto">Asunto</label>
+        <input type="text" class="einput" id="email-asunto">
+      </div>
+      <div class="efield">
+        <label class="elabel" for="email-cuerpo">Mensaje</label>
+        <textarea class="etextarea" id="email-cuerpo"></textarea>
+      </div>
+      <div class="efield">
+        <span class="elabel">Adjuntos</span>
+        <div class="eattach" id="email-attach"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="modal-btn-secondary" data-close-send>Cancelar</button>
+      <button class="modal-btn-primary" id="btn-confirm-send">
+        <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Enviar
+      </button>
+    </div>
   </div>
 </div>
 
@@ -561,17 +611,37 @@
     $("#flow").innerHTML = html;
   }
   $("#sec-flujo").addEventListener("click", function(e){
-    if (!e.target.closest("#btn-enviar")) return;
-    var f = D.flujo;
+    if (e.target.closest("#btn-enviar")) openSendModal();
+  });
+
+  // ---------- modal: enviar nóminas (borrador editable) ----------
+  function openSendModal(){
+    var f = D.flujo.enviar;
+    $("#email-para").value = f.destinatario;
+    $("#email-asunto").value = f.asunto;
+    $("#email-cuerpo").value = f.cuerpo;
+    $("#email-attach").innerHTML = f.adjuntos.map(function(nombre){
+      return '<span class="eattach-chip"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>' + nombre + "</span>";
+    }).join("");
+    $("#modal-send").classList.add("open");
+    $("#email-para").focus();
+  }
+  function closeSendModal(){ $("#modal-send").classList.remove("open"); }
+  $("#modal-send").addEventListener("click", function(e){
+    if (e.target === this || e.target.closest("[data-close-send]")) closeSendModal();
+  });
+  $("#btn-confirm-send").addEventListener("click", function(){
+    var destinatario = $("#email-para").value.trim() || D.flujo.enviar.destinatario;
+    closeSendModal();
     var btn = $("#btn-enviar");
-    btn.outerHTML = '<span class="kdone-tag" style="font-size:14px">✓ Enviado a ' + f.enviar.destinatario +
+    btn.outerHTML = '<span class="kdone-tag" style="font-size:14px">✓ Enviado a ' + destinatario +
       " — copia archivada en Documentos del cliente.</span>";
     // marcar el paso como completado
     var steps = document.querySelectorAll("#flow .fstep");
     var last = steps[steps.length - 1];
     last.classList.add("done");
     last.querySelector(".fstep-dot").textContent = "✓";
-    toast("24 nóminas de julio enviadas por Gmail y archivadas en Documentos.");
+    toast("Correo enviado a " + destinatario + " — 24 nóminas de julio archivadas en Documentos.");
   });
 
   // ---------- drawer hipótesis ----------
@@ -610,7 +680,7 @@
   $("#modal-doc").addEventListener("click", function(e){
     if (e.target === this || e.target.closest("[data-close-doc]")) closeDocModal();
   });
-  document.addEventListener("keydown", function(e){ if (e.key === "Escape"){ closeDrawer(); closeDocModal(); } });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape"){ closeDrawer(); closeDocModal(); closeSendModal(); } });
 
   // ---------- tooltips flotantes ----------
   var tipbox = $("#tipbox");

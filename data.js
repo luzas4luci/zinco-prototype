@@ -154,7 +154,10 @@ window.DATA = {
       titulo: "Enviar en 1 clic",
       detalle: "24 nóminas + resumen del mes a Carmen Ortega (directora de operaciones), desde tu Gmail. Copia en los Documentos del cliente.",
       nota: "Ventana habitual de envío: del 25 al 28.",
-      destinatario: "carmen@grupofuegolento.es"
+      destinatario: "carmen@grupofuegolento.es",
+      asunto: "Nóminas de julio 2026 — Grupo Fuego Lento SL",
+      cuerpo: "Hola Carmen,\n\nAdjunto las nóminas de julio y el resumen del mes.\n\nEl cálculo cuadra con las altas, bajas e incidencias registradas: alta de Hugo Pardo, baja y finiquito de Jorge Salas, IT de Antonio Vega y los atrasos del convenio.\n\nCualquier cosa, aquí estoy.\n\nUn saludo,\nMaría",
+      adjuntos: ["Nóminas_Julio2026_GrupoFuegoLentoSL.pdf", "Resumen_Julio2026_GrupoFuegoLentoSL.pdf"]
     }
   },
 
