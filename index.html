@@ -3,333 +3,332 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Yoda · Nóminas — Ciclo de Julio 2026</title>
+<title>Yoda · Grupo Fuego Lento SL — Nóminas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* ============ Tokens — Yoda Design System (DECISIONES §7) ============ */
   :root{
-    --zinco-green:#3D6740; --zinco-green-dark:#2C4A2E;
-    --zinco-green-tint:#E9F0EA; --bg-page:#F7F8F7; --bg-card:#FFFFFF;
-    --ok:#3D6740; --warn:#B45309; --warn-bg:#FEF3C7;
-    --alert:#B91C1C; --alert-bg:#FEE2E2;
-    --text:#1B1F1B; --text-soft:#5F6B60; --line:#E4E8E4;
-    --radius:14px; --font:'Inter',system-ui,sans-serif;
-    --shadow:0 1px 3px rgba(27,31,27,.06),0 4px 14px rgba(27,31,27,.05);
-    --shadow-lift:0 6px 24px rgba(27,31,27,.12);
+    --c-primary:#1C3829; --c-primary-hover:#2a4d3a;
+    --c-bg-page:#F5F2EC; --c-bg-card:#FFFFFF; --c-bg-inner:#F7F7F5;
+    --c-border:#E2E8F0; --c-border-input:#E5E5E5;
+    --c-text-1:#1C3829; --c-text-2:#64748B; --c-text-muted:#94A3B8;
+    --c-badge-ok-bg:#DCFCE7; --c-badge-ok-txt:#166534;
+    --c-urgent-bg:#FEE2E2; --c-urgent-txt:#DC2626;
+    --c-chip-bg:#F1F5F9; --c-chip-txt:#334155;
+    --c-amber-bg:#FEF3C7; --c-amber:#F97316;
+    --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+    --shadow-card:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+    --font:'Geist','Inter',-apple-system,sans-serif;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{font-family:var(--font);background:var(--bg-page);color:var(--text);font-size:15px;line-height:1.45}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{overflow-x:hidden}
+  body{font-family:var(--font);font-size:14px;color:var(--c-text-1);background:var(--c-bg-page);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   button{font-family:var(--font);cursor:pointer}
 
-  /* ---------- Topbar ---------- */
-  .topbar{background:var(--bg-card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
-  .topbar-inner{max-width:1280px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .wordmark{font-weight:700;font-size:19px;color:var(--zinco-green);letter-spacing:-.01em;white-space:nowrap}
-  .wordmark small{font-weight:600;color:var(--text-soft);font-size:12px;display:block;letter-spacing:0}
-  .sync-pill{font-size:12.5px;color:var(--zinco-green-dark);background:var(--zinco-green-tint);border-radius:99px;padding:5px 12px;display:inline-flex;align-items:center;gap:6px;font-weight:500}
-  .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:pulse 2.4s infinite}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(61,103,64,.35)}50%{box-shadow:0 0 0 5px rgba(61,103,64,0)}}
-  .topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}
-  .icon-btn{position:relative;background:var(--bg-card);border:1px solid var(--line);border-radius:99px;padding:8px 14px;font-size:13.5px;font-weight:600;color:var(--text);display:inline-flex;align-items:center;gap:7px;transition:.15s}
-  .icon-btn:hover{border-color:var(--zinco-green);color:var(--zinco-green-dark);background:var(--zinco-green-tint)}
-  .icon-btn .badge{background:var(--alert);color:#fff;font-size:11px;font-weight:700;border-radius:99px;min-width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px}
-  .icon-btn.primary{background:var(--zinco-green);border-color:var(--zinco-green);color:#fff}
-  .icon-btn.primary:hover{background:var(--zinco-green-dark)}
-  .icon-btn.primary .badge{background:#fff;color:var(--zinco-green-dark)}
+  .app{display:flex;min-height:100vh}
 
-  /* ---------- Nav de proyectos ---------- */
-  .projnav{background:var(--bg-card);border-bottom:1px solid var(--line)}
-  .projnav-inner{max-width:1280px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
-  .projnav button{background:none;border:none;border-bottom:3px solid transparent;padding:10px 14px;font-size:14px;font-weight:600;color:var(--text-soft);white-space:nowrap}
-  .projnav button.active{color:var(--zinco-green-dark);border-bottom-color:var(--zinco-green)}
-  .projnav button:disabled{cursor:not-allowed;opacity:.45}
-  .projnav .soon{font-size:10.5px;font-weight:600;background:var(--bg-page);border:1px solid var(--line);border-radius:99px;padding:1px 7px;margin-left:6px;color:var(--text-soft)}
+  /* ============ Sidebar (80px, verde bosque) ============ */
+  .sidebar{width:80px;background:var(--c-primary);flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:6px;position:fixed;height:100vh;z-index:100}
+  .side-logo{color:#fff;margin-bottom:10px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .side-logo svg{width:26px;height:26px}
+  .side-logo span{font-size:11px;font-weight:700;letter-spacing:.01em}
+  .nav-item{width:64px;padding:8px 4px;border-radius:var(--r-lg);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:background .15s;background:none;border:none}
+  .nav-item svg{width:18px;height:18px;stroke:rgba(255,255,255,.65);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .nav-item span{font-size:10px;font-weight:500;color:rgba(255,255,255,.65);line-height:1.2}
+  .nav-item:not(.active):hover{background:rgba(255,255,255,.1)}
+  .nav-item:not(.active):hover svg{stroke:rgba(255,255,255,.9)}
+  .nav-item:not(.active):hover span{color:rgba(255,255,255,.9)}
+  .nav-item.active{background:#fff}
+  .nav-item.active svg{stroke:var(--c-primary)}
+  .nav-item.active span{color:var(--c-primary);font-weight:700}
+  .side-bottom{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15);width:64px}
+  .nav-avatar{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}
+  .side-bottom span{font-size:10px;color:rgba(255,255,255,.65);font-weight:500}
 
-  /* ---------- Cabecera del tablero ---------- */
-  .wrap{max-width:1280px;margin:0 auto;padding:22px 20px 60px}
-  .board-head h1{font-size:22px;font-weight:800;letter-spacing:-.01em}
-  .board-head .fecha{color:var(--text-soft);font-size:13.5px;margin-top:2px}
-  .diames-stats{margin-left:auto;font-size:12.5px;color:var(--text-soft);font-weight:500;display:flex;gap:5px 14px;flex-wrap:wrap}
-  .diames-stats b{font-size:15px;font-weight:800;color:var(--text)}
-  .diames-stats .warn b{color:var(--warn)}
-  .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0}
-  .filters label{font-size:12.5px;font-weight:600;color:var(--text-soft)}
-  .filters select{font-family:var(--font);font-size:13.5px;font-weight:500;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg-card);color:var(--text);max-width:100%}
-  .filters .clear{background:none;border:none;font-size:12.5px;font-weight:600;color:var(--zinco-green);text-decoration:underline;display:none}
-  .filters .clear.visible{display:inline}
+  /* ============ Main ============ */
+  .main{margin-left:80px;flex:1;padding:20px 24px 48px;min-width:0}
+  .frame{max-width:1160px;margin:0 auto}
 
-  /* ---------- Kanban ---------- */
-  .board{display:flex;gap:14px;overflow-x:auto;padding-bottom:14px;align-items:flex-start;scroll-snap-type:x proximity}
-  .col{min-width:236px;flex:1 0 236px;scroll-snap-align:start}
-  .col-head{display:flex;align-items:center;gap:8px;padding:4px 6px 10px}
-  .col-head h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-soft)}
-  .col-head .count{background:var(--bg-card);border:1px solid var(--line);border-radius:99px;font-size:11.5px;font-weight:700;padding:1px 8px;color:var(--text-soft)}
-  .col-body{display:flex;flex-direction:column;gap:10px;min-height:60px}
-  .col-empty{border:1.5px dashed var(--line);border-radius:var(--radius);padding:18px 12px;text-align:center;font-size:12.5px;color:var(--text-soft)}
+  /* ---- Cabecera del cliente (card verde oscuro) ---- */
+  .hero{background:var(--c-primary);border-radius:var(--r-xl);padding:18px 20px 14px;color:#fff}
+  .hero-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .hero-icon{width:40px;height:40px;border-radius:var(--r-md);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .hero-icon svg{width:20px;height:20px;stroke:var(--c-primary);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .hero h1{font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .badge{display:inline-flex;align-items:center;gap:5px;border-radius:var(--r-pill);padding:3px 11px;font-size:12px;font-weight:500;white-space:nowrap}
+  .badge-activo{background:var(--c-badge-ok-bg);color:var(--c-badge-ok-txt)}
+  .badge-envio{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+  .badge-envio .dot{width:6px;height:6px;border-radius:50%;background:#B7DB5E}
+  .hero-tabs{display:flex;gap:4px;margin-top:14px;overflow-x:auto}
+  .hero-tab{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r-md);font-size:13px;font-weight:500;color:rgba(255,255,255,.75);background:transparent;border:none;white-space:nowrap;transition:background .15s}
+  .hero-tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .hero-tab:not(.active):hover{background:rgba(255,255,255,.1)}
+  .hero-tab.active{background:#fff;color:var(--c-primary);font-weight:600}
 
-  .card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);cursor:pointer;transition:.15s;position:relative}
-  .card:hover{box-shadow:var(--shadow-lift);transform:translateY(-1px)}
-  .card h3{font-size:14.5px;font-weight:700;letter-spacing:-.01em;padding-right:8px}
-  .card .meta{font-size:12px;color:var(--text-soft);margin-top:2px}
-  .chips{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
-  .chip{font-size:11px;font-weight:600;border-radius:99px;padding:2.5px 9px;background:var(--bg-page);border:1px solid var(--line);color:var(--text-soft)}
-  .chip.gestor{background:var(--zinco-green-tint);border-color:#d5e3d6;color:var(--zinco-green-dark)}
-  .sla{margin-top:10px;font-size:12px;font-weight:500;display:flex;gap:6px;align-items:flex-start;line-height:1.35}
-  .sla.ok{color:var(--ok)} .sla.warn{color:var(--warn)} .sla.alert{color:var(--alert)}
-  .bloqueo{margin-top:8px;font-size:12px;font-weight:500;background:var(--warn-bg);color:var(--warn);border-radius:9px;padding:6px 9px;line-height:1.35}
-  .card-foot{margin-top:11px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .inc-count{font-size:12px;color:var(--text-soft);font-weight:500}
-  .next-btn{background:var(--bg-card);border:1px solid var(--line);border-radius:99px;font-size:12px;font-weight:600;padding:5px 11px;color:var(--zinco-green-dark);transition:.15s}
-  .next-btn:hover{background:var(--zinco-green);border-color:var(--zinco-green);color:#fff}
+  /* ---- Selector de sección de Laboral (Empleados | Nóminas) ---- */
+  .lab-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  .lab-card{display:flex;align-items:center;gap:12px;background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:14px 18px;cursor:pointer;text-align:left;box-shadow:var(--shadow-card);transition:border-color .15s}
+  .lab-card .lc-icon{width:36px;height:36px;border-radius:var(--r-md);background:var(--c-bg-inner);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .lab-card .lc-icon svg{width:18px;height:18px;stroke:var(--c-text-2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .lab-card b{font-size:14px;font-weight:600;display:block}
+  .lab-card span{font-size:12.5px;color:var(--c-text-2)}
+  .lab-card:hover{border-color:var(--c-primary)}
+  .lab-card.active{background:var(--c-badge-ok-bg);border-color:#bfe6cd}
+  .lab-card.active .lc-icon{background:#fff}
+  .lab-card.active .lc-icon svg{stroke:var(--c-primary)}
 
-  /* ---------- Drawers (agente y avisos) ---------- */
-  .overlay{position:fixed;inset:0;background:rgba(27,31,27,.35);z-index:60;opacity:0;pointer-events:none;transition:.2s}
+  /* ---- Cards genéricas ---- */
+  .card{background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:20px 24px;box-shadow:var(--shadow-card)}
+  .card + .card{margin-top:14px}
+  .card-title{font-size:16px;font-weight:700;color:var(--c-text-1)}
+  .card-sub{font-size:13px;color:var(--c-text-2);margin-top:2px}
+
+  /* ---- Calendario del mes ---- */
+  .cal-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .cal-head .hoy-label{font-size:13px;color:var(--c-text-2)}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cal-dow{font-size:11px;font-weight:600;color:var(--c-text-muted);text-transform:uppercase;letter-spacing:.04em;text-align:center;padding:2px 0 6px}
+  .cal-day{position:relative;height:46px;border-radius:var(--r-md);background:#fff;border:1px solid var(--c-border);display:flex;align-items:flex-start;justify-content:flex-start;padding:6px 8px;font-size:13px;font-weight:600;color:var(--c-text-1)}
+  .cal-day.empty{background:transparent;border:none}
+  .cal-day.weekend{color:var(--c-text-muted);font-weight:500;background:var(--c-bg-inner)}
+  .cal-day.f-variables{background:rgba(28,56,41,.08);border-color:rgba(28,56,41,.12)}
+  .cal-day.f-calculo{background:rgba(28,56,41,.16);border-color:rgba(28,56,41,.20)}
+  .cal-day.f-envio{background:rgba(28,56,41,.26);border-color:rgba(28,56,41,.30)}
+  .cal-day.f-rlc{background:rgba(28,56,41,.38);border-color:rgba(28,56,41,.42);color:#fff}
+  .cal-day.f-impuestos{background:var(--c-amber-bg);border-color:#f0dcaa}
+  .cal-day.hoy{outline:2px solid var(--c-primary);outline-offset:-2px;font-weight:800;background:#fff}
+  .cal-day.hoy::after{content:"hoy";position:absolute;right:7px;bottom:5px;font-size:9.5px;font-weight:700;color:var(--c-primary);text-transform:uppercase;letter-spacing:.05em}
+  .cal-legend{display:flex;gap:6px 18px;flex-wrap:wrap;margin-top:14px}
+  .cal-legend span{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--c-text-2);font-weight:500}
+  .cal-legend i{width:12px;height:12px;border-radius:4px;display:inline-block;border:1px solid rgba(28,56,41,.15)}
+  .cal-legend b{color:var(--c-text-1);font-weight:600}
+
+  /* ---- Hoy toca ---- */
+  .hoy-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .hoy-list li{display:flex;gap:10px;font-size:14px;line-height:1.45;align-items:flex-start}
+  .hoy-list li .arr{color:var(--c-primary);font-weight:700;flex-shrink:0}
+
+  /* ---- Avisos importantes (mini-kanban) ---- */
+  .kanban{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  .kcol-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .kcol-head h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--c-text-muted)}
+  .kcol-head .count{background:var(--c-bg-inner);border:1px solid var(--c-border);border-radius:var(--r-pill);font-size:11px;font-weight:700;padding:1px 8px;color:var(--c-text-2)}
+  .kcol-body{display:flex;flex-direction:column;gap:10px;min-height:40px}
+  .kitem{background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-md);padding:12px 14px}
+  .kitem.is-done{background:var(--c-bg-inner)}
+  .kitem-top{display:flex;align-items:flex-start;gap:8px}
+  .kitem b{font-size:13.5px;font-weight:600;flex:1;line-height:1.3}
+  .kitem .plazo{font-size:11px;font-weight:600;color:var(--c-urgent-txt);background:var(--c-urgent-bg);border-radius:var(--r-sm);padding:2px 7px;white-space:nowrap;flex-shrink:0}
+  .kitem p{font-size:12.5px;color:var(--c-text-2);margin-top:6px;line-height:1.45}
+  .kitem-act{margin-top:10px}
+  .kbtn{background:var(--c-primary);color:#fff;border:none;border-radius:var(--r-md);padding:6px 12px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:5px;transition:opacity .15s}
+  .kbtn:hover{opacity:.88}
+  .kdone-tag{font-size:12px;font-weight:600;color:var(--c-badge-ok-txt);display:inline-flex;align-items:center;gap:5px}
+  .kempty{border:1px dashed var(--c-border);border-radius:var(--r-md);padding:16px;text-align:center;font-size:12.5px;color:var(--c-text-muted);background:var(--c-bg-inner)}
+
+  /* ---- Flujo de nómina (stepper) ---- */
+  .flow{display:flex;flex-direction:column;gap:0}
+  .fstep{display:flex;gap:14px}
+  .fstep-rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+  .fstep-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;border:2px solid var(--c-border);background:#fff;color:var(--c-text-muted)}
+  .fstep.done .fstep-dot{background:var(--c-primary);border-color:var(--c-primary);color:#fff}
+  .fstep.active .fstep-dot{border-color:var(--c-primary);color:var(--c-primary)}
+  .fstep-line{width:2px;flex:1;background:var(--c-border);margin:4px 0}
+  .fstep.done .fstep-line{background:var(--c-primary)}
+  .fstep-body{padding-bottom:22px;flex:1;min-width:0}
+  .fstep:last-child .fstep-body{padding-bottom:0}
+  .fstep-body h3{font-size:15px;font-weight:700}
+  .fstep-body .fdet{font-size:13px;color:var(--c-text-2);margin-top:3px;line-height:1.5}
+  .fstep-body .fnota{font-size:12px;color:var(--c-text-muted);margin-top:4px}
+  .fstep-tag{font-size:11.5px;font-weight:600;border-radius:var(--r-pill);padding:2px 10px;margin-left:8px;vertical-align:middle}
+  .fstep-tag.ok{background:var(--c-badge-ok-bg);color:var(--c-badge-ok-txt)}
+  .fstep-tag.now{background:var(--c-amber-bg);color:#92400e}
+
+  /* verificación (tabla de cuadre viva) */
+  .verify{margin-top:12px;background:var(--c-bg-inner);border:1px solid var(--c-border);border-radius:var(--r-md);overflow:hidden}
+  .verify-rows{width:100%;border-collapse:collapse}
+  .verify-rows td{padding:9px 14px;font-size:13px;border-bottom:1px solid var(--c-border);vertical-align:middle}
+  .verify-rows tr:last-child td{border-bottom:none}
+  .verify-rows .amt{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+  .verify-rows .amt.neg{color:var(--c-primary)}
+  .verify-rows .r-base td{color:var(--c-text-2)}
+  .verify-rows .r-total td{background:#fff;font-weight:700}
+  .verify-rows .r-total .amt{font-size:15px}
+  .verify-checks{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:8px}
+  .verify-checks li{display:flex;gap:9px;font-size:13px;line-height:1.45;align-items:flex-start}
+  .verify-checks .ck{width:18px;height:18px;border-radius:50%;background:var(--c-badge-ok-bg);color:var(--c-badge-ok-txt);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+  .verify-checks .ck.pend{background:var(--c-amber-bg);color:#92400e}
+  .verify-summary{margin-top:12px;background:var(--c-badge-ok-bg);color:var(--c-badge-ok-txt);border-radius:var(--r-md);padding:10px 14px;font-size:13px;font-weight:600;display:flex;gap:8px;align-items:center}
+  .cifras-row{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap}
+  .cifra b{font-size:18px;font-weight:700;letter-spacing:-.01em;display:block;font-variant-numeric:tabular-nums}
+  .cifra span{font-size:11.5px;color:var(--c-text-2);font-weight:500}
+  .fsend{margin-top:10px}
+  .fsend-btn{background:var(--c-primary);color:#fff;border:none;border-radius:var(--r-md);padding:11px 18px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:opacity .15s}
+  .fsend-btn:hover{opacity:.9}
+  .fsend-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+  /* pie: hipótesis */
+  .foot{margin-top:18px;text-align:center}
+  .foot .link{background:none;border:none;color:var(--c-text-2);font-size:12.5px;text-decoration:underline;cursor:pointer;font-family:var(--font)}
+  .foot .link:hover{color:var(--c-primary)}
+
+  /* drawer hipótesis */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:150;opacity:0;pointer-events:none;transition:opacity .2s}
   .overlay.open{opacity:1;pointer-events:auto}
-  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(430px,100%);background:var(--bg-page);z-index:70;transform:translateX(105%);transition:.25s ease;display:flex;flex-direction:column;box-shadow:-8px 0 30px rgba(27,31,27,.15)}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--c-bg-page);z-index:160;transform:translateX(105%);transition:transform .25s ease;display:flex;flex-direction:column;box-shadow:-8px 0 30px rgba(0,0,0,.15)}
   .drawer.open{transform:translateX(0)}
-  .drawer-head{background:var(--bg-card);border-bottom:1px solid var(--line);padding:16px 20px;display:flex;align-items:center;gap:10px}
-  .drawer-head h2{font-size:16px;font-weight:800;letter-spacing:-.01em}
-  .drawer-head p{font-size:12.5px;color:var(--text-soft)}
-  .drawer-close{margin-left:auto;background:none;border:1px solid var(--line);border-radius:99px;width:32px;height:32px;font-size:15px;color:var(--text-soft);flex-shrink:0}
-  .drawer-body{overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .drawer-head{background:var(--c-bg-card);border-bottom:1px solid var(--c-border);padding:16px 20px;display:flex;align-items:center;gap:10px}
+  .drawer-head h2{font-size:16px;font-weight:700}
+  .drawer-head p{font-size:12.5px;color:var(--c-text-2);margin-top:2px}
+  .drawer-close{margin-left:auto;background:none;border:1px solid var(--c-border);border-radius:var(--r-pill);width:32px;height:32px;font-size:15px;color:var(--c-text-2);flex-shrink:0;cursor:pointer}
+  .drawer-body{overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .hip{background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:14px}
+  .hip h3{font-size:14px;font-weight:700}
+  .hip p{font-size:12.5px;color:var(--c-text-2);margin-top:6px;line-height:1.5}
 
-  .prop{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
-  .prop .origen{font-size:11.5px;font-weight:600;color:var(--text-soft);display:flex;gap:6px;align-items:center}
-  .prop h3{font-size:14px;font-weight:700;margin-top:6px}
-  .prop .analisis{font-size:13px;color:var(--text-soft);margin-top:5px;line-height:1.45}
-  .prop .propuesta{margin-top:9px;font-size:13px;font-weight:500;background:var(--zinco-green-tint);border-radius:9px;padding:8px 10px;color:var(--zinco-green-dark)}
-  .prop .acciones{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .btn{border-radius:99px;font-size:13px;font-weight:600;padding:7px 15px;border:1px solid var(--line);background:var(--bg-card);color:var(--text);transition:.15s}
-  .btn.green{background:var(--zinco-green);border-color:var(--zinco-green);color:#fff}
-  .btn.green:hover{background:var(--zinco-green-dark)}
-  .prop.done{opacity:.62}
-  .prop .hecho{font-size:12.5px;font-weight:600;color:var(--ok)}
+  /* toast (sobrio) */
+  .toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;width:min(460px,calc(100% - 32px))}
+  .toast{background:var(--c-primary);color:#fff;border-radius:var(--r-md);padding:12px 16px;font-size:13.5px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.18);display:flex;gap:9px;align-items:flex-start;animation:tin .2s ease;line-height:1.4}
+  @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .toast.out{opacity:0;transition:opacity .3s}
 
-  .aviso{background:var(--bg-card);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow)}
-  .aviso.alert{border-left-color:var(--alert)}
-  .aviso h3{font-size:13.5px;font-weight:700}
-  .aviso p{font-size:12.5px;color:var(--text-soft);margin-top:4px;line-height:1.4}
-  .aviso .btn{margin-top:9px;font-size:12px;padding:5px 12px}
+  /* ---- Tooltips (jerga — subrayado sutil) ---- */
+  .tip{border-bottom:1px dotted var(--c-text-muted);cursor:help}
+  .tipbox{position:fixed;z-index:200;background:var(--c-primary);color:#fff;font-size:12px;font-weight:400;padding:8px 11px;border-radius:var(--r-sm);max-width:260px;box-shadow:0 4px 16px rgba(0,0,0,.10);display:none;line-height:1.45;pointer-events:none}
 
-  /* ---------- Modal detalle ---------- */
-  .modal-wrap{position:fixed;inset:0;z-index:80;display:none;align-items:flex-start;justify-content:center;padding:4vh 16px;overflow-y:auto}
-  .modal-wrap.open{display:flex}
-  .modal-bg{position:fixed;inset:0;background:rgba(27,31,27,.4)}
-  .modal{position:relative;background:var(--bg-page);border-radius:18px;max-width:640px;width:100%;box-shadow:var(--shadow-lift);overflow:hidden;margin-bottom:6vh}
-  .modal-head{background:var(--bg-card);border-bottom:1px solid var(--line);padding:18px 22px;display:flex;gap:12px;align-items:flex-start}
-  .modal-head h2{font-size:18px;font-weight:800;letter-spacing:-.01em}
-  .modal-head .meta{font-size:12.5px;color:var(--text-soft);margin-top:3px}
-  .modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:16px}
-  .sec{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
-  .sec h4{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-soft);margin-bottom:10px}
-  .cifras{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .cifras b{font-size:19px;font-weight:800;letter-spacing:-.02em;display:block}
-  .cifras span{font-size:11.5px;color:var(--text-soft);font-weight:500}
-  .variacion{margin-top:12px;border-top:1px dashed var(--line);padding-top:11px}
-  .variacion .resumen{font-size:13px;font-weight:600;color:var(--zinco-green-dark)}
-  .variacion ul{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:6px}
-  .variacion li{font-size:12.5px;color:var(--text-soft);display:flex;justify-content:space-between;gap:12px;line-height:1.4}
-  .variacion li b{font-weight:700;color:var(--text);white-space:nowrap}
-  .variacion li b.neg{color:var(--ok)}
-  .check{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .check li{font-size:13.5px;display:flex;gap:9px;align-items:flex-start;line-height:1.4}
-  .check .tick{width:19px;height:19px;border-radius:50%;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:1px}
-  .check .tick.done{background:var(--zinco-green-tint);color:var(--ok)}
-  .check .tick.todo{border:1.5px dashed var(--line);color:transparent}
-  .check li.todo{color:var(--text-soft)}
-  .inc-list{list-style:none;display:flex;flex-direction:column;gap:9px}
-  .inc-list li{font-size:13px;display:flex;gap:9px;align-items:flex-start;line-height:1.4}
-  .origen-chip{font-size:10.5px;font-weight:700;border-radius:99px;padding:2px 8px;flex-shrink:0;margin-top:1px;text-transform:uppercase;letter-spacing:.03em}
-  .origen-email{background:var(--zinco-green-tint);color:var(--zinco-green-dark)}
-  .origen-fie{background:var(--warn-bg);color:var(--warn)}
-  .origen-red{background:var(--zinco-green-tint);color:var(--zinco-green-dark)}
-  .origen-convenio{background:var(--alert-bg);color:var(--alert)}
-  .origen-aviso{background:var(--bg-page);color:var(--text-soft);border:1px solid var(--line)}
-  .docs{font-size:13px;color:var(--ok);font-weight:500;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
-  .docs .sub{display:block;font-weight:400;color:var(--text-soft);font-size:12.5px;margin-top:2px}
-  .envio-hint{margin-top:10px;font-size:12.5px;background:var(--warn-bg);color:var(--warn);border-radius:9px;padding:8px 10px;font-weight:500;line-height:1.4}
-  .modal-foot{padding:0 22px 20px;display:flex;gap:10px;flex-wrap:wrap}
-  .modal-foot .btn{flex:1;min-width:200px;padding:11px 16px;font-size:14px;text-align:center}
-
-  /* ---------- Toasts ---------- */
-  .toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;width:min(480px,calc(100% - 32px))}
-  .toast{background:var(--zinco-green-dark);color:#fff;border-radius:12px;padding:12px 16px;font-size:13.5px;font-weight:500;box-shadow:var(--shadow-lift);display:flex;gap:9px;align-items:flex-start;animation:toastIn .25s ease;line-height:1.4}
-  @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .toast.out{opacity:0;transition:.3s}
-
-  .lbl-sm{display:none}
-
-  /* ---------- Subtabs (Nóminas / Seguros sociales) ---------- */
-  .subtabs{display:flex;gap:8px;margin-top:16px}
-  .subtabs button{background:var(--bg-card);border:1px solid var(--line);border-radius:99px;padding:8px 18px;font-size:13.5px;font-weight:600;color:var(--text-soft);transition:.15s}
-  .subtabs button:hover{border-color:var(--zinco-green);color:var(--zinco-green-dark)}
-  .subtabs button.active{background:var(--zinco-green);border-color:var(--zinco-green);color:#fff}
-  .subtabs .mini-badge{background:var(--warn-bg);color:var(--warn);border-radius:99px;font-size:11px;font-weight:700;padding:1px 7px;margin-left:5px}
-
-  /* ---------- Cinta del día ---------- */
-  .diames{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);margin-top:16px}
-  .diames-head{font-size:13.5px;font-weight:700;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
-  .diames-head span{font-weight:500;color:var(--text-soft);font-size:12.5px}
-  .diames-track{position:relative;height:26px;background:var(--bg-page);border:1px solid var(--line);border-radius:99px;margin:24px 6px 8px}
-  .diames-seg{position:absolute;top:3px;bottom:3px;border-radius:99px;cursor:help;min-width:9px}
-  .seg-variables,.seg-calculo{background:var(--zinco-green-tint);border:1px solid #cfe0d0}
-  .seg-impuestos,.seg-rlc{background:var(--warn-bg);border:1px solid #f0dcaa}
-  .seg-envio{background:var(--zinco-green);opacity:.85}
-  .diames-hoy{position:absolute;top:-7px;bottom:-7px;width:2.5px;background:var(--alert);border-radius:2px}
-  .diames-hoy::after{content:"HOY";position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-size:9.5px;font-weight:800;color:var(--alert);letter-spacing:.05em}
-  .diames-legend{display:flex;gap:5px 16px;flex-wrap:wrap;font-size:11.5px;color:var(--text-soft);font-weight:500;padding:0 6px}
-  .diames-legend b{color:var(--text);font-weight:700}
-  .hoy-toca{list-style:none;margin-top:11px;border-top:1px dashed var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
-  .hoy-toca li{font-size:13px;display:flex;gap:8px;line-height:1.4}
-  .hoy-toca li::before{content:"→";color:var(--zinco-green);font-weight:700}
-
-  /* ---------- Tab Seguros sociales ---------- */
-  .ss-head{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);margin:16px 0 14px}
-  .ss-head .nums{display:flex;gap:24px}
-  .ss-head .nums b{font-size:22px;font-weight:800;display:block;letter-spacing:-.02em}
-  .ss-head .nums .pend b{color:var(--warn)}
-  .ss-head .nums span{font-size:11.5px;color:var(--text-soft);font-weight:500}
-  .ss-head .nota{font-size:12.5px;color:var(--text-soft);max-width:330px;line-height:1.4}
-  .ss-head .btn{margin-left:auto}
-  .ss-table-wrap{overflow-x:auto;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
-  table.ss{width:100%;border-collapse:collapse;min-width:640px}
-  table.ss th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-soft);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
-  table.ss td{padding:11px 14px;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:middle}
-  table.ss tr:last-child td{border-bottom:none}
-  table.ss td .sub{display:block;font-size:11.5px;color:var(--text-soft)}
-  .ss-ok{color:var(--ok);font-weight:600;font-size:12.5px;white-space:nowrap}
-  .ss-wait{color:var(--warn);font-weight:600;font-size:12.5px}
-  .btn.sm{font-size:12px;padding:5px 12px}
-
-  /* ---------- Panel "¿Cómo funciona?" ---------- */
-  .como{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow)}
-  .como h3{font-size:13.5px;font-weight:700}
-  .como p{font-size:12.5px;color:var(--text-soft);margin-top:5px;line-height:1.45}
-  .como .fuente{margin-top:8px;font-size:11.5px;font-weight:600;color:var(--zinco-green-dark);background:var(--zinco-green-tint);border-radius:8px;padding:5px 9px;display:inline-block}
-  .link-btn{background:none;border:none;color:var(--zinco-green);font-weight:600;font-size:12.5px;text-decoration:underline;cursor:pointer}
-
-  .aviso.info{border-left-color:var(--zinco-green)}
-  .filters input[type=search]{font-family:var(--font);font-size:13.5px;font-weight:500;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg-card);color:var(--text);min-width:170px;max-width:100%}
-
-  /* ---------- Tooltips ---------- */
-  .tip{border-bottom:1.5px dotted var(--text-soft);cursor:help}
-  .tip-info{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--text-soft);color:var(--text-soft);font-size:10px;font-weight:700;cursor:help;flex-shrink:0;font-style:normal}
-  .tip-info:hover{border-color:var(--zinco-green);color:var(--zinco-green)}
-  .tipbox{position:fixed;z-index:120;background:var(--text);color:#fff;font-size:12.5px;font-weight:400;padding:9px 12px;border-radius:9px;max-width:260px;box-shadow:var(--shadow-lift);display:none;line-height:1.45;pointer-events:none}
-
-  /* ---------- Pie ---------- */
-  .foot-note{margin-top:26px;text-align:center;font-size:12.5px;color:var(--text-soft)}
-  .foot-note b{color:var(--zinco-green-dark);font-weight:600}
-
-  @media (max-width:640px){
-    .topbar-inner{padding:10px 14px;gap:8px}
-    .sync-pill{display:none}
-    .topbar-right{margin-left:0;width:100%}
-    .topbar-right .icon-btn{flex:1;justify-content:center;font-size:12.5px;padding:7px 10px}
-    .lbl-lg{display:none}
-    .lbl-sm{display:inline}
-    .wrap{padding:16px 14px 50px}
-    .board-head h1{font-size:19px}
-    .cifras{grid-template-columns:1fr 1fr}
-    .modal-wrap{padding:0}
-    .modal{border-radius:0;min-height:100%;margin-bottom:0}
+  @media (max-width:760px){
+    body{overflow-x:hidden}
+    .main{margin-left:0;padding:14px 12px 40px}
+    .sidebar{display:none}
+    .lab-cards{grid-template-columns:1fr}
+    .kanban{grid-template-columns:1fr}
+    .cal-grid{gap:4px}
+    .cal-day{height:40px;padding:4px 5px;font-size:12px}
+    .cal-day.hoy::after{display:none}
+    .card{padding:16px}
+    .hero{padding:16px 16px 12px}
+    .hero h1{font-size:18px}
+    .cifras-row{gap:16px}
+    .fstep-body{padding-bottom:18px}
+    .verify-rows td{padding:8px 10px;font-size:12.5px}
   }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="wordmark">Yoda · Nóminas<small>por Zinco AI</small></div>
-    <span class="sync-pill"><span class="sync-dot"></span><span id="sync-text"></span></span>
-    <div class="topbar-right">
-      <button class="icon-btn" id="btn-avisos">🔔 Avisos <span class="badge" id="badge-avisos"></span></button>
-      <button class="icon-btn primary" id="btn-agente">✨ <span class="lbl-lg">Bandeja del agente</span><span class="lbl-sm">Agente</span> <span class="badge" id="badge-agente"></span></button>
+<div class="app">
+
+  <!-- ============ Sidebar Yoda ============ -->
+  <aside class="sidebar">
+    <div class="side-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 5.8L20 12l-5.6 4.2L12 22l-2.4-5.8L4 12l5.6-4.2z"/></svg>
+      <span>Yoda</span>
     </div>
-  </div>
-</header>
+    <button class="nav-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Buscar</span></button>
+    <button class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg><span>Agenda</span></button>
+    <button class="nav-item active"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span>Clientes</span></button>
+    <button class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Expedientes</span></button>
+    <button class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M21 20H3"/></svg><span>Métricas</span></button>
+    <button class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.2 3.8-5 7-5s5.8 1.8 7 5"/></svg><span>Admin.</span></button>
+    <button class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 4L2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/></svg><span>University</span></button>
+    <div class="side-bottom">
+      <div class="nav-avatar">MA</div>
+      <span>Perfil</span>
+    </div>
+  </aside>
 
-<nav class="projnav"><div class="projnav-inner" id="projnav"></div></nav>
+  <!-- ============ Main ============ -->
+  <main class="main"><div class="frame">
 
-<main class="wrap">
-  <div class="board-head">
-    <h1>Ciclo de nóminas — <span id="ciclo"></span></h1>
-    <div class="fecha" id="fecha"></div>
-  </div>
+    <!-- Cabecera del cliente -->
+    <header class="hero">
+      <div class="hero-top">
+        <div class="hero-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+        <h1 id="cliente-nombre"></h1>
+        <span class="badge badge-activo" id="cliente-estado"></span>
+        <span class="badge badge-envio" id="badge-envio" hidden><span class="dot"></span>Envío automático activo</span>
+      </div>
+      <nav class="hero-tabs">
+        <button class="hero-tab"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>General</button>
+        <button class="hero-tab active"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.9-2.6 3-4 5.5-4s4.6 1.4 5.5 4"/><path d="M16 5.5h5M16 9h5"/></svg>Laboral</button>
+        <button class="hero-tab"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>Documentos</button>
+        <button class="hero-tab"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Contabilidad</button>
+        <button class="hero-tab"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/></svg>Facturación Zinco</button>
+        <button class="hero-tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg>Historial</button>
+      </nav>
+    </header>
 
-  <div class="subtabs" role="tablist">
-    <button class="active" data-view="nominas">Nóminas</button>
-    <button data-view="ss">Seguros sociales <span class="mini-badge" id="ss-badge"></span></button>
-  </div>
-
-  <section id="view-nominas">
-    <div class="diames" id="diames"></div>
-
-    <div class="filters">
-      <label for="f-gestor">Gestor</label>
-      <select id="f-gestor"><option value="">Todos</option></select>
-      <label for="f-cliente">Cliente</label>
-      <select id="f-cliente"><option value="">Todos</option></select>
-      <label for="f-estado">Estado</label>
-      <select id="f-estado">
-        <option value="">Todos</option>
-        <option value="criticas">⚠ Críticas</option>
-        <option value="encurso">En curso</option>
-        <option value="finalizadas">✓ Finalizadas</option>
-      </select>
-      <input type="search" id="f-buscar" placeholder="Buscar cliente, incidencia…">
-      <button class="clear" id="f-clear">Quitar filtros</button>
+    <!-- Selector de sección de Laboral -->
+    <div class="lab-cards">
+      <button class="lab-card">
+        <span class="lc-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.9-2.6 3-4 5.5-4s4.6 1.4 5.5 4"/><circle cx="17" cy="9" r="2.4"/><path d="M14.5 19c.5-2 2-3.4 4-3.4 1.4 0 2.6.7 3.5 1.9"/></svg></span>
+        <span><b>Empleados</b><span>Plantilla, altas y contratos</span></span>
+      </button>
+      <button class="lab-card active">
+        <span class="lc-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+        <span><b>Nóminas</b><span>Ciclo del mes, verificación y envío</span></span>
+      </button>
     </div>
 
-    <section class="board" id="board" aria-label="Tablero Kanban del ciclo de nóminas"></section>
-  </section>
+    <!-- 1. Calendario del mes -->
+    <section class="card" id="sec-calendario">
+      <div class="cal-head">
+        <span class="card-title" id="cal-mes"></span>
+        <span class="hoy-label" id="cal-hoy-label"></span>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="cal-legend" id="cal-legend"></div>
+    </section>
 
-  <section id="view-ss" hidden>
-    <div class="ss-head" id="ss-head"></div>
-    <div class="ss-table-wrap">
-      <table class="ss" id="ss-table"></table>
+    <!-- 2. Hoy toca -->
+    <section class="card" id="sec-hoy">
+      <span class="card-title">Hoy toca</span>
+      <div class="card-sub" id="hoy-fecha"></div>
+      <ul class="hoy-list" id="hoy-list"></ul>
+    </section>
+
+    <!-- 3. Avisos importantes -->
+    <section class="card" id="sec-avisos">
+      <span class="card-title">Avisos importantes</span>
+      <div class="card-sub">Altas, bajas y variables del cliente que afectan a la nómina de este mes.</div>
+      <div class="kanban">
+        <div class="kcol">
+          <div class="kcol-head"><h3>Por hacer</h3><span class="count" id="k-todo-count"></span></div>
+          <div class="kcol-body" id="k-todo"></div>
+        </div>
+        <div class="kcol">
+          <div class="kcol-head"><h3>Hecho</h3><span class="count" id="k-done-count"></span></div>
+          <div class="kcol-body" id="k-done"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Flujo de nómina -->
+    <section class="card" id="sec-flujo">
+      <span class="card-title">Nómina de julio</span>
+      <div class="card-sub">Exportar → verificar → enviar, sin salir de Yoda.</div>
+      <div class="flow" id="flow"></div>
+    </section>
+
+    <!-- Pie: hipótesis de integración -->
+    <div class="foot">
+      <button class="link" id="btn-hip">¿Cómo funcionaría esto de verdad? · Hipótesis de integración</button>
     </div>
-  </section>
 
-  <p class="foot-note" id="valor-foot"></p>
-  <p class="foot-note">⏱ <b>Tiempo registrado automáticamente</b> desde el correo y las llamadas — nadie ha tenido que reportar nada a mano hoy. · <button class="link-btn" id="btn-como">ⓘ ¿Cómo funciona esta demo?</button></p>
-</main>
-
-<!-- Drawer: bandeja del agente -->
-<div class="overlay" id="overlay"></div>
-<aside class="drawer" id="drawer-agente" aria-label="Bandeja del agente">
-  <div class="drawer-head">
-    <div><h2>✨ Bandeja del agente</h2><p>Leído del buzón esta noche a las 23:00 — aquí solo está lo que necesita tu confirmación.</p></div>
-    <button class="drawer-close" data-close>✕</button>
-  </div>
-  <div class="drawer-body" id="agente-body"></div>
-</aside>
-
-<!-- Drawer: ¿cómo funciona esta demo? -->
-<aside class="drawer" id="drawer-como" aria-label="Cómo funciona">
-  <div class="drawer-head">
-    <div><h2>ⓘ ¿Cómo funciona?</h2><p>El mecanismo real detrás de cada promesa. Sin humo.</p></div>
-    <button class="drawer-close" data-close>✕</button>
-  </div>
-  <div class="drawer-body" id="como-body"></div>
-</aside>
-
-<!-- Drawer: avisos -->
-<aside class="drawer" id="drawer-avisos" aria-label="Avisos">
-  <div class="drawer-head">
-    <div><h2>🔔 Avisos</h2><p>Plazos, cambios y recordatorios para tener en el radar — aquí no hay nada que confirmar.</p></div>
-    <button class="drawer-close" data-close>✕</button>
-  </div>
-  <div class="drawer-body" id="avisos-body"></div>
-</aside>
-
-<!-- Modal de detalle de cliente -->
-<div class="modal-wrap" id="modal-wrap">
-  <div class="modal-bg" data-close></div>
-  <div class="modal" role="dialog" aria-modal="true" id="modal"></div>
+  </div></main>
 </div>
+
+<!-- Drawer hipótesis -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer-hip" aria-label="Hipótesis de integración">
+  <div class="drawer-head">
+    <div><h2>Hipótesis de integración</h2><p>Lo que el prototipo muestra funcionando, y lo que aún hay que resolver.</p></div>
+    <button class="drawer-close" data-close>✕</button>
+  </div>
+  <div class="drawer-body" id="hip-body"></div>
+</aside>
 
 <div class="toasts" id="toasts"></div>
 <div class="tipbox" id="tipbox" role="tooltip"></div>
@@ -341,39 +340,7 @@
   var D = window.DATA;
   var $ = function(s){ return document.querySelector(s); };
 
-  // ---------- estado ----------
-  var state = {
-    filtroGestor: "",
-    filtroCliente: "",
-    filtroEstado: "",
-    busqueda: "",
-    vista: "nominas",       // "nominas" | "ss"
-    aceptadas: {},          // id de propuesta -> true
-    avisosVistos: {},       // id de aviso -> true
-    incidenciasNuevas: 0
-  };
-
-  var fmtEur = function(n){
-    return n.toLocaleString("es-ES") + " €";
-  };
-  var gestorById = function(id){
-    for (var i=0;i<D.gestores.length;i++) if (D.gestores[i].id===id) return D.gestores[i];
-    return null;
-  };
-  var clienteById = function(id){
-    for (var i=0;i<D.clientes.length;i++) if (D.clientes[i].id===id) return D.clientes[i];
-    return null;
-  };
-  var faseIdx = function(id){
-    for (var i=0;i<D.fases.length;i++) if (D.fases[i].id===id) return i;
-    return -1;
-  };
-  var slaIcon = { ok:"✓", warn:"⚠", alert:"⏰" };
-
-  // ---------- glosario: subraya términos de jerga con su tooltip ----------
-  // Una sola pasada con una regex combinada: lo insertado (las definiciones)
-  // nunca se vuelve a escanear, así los términos dentro de una definición
-  // no rompen el HTML.
+  // ---------- glosario (una pasada, primera aparición por texto) ----------
   var escAttr = function(s){ return s.replace(/"/g, "&quot;"); };
   var glosLower = {};
   Object.keys(D.glosario).forEach(function(t){ glosLower[t.toLowerCase()] = D.glosario[t]; });
@@ -385,7 +352,7 @@
       .join("|") +
     ")(?![\\wáéíóúñÁÉÍÓÚÑ])", "gi");
   function glosar(txt){
-    var vistos = {}; // solo la primera aparición de cada término por texto
+    var vistos = {};
     return txt.replace(glosRe, function(m){
       var k = m.toLowerCase();
       if (vistos[k]) return m;
@@ -393,463 +360,182 @@
       return '<span class="tip" data-tip="' + escAttr(glosLower[k]) + '">' + m + "</span>";
     });
   }
-  var origenClase = { email:"origen-email", fie:"origen-fie", red:"origen-red", convenio:"origen-convenio", aviso:"origen-aviso" };
-  var origenLabel = { email:"Email", fie:"FIE", red:"RED", convenio:"Convenio", aviso:"Aviso" };
 
-  // ---------- cabecera ----------
-  $("#ciclo").textContent = D.ciclo;
-  $("#fecha").textContent = "Hoy es " + D.hoyTexto + " · " + D.clientes.length + " empresas en cartera";
-  $("#sync-text").textContent = D.sincronizacion;
+  // ---------- cabecera del cliente ----------
+  $("#cliente-nombre").textContent = D.cliente.nombre;
+  $("#cliente-estado").textContent = D.cliente.estado;
+  if (D.cliente.envioAuto) $("#badge-envio").hidden = false;
 
-  var nav = $("#projnav");
-  D.proyectos.forEach(function(p){
-    var b = document.createElement("button");
-    if (p.activo){ b.className = "active"; b.textContent = p.nombre; }
-    else { b.disabled = true; b.innerHTML = p.nombre + '<span class="soon">próximamente</span>'; }
-    nav.appendChild(b);
-  });
-
-  // ---------- filtros ----------
-  var selG = $("#f-gestor"), selC = $("#f-cliente");
-  D.gestores.forEach(function(g){
-    var o = document.createElement("option"); o.value = g.id; o.textContent = g.nombre; selG.appendChild(o);
-  });
-  D.clientes.forEach(function(c){
-    var o = document.createElement("option"); o.value = c.id; o.textContent = c.nombre; selC.appendChild(o);
-  });
-  var selE = $("#f-estado"), inpB = $("#f-buscar");
-  selG.addEventListener("change", function(){ state.filtroGestor = this.value; render(); });
-  selC.addEventListener("change", function(){ state.filtroCliente = this.value; render(); });
-  selE.addEventListener("change", function(){ state.filtroEstado = this.value; render(); });
-  inpB.addEventListener("input", function(){ state.busqueda = this.value.trim().toLowerCase(); render(); });
-  $("#f-clear").addEventListener("click", function(){
-    state.filtroGestor = ""; state.filtroCliente = ""; state.filtroEstado = ""; state.busqueda = "";
-    selG.value = ""; selC.value = ""; selE.value = ""; inpB.value = ""; render();
-  });
-
-  // ---------- subtabs Nóminas / Seguros sociales ----------
-  function showView(v){
-    state.vista = v;
-    $("#view-nominas").hidden = (v !== "nominas");
-    $("#view-ss").hidden = (v !== "ss");
-    document.querySelectorAll(".subtabs button").forEach(function(b){
-      b.classList.toggle("active", b.getAttribute("data-view") === v);
-    });
-    if (v === "ss") renderSS();
+  // ---------- calendario ----------
+  function faseDe(dia){
+    for (var i = 0; i < D.calendario.fases.length; i++){
+      var f = D.calendario.fases[i];
+      if (dia >= f.desde && dia <= f.hasta) return f;
+    }
+    return null;
   }
-  document.querySelector(".subtabs").addEventListener("click", function(e){
-    var b = e.target.closest("[data-view]");
-    if (b) showView(b.getAttribute("data-view"));
-  });
+  function renderCalendario(){
+    var cal = D.calendario;
+    $("#cal-mes").textContent = cal.mes;
+    $("#cal-hoy-label").textContent = "— hoy es " + D.hoyTexto;
+    var dows = ["L","M","X","J","V","S","D"];
+    var html = dows.map(function(d){ return '<div class="cal-dow">' + d + "</div>"; }).join("");
+    for (var i = 1; i < cal.primerDiaSemana; i++) html += '<div class="cal-day empty"></div>';
+    for (var dia = 1; dia <= cal.diasMes; dia++){
+      var dowIdx = ((cal.primerDiaSemana - 1) + (dia - 1)) % 7; // 0=lunes … 6=domingo
+      var f = faseDe(dia);
+      var cls = "cal-day";
+      if (dowIdx >= 5) cls += " weekend";
+      if (f) cls += " f-" + f.id;
+      if (dia === cal.diaHoy) cls += " hoy";
+      var tip = f ? ' data-tip="' + f.tip.replace(/"/g, "&quot;") + '"' : "";
+      html += '<div class="' + cls + '"' + tip + ">" + dia + "</div>";
+    }
+    $("#cal-grid").innerHTML = html;
 
-  // ---------- toasts ----------
+    var tints = { variables:"rgba(28,56,41,.07)", impuestos:"#FEF3C7", calculo:"rgba(28,56,41,.14)", envio:"rgba(28,56,41,.22)", rlc:"rgba(28,56,41,.32)" };
+    $("#cal-legend").innerHTML = cal.fases.map(function(f){
+      var rango = f.desde === f.hasta ? f.desde : f.desde + "–" + f.hasta;
+      return '<span><i style="background:' + tints[f.id] + '"></i><b>' + rango + "</b> " + f.label + "</span>";
+    }).join("");
+  }
+
+  // ---------- hoy toca ----------
+  function renderHoyToca(){
+    $("#hoy-fecha").textContent = D.hoyTexto.charAt(0).toUpperCase() + D.hoyTexto.slice(1);
+    $("#hoy-list").innerHTML = D.hoyToca.map(function(t){
+      return '<li><span class="arr">→</span><span>' + glosar(t) + "</span></li>";
+    }).join("");
+  }
+
+  // ---------- toasts (sobrio) ----------
   function toast(msg){
     var box = $("#toasts");
     var t = document.createElement("div");
     t.className = "toast";
     t.innerHTML = "✓ <span>" + msg + "</span>";
     box.appendChild(t);
-    setTimeout(function(){ t.classList.add("out"); setTimeout(function(){ t.remove(); }, 350); }, 3800);
+    setTimeout(function(){ t.classList.add("out"); setTimeout(function(){ t.remove(); }, 320); }, 3600);
   }
 
-  // ---------- contadores (dentro de la cinta) + línea de valor (pie) ----------
-  function renderStats(){
-    var enCurso=0, bloqueados=0, listos=0, cerradas=0;
-    D.clientes.forEach(function(c){
-      if (c.fase === "cerrada") cerradas++;
-      else {
-        enCurso++;
-        if (c.bloqueo) bloqueados++;
-        if (c.fase === "envio") listos++;
-      }
-    });
-    var el = $("#diames-stats");
-    if (el) el.innerHTML =
-      "<span><b>"+enCurso+"</b> en curso</span>"+
-      '<span class="warn"><b>'+bloqueados+"</b> bloqueados</span>"+
-      "<span><b>"+listos+"</b> para enviar</span>"+
-      "<span><b>"+cerradas+"</b> cerradas</span>";
-    var v = D.valor;
-    $("#valor-foot").innerHTML =
-      "✨ El agente ha preparado hoy <b>"+(v.incidenciasPreparadasHoy + state.incidenciasNuevas)+
-      " incidencias</b> y guardado <b>"+v.docsGuardadosDrive+" documentos</b> en Drive — ~"+
-      v.minutosAhorradosHoy+" min devueltos a la cartera.";
-  }
+  // Siempre con punto de millar (los programas de nómina lo ponen aunque
+  // sean 4 cifras; evita el "2782" junto a "45.205" de la regla RAE).
+  var fmtEur = function(n){
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+  };
 
-  // ---------- kanban ----------
-  function cardHTML(c){
-    var g = gestorById(c.gestorId);
-    var html = '<article class="card" data-cliente="'+c.id+'">';
-    html += "<h3>"+c.nombre+"</h3>";
-    html += '<div class="meta">'+c.sector+" · "+c.empleados+" empleados</div>";
-    html += '<div class="chips"><span class="chip gestor">'+g.nombre+"</span></div>";
-    html += '<div class="sla '+c.sla+'"><span>'+slaIcon[c.sla]+"</span><span>"+c.slaTexto+"</span></div>";
-    if (c.bloqueo){
-      html += '<div class="bloqueo">⏳ '+c.bloqueo.texto+" — pelota: "+c.bloqueo.pelota+" ("+c.bloqueo.dias+" días)</div>";
-    }
-    html += '<div class="card-foot"><span class="inc-count">'+
-      (c.incidencias.length ? "📋 "+c.incidencias.length+" incidencia"+(c.incidencias.length>1?"s":"") : "")+
-      "</span>";
-    if (c.fase !== "cerrada"){
-      html += '<button class="next-btn" data-next="'+c.id+'">Pasar fase →</button>';
-    }
-    html += "</div></article>";
-    return html;
+  // ---------- avisos importantes (mini-kanban) ----------
+  function itemHTML(a, done){
+    var h = '<div class="kitem' + (done ? " is-done" : "") + '" data-aviso="' + a.id + '">';
+    h += '<div class="kitem-top"><b>' + glosar(a.titulo) + "</b>";
+    if (!done && a.plazo) h += '<span class="plazo">' + a.plazo + "</span>";
+    h += "</div>";
+    h += "<p>" + glosar(a.detalle) + "</p>";
+    h += '<div class="kitem-act">';
+    if (done) h += '<span class="kdone-tag">✓ Hecho</span>';
+    else h += '<button class="kbtn" data-done="' + a.id + '">Marcar como hecho</button>';
+    h += "</div></div>";
+    return h;
   }
+  function renderAvisos(){
+    var todo = D.avisos.porHacer, done = D.avisos.hecho;
+    $("#k-todo-count").textContent = todo.length;
+    $("#k-done-count").textContent = done.length;
+    $("#k-todo").innerHTML = todo.length
+      ? todo.map(function(a){ return itemHTML(a, false); }).join("")
+      : '<div class="kempty">Nada pendiente 🎉</div>';
+    $("#k-done").innerHTML = done.map(function(a){ return itemHTML(a, true); }).join("");
+  }
+  $("#sec-avisos").addEventListener("click", function(e){
+    var b = e.target.closest("[data-done]");
+    if (!b) return;
+    var id = b.getAttribute("data-done");
+    var idx = -1;
+    D.avisos.porHacer.forEach(function(a, i){ if (a.id === id) idx = i; });
+    if (idx === -1) return;
+    var a = D.avisos.porHacer.splice(idx, 1)[0];
+    delete a.plazo;
+    D.avisos.hecho.unshift(a);
+    renderAvisos();
+    toast(a.titulo + " — marcado como hecho.");
+  });
 
-  function render(){
-    renderStats();
-    var board = $("#board");
-    var visibles = D.clientes.filter(function(c){
-      if (state.filtroGestor && c.gestorId !== state.filtroGestor) return false;
-      if (state.filtroCliente && c.id !== state.filtroCliente) return false;
-      if (state.filtroEstado === "criticas" && !(c.sla !== "ok" && c.fase !== "cerrada")) return false;
-      if (state.filtroEstado === "encurso" && c.fase === "cerrada") return false;
-      if (state.filtroEstado === "finalizadas" && c.fase !== "cerrada") return false;
-      if (state.busqueda){
-        var pajar = (c.nombre + " " + c.sector + " " + c.slaTexto + " " +
-          (c.bloqueo ? c.bloqueo.texto : "") + " " +
-          c.incidencias.map(function(i){ return i.texto; }).join(" ")).toLowerCase();
-        if (pajar.indexOf(state.busqueda) === -1) return false;
-      }
-      return true;
-    });
+  // ---------- flujo de nómina ----------
+  function renderFlujo(){
+    var f = D.flujo;
     var html = "";
-    D.fases.forEach(function(f){
-      var enFase = visibles.filter(function(c){ return c.fase === f.id; });
-      html += '<div class="col"><div class="col-head"><h2>'+f.nombre+'</h2><span class="tip-info" data-tip="'+f.descripcion.replace(/"/g,"&quot;")+'">i</span><span class="count">'+enFase.length+"</span></div>";
-      html += '<div class="col-body">';
-      if (!enFase.length) html += '<div class="col-empty">'+(f.vacio || "Nada aquí ahora mismo")+"</div>";
-      else enFase.forEach(function(c){ html += cardHTML(c); });
-      html += "</div></div>";
+
+    // Paso 1 — Exportar (done)
+    html += '<div class="fstep done"><div class="fstep-rail"><div class="fstep-dot">✓</div><div class="fstep-line"></div></div>';
+    html += '<div class="fstep-body"><h3>' + f.exportar.titulo + '<span class="fstep-tag ok">Importado</span></h3>';
+    html += '<div class="fdet">' + glosar(f.exportar.detalle) + "</div>";
+    html += '<div class="fnota">' + glosar(f.exportar.nota) + "</div></div></div>";
+
+    // Paso 2 — Verificar (active, con la tabla viva)
+    var v = f.verificar;
+    html += '<div class="fstep active"><div class="fstep-rail"><div class="fstep-dot">2</div><div class="fstep-line"></div></div>';
+    html += '<div class="fstep-body"><h3>' + v.titulo + '<span class="fstep-tag now">Lo de hoy</span></h3>';
+    html += '<table class="verify"><tbody class="verify-rows">';
+    html += '<tr class="r-base"><td>' + v.base.label + '</td><td class="amt">' + fmtEur(v.base.importe) + "</td></tr>";
+    v.conceptos.forEach(function(c){
+      var neg = c.importe < 0;
+      var val = (neg ? "−" : "+") + fmtEur(Math.abs(c.importe));
+      html += "<tr><td>" + glosar(c.label) + '</td><td class="amt' + (neg ? " neg" : "") + '">' + val + "</td></tr>";
     });
-    board.innerHTML = html;
-    $("#f-clear").classList.toggle("visible", !!(state.filtroGestor || state.filtroCliente || state.filtroEstado || state.busqueda));
-    renderBadges();
-  }
-
-  // ---------- cinta del día ("estás a día 11, ¿qué toca hoy?") ----------
-  function renderCinta(){
-    var cal = D.calendarioMes;
-    var html = '<div class="diames-head">📅 Julio, día ' + cal.diaHoy +
-      ' de ' + cal.diasMes + '<span>— el ciclo del mes de un vistazo</span>' +
-      '<span class="diames-stats" id="diames-stats"></span></div>';
-    html += '<div class="diames-track">';
-    cal.hitos.forEach(function(h){
-      var left = ((h.desde - 1) / cal.diasMes * 100).toFixed(2);
-      var width = ((h.hasta - h.desde + 1) / cal.diasMes * 100).toFixed(2);
-      html += '<div class="diames-seg seg-' + h.tipo + '" style="left:' + left + '%;width:' + width +
-        '%" data-tip="' + h.tip.replace(/"/g, "&quot;") + '"></div>';
+    html += '<tr class="r-total"><td>' + v.total.label + '</td><td class="amt">' + fmtEur(v.total.importe) + "</td></tr>";
+    html += "</tbody></table>";
+    html += '<ul class="verify-checks">';
+    v.comprobaciones.forEach(function(c){
+      html += '<li><span class="ck">✓</span><span>' + glosar(c.texto) + "</span></li>";
     });
-    var hoyLeft = ((cal.diaHoy - 0.5) / cal.diasMes * 100).toFixed(2);
-    html += '<div class="diames-hoy" style="left:' + hoyLeft + '%"></div>';
-    html += "</div>";
-    html += '<div class="diames-legend">' + cal.hitos.map(function(h){
-      return "<span><b>" + h.desde + (h.hasta > h.desde ? "-" + h.hasta : "") + "</b> " + h.label + "</span>";
-    }).join("") + "</div>";
-    html += '<ul class="hoy-toca">' + cal.hoyToca.map(function(t){
-      return "<li>" + glosar(t) + "</li>";
-    }).join("") + "</ul>";
-    $("#diames").innerHTML = html;
-  }
-
-  // ---------- tab Seguros sociales ----------
-  function ssPendientes(){
-    return D.segurosSociales.clientes.filter(function(r){ return r.recibido && !r.enviado; });
-  }
-  function fmtDia(iso){
-    return iso ? iso.slice(8,10) + "/" + iso.slice(5,7) : "";
-  }
-  function renderSS(){
-    var ss = D.segurosSociales;
-    var recibidos = ss.clientes.filter(function(r){ return r.recibido; }).length;
-    var enviados = ss.clientes.filter(function(r){ return r.enviado; }).length;
-    var pendientes = ssPendientes().length;
-    var head = '<div class="nums">' +
-      "<div><b>" + recibidos + "/" + ss.clientes.length + "</b><span>RLC/RNT recibidos de SILTRA</span></div>" +
-      "<div><b>" + enviados + "</b><span>enviados al cliente</span></div>" +
-      '<div class="pend"><b>' + pendientes + "</b><span>pendientes de envío</span></div>" +
-      "</div>";
-    head += '<div class="nota">' + glosar(ss.nota) + "</div>";
-    if (pendientes) head += '<button class="btn green" id="ss-enviar-todo">📤 Enviar pendientes (' + pendientes + ") por Gmail</button>";
-    else head += '<span class="ss-ok" style="margin-left:auto">✓ Todo enviado — seguros sociales de ' + ss.periodo + " al día</span>";
-    $("#ss-head").innerHTML = head;
-
-    var rows = '<thead><tr><th>Cliente</th><th>Período</th><th>RLC/RNT desde SILTRA</th><th>Envío al cliente (Gmail)</th><th></th></tr></thead><tbody>';
-    ss.clientes.forEach(function(r){
-      var c = clienteById(r.clienteId);
-      var g = gestorById(c.gestorId);
-      rows += "<tr><td><b>" + c.nombre + '</b><span class="sub">' + g.nombre + " · " + c.empleados + " empleados</span></td>";
-      rows += "<td>" + ss.periodo + "</td>";
-      rows += "<td>" + (r.recibido
-        ? '<span class="ss-ok">✓ Importado el ' + fmtDia(r.recibido) + "</span>"
-        : '<span class="ss-wait">⏳ ' + (r.notaFila || "Pendiente") + "</span>") + "</td>";
-      rows += "<td>" + (r.enviado
-        ? '<span class="ss-ok">✓ Enviado el ' + fmtDia(r.enviado) + "</span>"
-        : (r.recibido ? '<span class="ss-wait">Pendiente</span>' : '<span class="sub">—</span>')) + "</td>";
-      rows += "<td>" + (r.recibido && !r.enviado
-        ? '<button class="btn green sm" data-ss-enviar="' + r.clienteId + '">Enviar</button>' : "") + "</td></tr>";
-    });
-    rows += "</tbody>";
-    $("#ss-table").innerHTML = rows;
-    renderBadges();
-  }
-
-  $("#view-ss").addEventListener("click", function(e){
-    var uno = e.target.closest("[data-ss-enviar]");
-    if (uno){
-      var r = null;
-      D.segurosSociales.clientes.forEach(function(x){ if (x.clienteId === uno.getAttribute("data-ss-enviar")) r = x; });
-      r.enviado = D.hoy;
-      var c = clienteById(r.clienteId);
-      toast("RLC y RNT de junio enviados a " + c.nombre + " por Gmail — +2 min registrados a su facturación.");
-      renderSS();
-      return;
-    }
-    if (e.target.closest("#ss-enviar-todo")){
-      var pend = ssPendientes();
-      pend.forEach(function(x){ x.enviado = D.hoy; });
-      toast(pend.length + " envíos de seguros sociales hechos por Gmail en un clic — +" + (pend.length * 2) + " min registrados. Antes: uno a uno con SAGE, Gmail y SILTRA.");
-      renderSS();
-    }
-  });
-
-  // ---------- drawer "¿Cómo funciona?" ----------
-  function renderComo(){
-    $("#como-body").innerHTML = D.comoFunciona.map(function(x){
-      return '<div class="como"><h3>' + x.titulo + "</h3><p>" + x.mecanismo +
-        '</p><div class="fuente">📎 ' + x.fuente + "</div></div>";
-    }).join("");
-  }
-
-  function avanzarFase(c){
-    var i = faseIdx(c.fase);
-    if (i >= D.fases.length - 1) return;
-    c.fase = D.fases[i+1].id;
-    if (c.fase === "cerrada"){
-      c.sla = "ok";
-      c.slaTexto = "✓ Cerrada — nóminas enviadas y RLC presentado";
-      c.bloqueo = null;
-      c.checklist.forEach(function(p){ p.done = true; });
-      toast(c.nombre+": ciclo de julio cerrado. Nóminas y resumen guardados en su carpeta de Drive.");
-    } else {
-      toast(c.nombre+" pasa a «"+D.fases[faseIdx(c.fase)].nombre+"».");
-    }
-    render();
-  }
-
-  $("#board").addEventListener("click", function(e){
-    var nextBtn = e.target.closest("[data-next]");
-    if (nextBtn){
-      e.stopPropagation();
-      avanzarFase(clienteById(nextBtn.getAttribute("data-next")));
-      return;
-    }
-    var card = e.target.closest("[data-cliente]");
-    if (card) openModal(card.getAttribute("data-cliente"));
-  });
-
-  // ---------- modal ----------
-  function openModal(id){
-    var c = clienteById(id);
-    var g = gestorById(c.gestorId);
-    var m = $("#modal");
-    var html = '<div class="modal-head"><div>';
-    html += "<h2>"+c.nombre+"</h2>";
-    html += '<div class="meta">'+c.sector+" · "+c.empleados+" empleados · Gestor: "+g.nombre+" · "+c.herramienta+
-      " · Fase: "+D.fases[faseIdx(c.fase)].nombre+"</div>";
-    html += '<div class="sla '+c.sla+'" style="margin-top:8px">'+slaIcon[c.sla]+" "+glosar(c.slaTexto)+"</div>";
-    html += '</div><button class="drawer-close" data-close>✕</button></div>';
-
-    html += '<div class="modal-body">';
-
-    // Cifras del mes
-    html += '<div class="sec"><h4>Nómina de julio</h4><div class="cifras">';
-    html += "<div><b>"+fmtEur(c.cifras.bruto)+"</b><span>bruto total</span></div>";
-    html += "<div><b>"+fmtEur(c.cifras.ssEmpresa)+"</b><span>SS a cargo de la empresa</span></div>";
-    html += "<div><b>"+fmtEur(c.cifras.neto)+"</b><span>neto a pagar</span></div>";
-    html += "</div>";
-    if (c.variacion){
-      html += '<div class="variacion"><div class="resumen">+'+fmtEur(c.variacion.importe)+" respecto a "+
-        c.variacion.respectoA.toLowerCase()+" (+"+c.variacion.porcentaje.toLocaleString("es-ES")+" %). "+c.variacion.resumen+"</div><ul>";
-      c.variacion.conceptos.forEach(function(x){
-        var val = (x.importe>0?"+":"−") + fmtEur(Math.abs(x.importe)) + (x.neutro ? " (neutro)" : "");
-        html += "<li><span>"+glosar(x.concepto)+'</span><b class="'+(x.importe<0?"neg":"")+'">'+val+"</b></li>";
-      });
-      html += "</ul></div>";
-    }
-    html += "</div>";
-
-    // Checklist
-    html += '<div class="sec"><h4>Checklist del ciclo</h4><ul class="check">';
-    c.checklist.forEach(function(p){
-      html += '<li class="'+(p.done?"done":"todo")+'"><span class="tick '+(p.done?"done":"todo")+'">'+(p.done?"✓":"·")+"</span><span>"+glosar(p.label)+"</span></li>";
-    });
-    html += "</ul></div>";
-
-    // Incidencias (control de nóminas)
-    html += '<div class="sec"><h4>Control de nóminas — incidencias de julio</h4>';
-    if (c.incidencias.length){
-      html += '<ul class="inc-list">';
-      c.incidencias.forEach(function(x){
-        html += '<li><span class="origen-chip '+origenClase[x.origen]+'">'+origenLabel[x.origen]+"</span><span>"+glosar(x.texto)+"</span></li>";
-      });
-      html += "</ul>";
-    } else {
-      html += '<p style="font-size:13px;color:var(--text-soft)">Sin incidencias este mes.</p>';
-    }
-    html += "</div>";
-
-    // Documentos
-    html += '<div class="sec"><h4>Documentos</h4><div class="docs"><span>📁</span><span>✓ Nóminas y resúmenes guardados automáticamente en Drive'+
-      '<span class="sub">Carpeta: Clientes / '+c.nombre+" / Nóminas / 2026-07 — nadie ha tenido que bajar ni subir nada.</span></span></div>";
-    if (c.envioAuto && !c.envioAutoConocido){
-      html += '<div class="envio-hint">💡 Este cliente tiene el <b>envío automático de nóminas</b> disponible y sin usar. Envía desde aquí y olvídate del envío manual.</div>';
-    }
+    html += '<li><span class="ck pend">!</span><span>' + glosar(v.pendiente.texto) + "</span></li>";
+    html += "</ul>";
+    html += '<div class="verify-summary">✓ ' + v.resumen + "</div>";
+    html += '<div class="cifras-row">' +
+      '<div class="cifra"><b>' + fmtEur(v.cifras.bruto) + "</b><span>bruto total</span></div>" +
+      '<div class="cifra"><b>' + fmtEur(v.cifras.ssEmpresa) + '</b><span>' + glosar("SS a cargo de la empresa") + "</span></div>" +
+      '<div class="cifra"><b>' + fmtEur(v.cifras.neto) + "</b><span>neto a pagar</span></div></div>";
     html += "</div></div>";
 
-    // Acciones
-    html += '<div class="modal-foot">';
-    if (c.fase !== "cerrada"){
-      html += '<button class="btn green" data-enviar="'+c.id+'">📤 Enviar nóminas + resumen al cliente</button>';
-      html += '<button class="btn" data-avanzar="'+c.id+'">Pasar a la siguiente fase →</button>';
-    } else {
-      html += '<button class="btn" data-enviar="'+c.id+'">📤 Reenviar nóminas + resumen</button>';
-    }
-    html += "</div>";
+    // Paso 3 — Enviar
+    html += '<div class="fstep"><div class="fstep-rail"><div class="fstep-dot">3</div></div>';
+    html += '<div class="fstep-body"><h3>' + f.enviar.titulo + "</h3>";
+    html += '<div class="fdet">' + glosar(f.enviar.detalle) + "</div>";
+    html += '<div class="fnota">' + f.enviar.nota + "</div>";
+    html += '<div class="fsend"><button class="fsend-btn" id="btn-enviar">' +
+      '<svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Enviar las 24 nóminas + resumen por Gmail</button></div>';
+    html += "</div></div>";
 
-    m.innerHTML = html;
-    $("#modal-wrap").classList.add("open");
-    document.body.style.overflow = "hidden";
+    $("#flow").innerHTML = html;
   }
-
-  function closeModal(){
-    $("#modal-wrap").classList.remove("open");
-    document.body.style.overflow = "";
-  }
-
-  $("#modal-wrap").addEventListener("click", function(e){
-    if (e.target.closest("[data-close]")){ closeModal(); return; }
-    var env = e.target.closest("[data-enviar]");
-    if (env){
-      var c = clienteById(env.getAttribute("data-enviar"));
-      toast("Nóminas de julio y resumen enviados a "+c.nombre+" por Gmail — copia en su Drive y +4 min registrados.");
-      if (c.envioAuto && !c.envioAutoConocido){
-        c.envioAutoConocido = true;
-        if (c.sla === "warn" && c.fase === "envio"){ c.sla = "ok"; c.slaTexto = "Envío automático activado — nóminas enviadas"; }
-      }
-      if (c.fase === "envio"){ avanzarFase(c); }
-      closeModal();
-      render();
-      return;
-    }
-    var av = e.target.closest("[data-avanzar]");
-    if (av){
-      avanzarFase(clienteById(av.getAttribute("data-avanzar")));
-      closeModal();
-    }
+  $("#sec-flujo").addEventListener("click", function(e){
+    if (!e.target.closest("#btn-enviar")) return;
+    var f = D.flujo;
+    var btn = $("#btn-enviar");
+    btn.outerHTML = '<span class="kdone-tag" style="font-size:14px">✓ Enviado a ' + f.enviar.destinatario +
+      " — copia archivada en Documentos del cliente.</span>";
+    // marcar el paso como completado
+    var steps = document.querySelectorAll("#flow .fstep");
+    var last = steps[steps.length - 1];
+    last.classList.add("done");
+    last.querySelector(".fstep-dot").textContent = "✓";
+    toast("24 nóminas de julio enviadas por Gmail y archivadas en Documentos.");
   });
 
-  // ---------- drawers ----------
-  function openDrawer(id){
-    $("#overlay").classList.add("open");
-    $(id).classList.add("open");
+  // ---------- drawer hipótesis ----------
+  function renderHip(){
+    $("#hip-body").innerHTML = D.hipotesis.map(function(h){
+      return '<div class="hip"><h3>' + h.titulo + "</h3><p>" + glosar(h.texto) + "</p></div>";
+    }).join("");
   }
-  function closeDrawers(){
-    $("#overlay").classList.remove("open");
-    $("#drawer-agente").classList.remove("open");
-    $("#drawer-avisos").classList.remove("open");
-    $("#drawer-como").classList.remove("open");
-  }
-  $("#overlay").addEventListener("click", closeDrawers);
-  $("#btn-agente").addEventListener("click", function(){ renderAgente(); openDrawer("#drawer-agente"); });
-  $("#btn-como").addEventListener("click", function(){ renderComo(); openDrawer("#drawer-como"); });
-  $("#btn-avisos").addEventListener("click", function(){
-    D.avisos.forEach(function(a){ state.avisosVistos[a.id] = true; });
-    renderAvisos(); openDrawer("#drawer-avisos"); renderBadges();
-  });
-  document.addEventListener("keydown", function(e){
-    if (e.key === "Escape"){ closeDrawers(); closeModal(); }
-  });
-  document.addEventListener("click", function(e){
-    if (e.target.closest(".drawer .drawer-close")) closeDrawers();
-  });
+  function openDrawer(){ $("#overlay").classList.add("open"); $("#drawer-hip").classList.add("open"); }
+  function closeDrawer(){ $("#overlay").classList.remove("open"); $("#drawer-hip").classList.remove("open"); }
+  $("#btn-hip").addEventListener("click", function(){ renderHip(); openDrawer(); });
+  $("#overlay").addEventListener("click", closeDrawer);
+  document.querySelector("#drawer-hip .drawer-close").addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeDrawer(); });
 
-  function renderBadges(){
-    var pend = D.bandejaAgente.filter(function(p){ return !state.aceptadas[p.id]; }).length;
-    var bA = $("#badge-agente");
-    bA.textContent = pend; bA.style.display = pend ? "" : "none";
-    var noVistos = D.avisos.filter(function(a){ return !state.avisosVistos[a.id]; }).length;
-    var bV = $("#badge-avisos");
-    bV.textContent = noVistos; bV.style.display = noVistos ? "" : "none";
-    var pendSS = ssPendientes().length;
-    var bS = $("#ss-badge");
-    bS.textContent = pendSS + " pendientes"; bS.style.display = pendSS ? "" : "none";
-  }
-
-  var origenIcono = { email:"📧", fie:"📄" };
-  function renderAgente(){
-    var body = $("#agente-body");
-    var html = "";
-    D.bandejaAgente.forEach(function(p){
-      var done = state.aceptadas[p.id];
-      html += '<div class="prop'+(done?" done":"")+'">';
-      html += '<div class="origen">'+(origenIcono[p.origen]||"📧")+" "+p.origenTexto+
-        (p.categoria ? ' <span class="chip" style="margin-left:auto">'+p.categoria+"</span>" : "")+"</div>";
-      html += "<h3>"+p.asunto+"</h3>";
-      html += '<div class="analisis">'+glosar(p.analisis)+"</div>";
-      html += '<div class="propuesta">→ '+glosar(p.propuesta)+"</div>";
-      html += '<div class="acciones">';
-      if (done) html += '<span class="hecho">✓ Hecho — incidencia añadida al control</span>';
-      else html += '<button class="btn green" data-aceptar="'+p.id+'">'+p.cta+'</button><button class="btn" data-ver="'+p.clienteId+'">Ver cliente</button>';
-      html += "</div></div>";
-    });
-    body.innerHTML = html;
-  }
-
-  $("#agente-body").addEventListener("click", function(e){
-    var ac = e.target.closest("[data-aceptar]");
-    if (ac){
-      var p = null;
-      D.bandejaAgente.forEach(function(x){ if (x.id === ac.getAttribute("data-aceptar")) p = x; });
-      state.aceptadas[p.id] = true;
-      var c = clienteById(p.clienteId);
-      if (p.incidencia){
-        c.incidencias.push({ texto: p.incidencia.texto, origen: p.incidencia.origen, fecha: D.hoy });
-        state.incidenciasNuevas++;
-      }
-      toast("Hecho: "+p.propuesta.replace(/\.$/,"")+" ("+c.nombre+") — +3 min registrados a su facturación.");
-      renderAgente(); render();
-      return;
-    }
-    var ver = e.target.closest("[data-ver]");
-    if (ver){ closeDrawers(); openModal(ver.getAttribute("data-ver")); }
-  });
-
-  var avisoIcono = { convenio:"📖", contrato:"📅", rlc:"🧾", caducidad:"🔐" };
-  function renderAvisos(){
-    var body = $("#avisos-body");
-    var html = "";
-    D.avisos.forEach(function(a){
-      html += '<div class="aviso '+a.nivel+'">';
-      html += "<h3>"+(avisoIcono[a.tipo]||"🔔")+" "+glosar(a.titulo)+"</h3>";
-      html += "<p>"+glosar(a.detalle)+"</p>";
-      html += '<button class="btn" data-aviso-cliente="'+(a.clienteId||"")+'" data-aviso-accion="'+(a.accion||"")+'">'+a.cta+" →</button>";
-      html += "</div>";
-    });
-    body.innerHTML = html;
-  }
-
-  $("#avisos-body").addEventListener("click", function(e){
-    var b = e.target.closest("[data-aviso-cliente]");
-    if (!b) return;
-    closeDrawers();
-    if (b.getAttribute("data-aviso-accion") === "tab-ss"){ showView("ss"); return; }
-    var cid = b.getAttribute("data-aviso-cliente");
-    if (cid) openModal(cid);
-  });
-
-  // ---------- tooltips (hover en escritorio, toque en móvil) ----------
+  // ---------- tooltips flotantes ----------
   var tipbox = $("#tipbox");
   var tipPinned = null;
   function showTip(el){
@@ -873,15 +559,17 @@
     var t = e.target.closest("[data-tip]");
     if (t){
       e.stopPropagation();
-      if (tipPinned === t){ hideTip(); }
+      if (tipPinned === t) hideTip();
       else { showTip(t); tipPinned = t; }
     } else hideTip();
   }, true);
   window.addEventListener("scroll", hideTip, true);
 
   // ---------- init ----------
-  renderCinta();
-  render();
+  renderCalendario();
+  renderHoyToca();
+  renderAvisos();
+  renderFlujo();
 })();
 </script>
 </body>

@@ -1,82 +1,54 @@
 # PLAN.md — Arquitectura del prototipo
 
-Prototipo "Yoda · Nóminas" v2 (post-entrevistas): herramienta interna de
-los gestores laborales (un solo `index.html` + `data.js`). Fecha simulada:
-11 de julio de 2026.
+Prototipo "Yoda · Nóminas" (rediseño según `DECISIONES.md`): la pantalla de
+Nóminas de **un cliente** dentro de la navegación real de Yoda. Un solo
+`index.html` + `data.js`. Fecha simulada: viernes 10 de julio de 2026.
 
-REGLA DE ORO (v2): toda feature mostrada tiene un mecanismo real detrás
-(API del BOE, carpetas de SILTRA, Gmail API, API de a3innuva, carpeta
-vigilada para SAGE). El panel "¿Cómo funciona?" del pie lo documenta en
-la propia UI. No se promete nada sin fuente.
+## Tesis (DECISIONES §0)
+El valor no es que sea bonito: es que centraliza en Yoda un flujo que hoy son
+5 pasos en 4 herramientas (exportar → bajar → subir a Drive → subir a Yoda →
+enviar uno a uno). La cadena que lo sustituye: **exportar → verificar →
+enviar en 1 clic, sin salir de Yoda**. Regla de corte: si un elemento no sirve
+a esa cadena o a orientar hacia ella, fuera.
 
-## Topbar
-- Wordmark de texto "Yoda · Nóminas — por Zinco AI".
-- Pulso de sincronización con el Sistema RED (dato vivo).
-- Botón **Avisos** (con badge) y botón **Bandeja del agente** (con badge).
+## Navegación (DECISIONES §1)
+Se respeta la de Yoda real: **Sidebar → Cliente → tab Laboral**. Dentro de
+Laboral, las dos secciones (Empleados | Nóminas) se mantienen. El rediseño
+vive dentro de **Nóminas**, para UN cliente (el cliente lo da la navegación,
+no un filtro).
 
-## Nav de proyectos (como el módulo de contabilidad de Yoda)
-- Nóminas (activo) · Contabilidad · Fiscal · Mercantil ("próximamente").
+## Estructura de la pantalla (de arriba a abajo)
+0. **Shell Yoda**: sidebar 80px verde bosque; cabecera del cliente (card
+   verde) con badge de estado y distintivo "Envío automático activo"; fila de
+   tabs (Laboral activo); dos cards Empleados | Nóminas (Nóminas activa).
+1. **Calendario del mes** — rejilla real de julio 2026, "hoy" marcado (día 10),
+   fases pintadas en sus días (variables 1-5, impuestos 20, cálculo 21-24,
+   envío 25-28, seguros sociales 29-31). Sustituye a la cinta y al kanban de
+   fases. Proceso lineal → forma lineal (DECISIONES §3).
+2. **"Hoy toca"** — tarjeta fija bajo el calendario, servida sin explorar
+   (desempate hacia el veterano; NO clic-en-día).
+3. **Avisos importantes** — mini-kanban Por hacer / Hecho de ítems discretos
+   del cliente (altas, bajas, variables). Marcar como hecho mueve la tarjeta.
+   Kanban donde hay ítems que se mueven (DECISIONES §3).
+4. **Flujo de nómina** — stepper exportar → verificar → enviar. El paso
+   **Verificar** se ve: tabla de cuadre viva (junio + conceptos = 45.205 € ✓)
+   y cruce contra las incidencias del mes. El envío por Gmail cierra la cadena.
+5. **Pie** — enlace discreto "Hipótesis de integración" (drawer con §5).
 
-## Subtabs del proyecto (v2)
-- **Nóminas** (el foco): cinta del día + Kanban.
-- **Seguros sociales**: tabla por cliente — RLC/RNT importado desde la
-  carpeta de SILTRA ✓ → enviado al cliente por Gmail ✓/pendiente, con
-  envío individual y masivo ("Enviar pendientes (n) por Gmail").
+## Realismo (DECISIONES §5)
+Los supuestos técnicos se muestran funcionando pero se nombran como hipótesis
+en el drawer: exportar de SAGE/A3 a Yoda (carpeta vigilada / API a3innuva),
+envío por Gmail (vs Outlook de SAGE), y seguros sociales (misma hipótesis,
+fuera del alcance de este primer prototipo). "Lo que Yoda NO hace": calcular
+la nómina — eso es de A3/SAGE.
 
-## Cinta del día (v2 — "estás a día 11, ¿qué toca hoy?")
-- Línea temporal del mes con los hitos del ciclo (1-5 variables ·
-  20 impuestos · 21-24 cálculo · 25-28 envío y pago · 29-31 RLC/RNT),
-  marcador HOY, lista "hoy toca" y los contadores del tablero integrados
-  (una sola banda de resumen; la línea de valor del agente vive en el pie).
+## Piel visual (DECISIONES §7 + design skill de Yoda)
+Tokens reales de Yoda: primario `#1C3829`, fondo crema `#F5F2EC`, cards
+blancas radius 12px, borde `#E2E8F0`, tipografía Geist (fallback Inter),
+iconos SVG stroke fino, un único acento verde. Sin morados, azules ni otros
+verdes.
 
-## Coherencia temporal (v2.1 — revisión de experto)
-- El estado del tablero DEBE ser creíble para la fecha simulada: a día 11
-  la mayoría de la cartera está en "Variables e incidencias" (la ventana
-  de cálculo abre el 21), los adelantos llevan motivo explícito en su
-  slaTexto (atrasos del convenio, anticipos del día 15, cuadrar una IT),
-  y Envío/Cerrada están vacíos con texto propio ("la ventana de envío
-  abre el 25"). Nunca mover una tarjeta de fase sin una razón que un
-  gestor laboral aceptaría.
-
-## Tablero Kanban del ciclo mensual (pieza central)
-- Columnas = fases del ciclo: **Variables e incidencias → Cálculo →
-  Revisión → Envío al cliente → Cerrada**.
-- Tarjetas = empresa cliente × Julio 2026 (9 empresas, 3 gestores).
-- Filtros por gestor, cliente, estado (⚠ críticas / en curso /
-  ✓ finalizadas) y buscador de texto. Contadores-resumen y línea de valor
-  ("incidencias preparadas hoy por el agente").
-- Cada tarjeta: sector, empleados, gestor, herramienta (A3/SAGE), semáforo
-  SLA por plazo legal, bloqueo con "pelota" (cliente/mutua/SS) y contador
-  de incidencias. Botón "Pasar fase →" (sin drag&drop, más fiable en demo).
-
-## Modal de detalle de cliente
-- Cifras del mes (bruto / SS empresa / neto) y, en el cliente estrella
-  (Grupo Fuego Lento SL), la variación de julio explicada al euro (+4.725 €).
-- Checklist estandarizada del ciclo.
-- Control de nóminas: incidencias con chip de origen (Email / FIE / RED /
-  Convenio) — sustituye el Excel manual.
-- Documentos guardados automáticamente en Drive (dolor nº 1 de las notas).
-- Botón "Enviar nóminas + resumen al cliente"; si el envío automático está
-  disponible y sin usar, se destaca (problema de visibilidad detectado).
-
-## Bandeja del agente (drawer)
-- "El agente ha leído el buzón esta noche a las 23:00": correos y ficheros
-  FIE ya analizados, con categoría (altas y bajas / variables / envíos) y
-  propuesta accionable en 1 clic; la incidencia se añade al control del
-  cliente y suma minutos al registro de facturación.
-
-## Avisos (drawer)
-- Convenio nuevo publicado, fin de contrato temporal, pago delegado en el
-  RLC, caducidad de certificado digital, recurrentes ("los SS de junio se
-  envían el lunes" → abre el tab de Seguros sociales) y cambios internos
-  del equipo (visibilidad). Cada aviso lleva su CTA.
-
-## Panel "¿Cómo funciona?" (drawer, v2)
-- Enlace discreto en el pie. Lista cada promesa con su mecanismo real y
-  su fuente (BOE datos abiertos, SILTRA, Gmail API, a3developers, carpeta
-  vigilada, FIE) y cierra con "lo que Yoda NO hace" (calcular la nómina).
-
-## Pie
-- "Tiempo registrado automáticamente desde el correo y las llamadas":
-  nadie reporta a mano (respuesta al problema de adopción de Yoda).
-  Los toasts de cada acción suman "+N min registrados".
+## Fuera de alcance (anti scope-creep, DECISIONES §4)
+Sin módulos de insights/payments, sin subtab de Seguros sociales (misma
+hipótesis; se resolvería igual), sin contadores de PM, sin mención a
+"agente/IA" en la UI (el resultado se nombra, no la tecnología).
