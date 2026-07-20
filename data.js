@@ -2,18 +2,18 @@
 // data.js — Yoda · Nóminas (rediseño según DECISIONES.md)
 // Pantalla de UN cliente: Grupo Fuego Lento SL, dentro de la navegación
 // real de Yoda (Sidebar → Cliente → Laboral → Nóminas).
-// Fecha simulada de "hoy": viernes 10 de julio de 2026 (calendario real:
-// el 1 de julio de 2026 cae en miércoles; el 20, lunes).
-// Coherencia al euro: 40.480 (junio) + 2.782 + 875 + 1.368 + 540 − 840
-// = 45.205 € (cálculo previo de julio). El pago delegado (861 €) es
-// neutro y los 2 días de Sara Peña (−104 €) quedan pendientes para el
-// cálculo definitivo (días 21-24): eso es lo que "Verificar" te enseña.
+// Fecha simulada de "hoy": lunes 27 de julio de 2026 — día de envío
+// (calendario real: el 1 de julio de 2026 cae en miércoles; el 27, lunes).
+// Coherencia al euro (cálculo definitivo): 40.480 (junio) + 2.782 + 875
+// + 1.368 + 540 − 840 − 104 = 45.101 €. El pago delegado (861 €) es neutro
+// (se recupera en el RLC). Los 2 días de Sara Peña (−104 €) ya entran en el
+// definitivo: eso es lo que "Verificar" te enseña, cuadrando 6 de 6.
 // =====================================================================
 
 window.DATA = {
 
-  hoy: "2026-07-10",
-  hoyTexto: "viernes, 10 de julio de 2026",
+  hoy: "2026-07-27",
+  hoyTexto: "lunes, 27 de julio de 2026",
 
   cliente: {
     nombre: "Grupo Fuego Lento SL",
@@ -36,7 +36,7 @@ window.DATA = {
     mes: "Julio 2026",
     diasMes: 31,
     primerDiaSemana: 3,
-    diaHoy: 10,
+    diaHoy: 27,
     fases: [
       { desde: 1,  hasta: 5,  id: "variables", label: "Variables e incidencias",
         tip: "Días 1-5: recoger todo lo que cambia la nómina del mes (horas extra, bajas, altas, anticipos)." },
@@ -55,9 +55,9 @@ window.DATA = {
   // "Hoy toca" — tarjeta fija bajo el calendario. Servido, sin explorar.
   // -------------------------------------------------------------------
   hoyToca: [
-    "Revisar el cálculo previo de julio: sube 4.725 € por los atrasos del convenio — está explicado partida a partida",
-    "Reclamar a Mutua Universal el 2.º parte de confirmación de Antonio Vega (pendiente desde el día 5)",
-    "Preparar el finiquito de Jorge Salas — su último día es el miércoles 15"
+    "Enviar las nóminas de julio a Grupo Fuego Lento — el cálculo está cerrado y cuadra",
+    "Presentar los seguros sociales de junio (RLC/RNT) antes del viernes 31",
+    "Ordenar las transferencias de pago a los 24 trabajadores"
   ],
 
   // -------------------------------------------------------------------
@@ -67,25 +67,34 @@ window.DATA = {
   avisos: {
     porHacer: [
       {
-        id: "av-1",
-        titulo: "Finiquito de Jorge Salas",
-        detalle: "Baja voluntaria el 15/07. Calculado: 1.395 € brutos (salario de 15 días, 4 días de vacaciones y pagas extra prorrateadas).",
-        plazo: "Vence el 15/07"
+        id: "av-7",
+        titulo: "Seguros sociales de junio",
+        detalle: "Presentar el RLC/RNT de junio por SILTRA antes del viernes 31/07. Ya está preparado; falta enviar.",
+        plazo: "Vence el 31/07"
       },
       {
-        id: "av-2",
-        titulo: "2.º parte de confirmación de Antonio Vega",
-        detalle: "IT por lumbalgia (día 18 de baja). Mutua Universal aún no envía el parte; sin él no se acredita la prórroga.",
-        plazo: "Pendiente desde el 05/07"
+        id: "av-8",
+        titulo: "Transferencias de pago",
+        detalle: "Ordenar las transferencias de la nómina de julio a los 24 trabajadores tras el envío al cliente.",
+        plazo: "Ventana de pago 25-28"
+      }
+    ],
+    hecho: [
+      {
+        id: "av-1",
+        titulo: "Finiquito de Jorge Salas",
+        detalle: "Baja voluntaria; último día 15/07. Finiquito de 1.395 € brutos calculado y pagado (15 días + 4 de vacaciones + extras)."
       },
       {
         id: "av-3",
         titulo: "Asuntos propios de Sara Peña",
-        detalle: "2 días no retribuidos (8 y 9/07) comunicados ayer por email. Se descontarán 104 € brutos en el cálculo definitivo.",
-        plazo: "Para el cálculo del 21-24"
-      }
-    ],
-    hecho: [
+        detalle: "2 días no retribuidos (8 y 9/07) incorporados al cálculo definitivo: −104 € brutos."
+      },
+      {
+        id: "av-2",
+        titulo: "2.º parte de confirmación de Antonio Vega",
+        detalle: "IT por lumbalgia: 2.º parte recibido de Mutua Universal; la baja continúa y el pago delegado sigue en el RLC."
+      },
       {
         id: "av-4",
         titulo: "Alta de Hugo Pardo",
@@ -106,21 +115,20 @@ window.DATA = {
 
   // -------------------------------------------------------------------
   // Flujo de nómina — exportar → verificar → enviar (el corazón).
-  // Estado a día 10: el cálculo previo está exportado (María lo adelantó
-  // por los atrasos del convenio); verificar es el trabajo de hoy; el
-  // envío se habilita tras verificar (ventana habitual: 25-28).
+  // Estado a día 27 (ventana de envío): el cálculo definitivo está cerrado
+  // y verificado; hoy toca enviar las nóminas a la empresa.
   // -------------------------------------------------------------------
   flujo: {
     exportar: {
       titulo: "Exportar desde SAGE",
       hecho: true,
-      detalle: "Cálculo previo de julio: 24 nóminas importadas a Yoda hoy a las 08:15 desde la carpeta de SAGE. Nada que bajar ni subir a mano.",
-      nota: "Adelantado por los atrasos del convenio — el definitivo se calcula el 21-24.",
+      detalle: "Cálculo definitivo de julio: 24 nóminas importadas a Yoda desde la carpeta de SAGE. Nada que bajar ni subir a mano.",
+      nota: "Cálculo cerrado tras la revisión del 21-24.",
       documento: {
         archivo: "Nóminas_Julio2026_GrupoFuegoLentoSL.pdf",
         paginas: 24,
         tamano: "1,8 MB",
-        generado: "10/07/2026 · 08:15",
+        generado: "24/07/2026 · 17:40",
         ruta: "Documentos › Grupo Fuego Lento SL › Nóminas › 2026-07",
         extra: "+ 1 resumen del mes, listo para adjuntar al envío"
       }
@@ -133,30 +141,28 @@ window.DATA = {
         { label: "Nuevas tablas del convenio aplicadas a julio", importe: 875, avisoId: "av-6" },
         { label: "Alta de Hugo Pardo — del 4 al 31 de julio, prorrateado", importe: 1368, avisoId: "av-4" },
         { label: "Finiquito de Jorge Salas: vacaciones y extras prorrateadas", importe: 540, avisoId: "av-1" },
-        { label: "Jorge Salas devenga solo hasta el 15 de julio", importe: -840, avisoId: "av-1" }
+        { label: "Jorge Salas devenga solo hasta el 15 de julio", importe: -840, avisoId: "av-1" },
+        { label: "Asuntos propios de Sara Peña (2 días no retribuidos)", importe: -104, avisoId: "av-3" }
       ],
-      total: { label: "Cálculo previo de julio", importe: 45205 },
+      total: { label: "Cálculo definitivo de julio", importe: 45101 },
       comprobaciones: [
         { texto: "Alta de Hugo Pardo reflejada (+1.368 €)", ok: true },
         { texto: "Baja de Jorge Salas prorrateada y finiquito incluido (+540 € / −840 €)", ok: true },
         { texto: "Atrasos y tablas nuevas del convenio aplicados (+3.657 €)", ok: true },
         { texto: "IT de Antonio Vega: pago delegado de 861 € anticipado y recuperado en el RLC — coste neutro", ok: true },
-        { texto: "Lucía Gil en pago directo del INSS: julio a 0 € en nómina", ok: true }
+        { texto: "Lucía Gil en pago directo del INSS: julio a 0 € en nómina", ok: true },
+        { texto: "Asuntos propios de Sara Peña reflejados (−104 €)", ok: true }
       ],
-      pendiente: {
-        texto: "Asuntos propios de Sara Peña (−104 €): comunicados ayer, entran en el cálculo definitivo del 21-24",
-        avisoId: "av-3"
-      },
-      resumen: "El cálculo previo cuadra al euro: 5 de 5 incidencias reflejadas · 1 nueva anotada para el definitivo.",
-      cifras: { bruto: 45205, ssEmpresa: 14420, neto: 35635 }
+      resumen: "El cálculo definitivo cuadra al euro: 6 de 6 incidencias reflejadas.",
+      cifras: { bruto: 45101, ssEmpresa: 14387, neto: 35556 }
     },
     enviar: {
       titulo: "Enviar en 1 clic",
       detalle: "24 nóminas + resumen del mes a Carmen Ortega (directora de operaciones), desde tu Gmail. Copia en los Documentos del cliente.",
-      nota: "Ventana habitual de envío: del 25 al 28.",
+      nota: "Hoy es el día de envío (ventana 25-28).",
       destinatario: "carmen@grupofuegolento.es",
       asunto: "Nóminas de julio 2026 — Grupo Fuego Lento SL",
-      cuerpo: "Hola Carmen,\n\nAdjunto las nóminas de julio y el resumen del mes.\n\nEl cálculo cuadra con las altas, bajas e incidencias registradas: alta de Hugo Pardo, baja y finiquito de Jorge Salas, IT de Antonio Vega y los atrasos del convenio.\n\nCualquier cosa, aquí estoy.\n\nUn saludo,\nMaría",
+      cuerpo: "Hola Carmen,\n\nAdjunto las nóminas de julio y el resumen del mes.\n\nEl cálculo está cerrado y cuadra con las altas, bajas e incidencias registradas: alta de Hugo Pardo, baja y finiquito de Jorge Salas, IT de Antonio Vega, los 2 días de Sara Peña y los atrasos del convenio.\n\nCualquier cosa, aquí estoy.\n\nUn saludo,\nMaría",
       adjuntos: ["Nóminas_Julio2026_GrupoFuegoLentoSL.pdf", "Resumen_Julio2026_GrupoFuegoLentoSL.pdf"]
     }
   },

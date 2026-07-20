@@ -116,6 +116,13 @@
   .kcol-head h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--c-text-muted)}
   .kcol-head .count{background:var(--c-bg-inner);border:1px solid var(--c-border);border-radius:var(--r-pill);font-size:11px;font-weight:700;padding:1px 8px;color:var(--c-text-2)}
   .kcol-body{display:flex;flex-direction:column;gap:10px;min-height:40px}
+  /* columna Hecho colapsable */
+  .kcol-toggle{width:100%;background:none;border:none;font-family:var(--font);cursor:pointer;padding:0;text-align:left}
+  .kcol-hint{font-size:11px;font-weight:500;color:var(--c-text-muted);text-transform:none;letter-spacing:0}
+  .kcol-chevron{width:16px;height:16px;margin-left:auto;stroke:var(--c-text-muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;flex-shrink:0}
+  .kcol-done.collapsed .kcol-chevron{transform:rotate(-90deg)}
+  .kcol-done.collapsed .kcol-body{display:none}
+  .kcol-toggle:hover h3,.kcol-toggle:hover .kcol-hint{color:var(--c-text-2)}
   .kitem{background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-md);padding:12px 14px}
   .kitem.is-done{background:var(--c-bg-inner)}
   .kitem-top{display:flex;align-items:flex-start;gap:8px}
@@ -349,8 +356,12 @@
           <div class="kcol-head"><h3>Por hacer</h3><span class="count" id="k-todo-count"></span></div>
           <div class="kcol-body" id="k-todo"></div>
         </div>
-        <div class="kcol">
-          <div class="kcol-head"><h3>Hecho</h3><span class="count" id="k-done-count"></span></div>
+        <div class="kcol kcol-done collapsed" id="kcol-done">
+          <button type="button" class="kcol-head kcol-toggle" id="k-done-toggle" aria-expanded="false">
+            <h3>Hecho</h3><span class="count" id="k-done-count"></span>
+            <span class="kcol-hint" id="k-done-hint"></span>
+            <svg class="kcol-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
           <div class="kcol-body" id="k-done"></div>
         </div>
       </div>
@@ -537,11 +548,18 @@
     var todo = D.avisos.porHacer, done = D.avisos.hecho;
     $("#k-todo-count").textContent = todo.length;
     $("#k-done-count").textContent = done.length;
+    $("#k-done-hint").textContent = "resueltas este mes";
     $("#k-todo").innerHTML = todo.length
       ? todo.map(function(a){ return itemHTML(a, false); }).join("")
       : '<div class="kempty">Nada pendiente 🎉</div>';
     $("#k-done").innerHTML = done.map(function(a){ return itemHTML(a, true); }).join("");
   }
+  // colapsar/expandir la columna Hecho
+  $("#k-done-toggle").addEventListener("click", function(){
+    var col = $("#kcol-done");
+    var collapsed = col.classList.toggle("collapsed");
+    this.setAttribute("aria-expanded", collapsed ? "false" : "true");
+  });
   $("#sec-avisos").addEventListener("click", function(e){
     var b = e.target.closest("[data-done]");
     if (!b) return;
@@ -590,7 +608,9 @@
     v.comprobaciones.forEach(function(c){
       html += '<li><span class="ck">✓</span><span>' + glosar(c.texto) + "</span></li>";
     });
-    html += '<li><span class="ck pend">!</span><span>' + glosar(v.pendiente.texto) + "</span></li>";
+    if (v.pendiente){
+      html += '<li><span class="ck pend">!</span><span>' + glosar(v.pendiente.texto) + "</span></li>";
+    }
     html += "</ul>";
     html += '<div class="verify-summary">✓ ' + v.resumen + "</div>";
     html += '<div class="cifras-row">' +
